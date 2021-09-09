@@ -1,11 +1,12 @@
-// testshapes demo for Adafruit RGBmatrixPanel library.
-// Demonstrates the drawing abilities of the RGBmatrixPanel library.
-// For 16x32 RGB LED matrix:
-// http://www.adafruit.com/products/420
+#define CLK  8  
+#define OE   9
+#define LAT 10
+#define A   A0
+#define B   A1
+#define C   A2
 
-// Written by Limor Fried/Ladyada & Phil Burgess/PaintYourDragon
-// for Adafruit Industries.
-// BSD license, all text above must be included in any redistribution.
+#define CVCLOCK A5
+#define DISPLAY_SWITCH A4
 
 #include <RGBmatrixPanel.h>
 #include <MIDI.h>
@@ -14,14 +15,7 @@
 
 // --- COLOR & MATRIX & etc ...
 
-#define CLK  8  
-#define OE   9
-#define LAT 10
-#define A   A0
-#define B   A1
-#define C   A2
-
-#define displayW 32
+#define displayW 32 * 2
 #define displayH 16
 
 typedef uint16_t color_t;
@@ -33,7 +27,6 @@ RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 void clearScreen() {
   matrix.fillScreen(COLOR(0, 0, 0));
 }
-
 
 const byte rainbowCount = 12;
 color_t rainbow[rainbowCount] = {COLOR(7,0,0), COLOR(7,4,0), COLOR(7,7,0), COLOR(4,7,0), COLOR(0,7,0), COLOR(0,7,4), COLOR(0,7,7), COLOR(0,4,7), COLOR(0,0,7), COLOR(4,0,7), COLOR(7,0,7), COLOR(7,0,4)};
@@ -47,7 +40,7 @@ color_t randomColor() {
 // ***********
 
 
-#include "Scene.h"
+#include "Squares.h"
 
 Squares scene;
 
@@ -203,20 +196,21 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
 }
 
 byte index = 0;
-
 bool cvInState = false;
+bool isOtherDisplay = false;
 
 Ticker ticker(2000);
 
 void loop() {
   MIDI.read();
 
-  bool newCvInState = analogRead(5) > 200;
+  bool newCvInState = analogRead(CVCLOCK) > 200;
+  isOtherDisplay = analogRead(DISPLAY_SWITCH) > 200;
 
   bool tick = newCvInState && !cvInState;
 
   scene.tick(tick);
-  scene.showFrame();
+  scene.showFrame(isOtherDisplay);
   
 /*
   if (ticker.checkTime()) {
