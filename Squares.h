@@ -5,6 +5,11 @@
 #include "Scene.h"
 
 class Squares : public Scene {
+  
+public:
+  Squares(bool randomMode = true) : randomMode(randomMode) {
+  }
+  
 public:
   virtual void tick(bool state) override {
     if (state)  {
@@ -13,21 +18,26 @@ public:
         prevXPos = xPos;
         prevYPos = yPos;
 
-        /*
-        xPos = (xPos + 1) % (displayW/size);
+        if (randomMode) {
+          
+          while(prevXPos == xPos && prevYPos == yPos) {
+            xPos = random(displayW/size);
+            yPos = random(displayH/size);
+          }
+          
+        } else {
+          
+          xPos = (xPos + 1) % (displayW/size);
 
-        if (xPos == 0) {
-          yPos = (yPos + 1) % (displayH/size);
-        }*/
-        while(prevXPos == xPos && prevYPos == yPos) {
-          xPos = random(displayW/size);
-          yPos = random(displayH/size);
+          if (xPos == 0) {
+           yPos = (yPos + 1) % (displayH/size);
+          }
+          
         }
-    }
-      
+      }
     }
 
-    virtual void draw(bool isOtherDisplay) override {
+    virtual void draw() override {
       byte half = isOtherDisplay ? ((displayW/size)/2) : 0;
       byte _xPos = xPos - half;
       byte _prevXPos = prevXPos - half;
@@ -44,6 +54,8 @@ private:
 
     byte prevXPos = 0;
     byte prevYPos = 0;
+
+    bool randomMode = true;
 };
 
 

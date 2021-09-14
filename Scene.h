@@ -1,19 +1,28 @@
+
 #ifndef SCENE_H
+
 #define SCENE_H
 
 class Scene {
   public:
 
-  	virtual void tick(bool state) = 0;
+  	virtual void tick(bool state) {};
 
   	void prepareFrame() {
     	initFrame();
     	needRefresh = true;
   	}
 
-  	void showFrame(bool isOtherDisplay) {
+  	void showFrame(bool _isOtherDisplay) {
+      
+      if (isOtherDisplay != _isOtherDisplay) {
+        initFrame();
+        needRefresh = true;
+        isOtherDisplay = _isOtherDisplay;
+      }
+    
   		if (needRefresh) {
-  			draw(isOtherDisplay);
+  			draw();
   			needRefresh = false;
   		}
   	}
@@ -24,11 +33,12 @@ class Scene {
    		matrix.setCursor(0, 0);
   	}
 
-  	virtual void draw(bool isOtherDisplay) = 0;
+  	virtual void draw() = 0;
   	
 
   protected:
   	bool needRefresh = true;
+    bool isOtherDisplay = false;
 
 };
 
