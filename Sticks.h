@@ -45,15 +45,15 @@ private:
     return (isOtherDisplay ? -1 : 1);
   }
 
-    byte width = 1;
-    byte tailSize;
-    byte space = 1;
-    
-    byte xPos = 0;
-    
-    byte maxStickCount = displayW/2/width;
+  byte width = 1;
+  byte tailSize;
+  byte space = 1;
+  
+  byte xPos = 0;
+  
+  byte maxStickCount = displayW/2/width;
 
-    Palette* palette;
+  Palette* palette;
 
 };
 
