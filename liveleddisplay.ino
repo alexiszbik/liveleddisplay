@@ -8,12 +8,20 @@
 #include "ColorsAndMatrix.h"
 #include "Ticker.h"
 
+
+#include "Palette.h"
 #include "Squares.h"
 #include "Sticks.h"
 #include "Message.h"
 
+
+color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
+Palette* blueTest = new Palette(3, blueArray);
+
+Palette* blue = new Palette(8, 0, 4, 7);
+
 Scene* scenes[] = {
-  new Sticks(),
+  new Sticks(blue),
   new Message("BRIGHTER"),
   new Squares(),
   new Squares(false)

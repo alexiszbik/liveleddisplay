@@ -19,9 +19,11 @@ RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 typedef uint16_t color_t;
 
 #define COLOR(r,g,b) matrix.Color333(r,g,b)
+#define CLEAR COLOR(0, 0, 0)
+
 
 void clearScreen() {
-  matrix.fillScreen(COLOR(0, 0, 0));
+  matrix.fillScreen(CLEAR);
 }
 
 

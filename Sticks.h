@@ -3,11 +3,13 @@
 #define STICKS_H
 
 #include "Scene.h"
+#include "Palette.h"
 
 class Sticks : public Scene {
   
 public:
-  Sticks()  {
+  Sticks(Palette* palette) : palette(palette)  {
+    tailSize = palette->size;
   }
   
 public:
@@ -15,33 +17,43 @@ public:
     if (state)  {
       needRefresh = true;
 
-      xPos = ((xPos + 1 * (isOtherDisplay ? -1 : 1)) + stickCount) % stickCount;
+      xPos = ((xPos + 1 * direction()) + maxStickCount) % maxStickCount;
     }
   }
 
   virtual void draw() override {
-    //clearScreen();
-    
+
     for (byte i = 0; i < tailSize * space; i++) {
       
-      byte x = ((xPos - i * (isOtherDisplay ? -1 : 1)) + stickCount) % stickCount;
+      byte x = ((xPos - i * direction()) + maxStickCount) % maxStickCount;
       
-      color_t color = (i % space == 0) ? COLOR(0, 0, 7 - ceil(i/space)) : COLOR(0, 0, 0);
+      color_t color = (i % space == 0) ? palette->colors[(int)ceil(i/space)] : COLOR(0, 0, 0);
       
       matrix.fillRect(x * width, 0, width, displayH, color);
       
+    }
+
+    if (space == 1) {
+      byte x = ((xPos - tailSize * direction()) + maxStickCount) % maxStickCount;
+      matrix.fillRect(x * width, 0, width, displayH, CLEAR);
     }
     
   }
 
 private:
-    byte width = 2;
-    byte tailSize = 8;
-    byte xPos = 0;
-    byte space = 2;
+  int direction() {
+    return (isOtherDisplay ? -1 : 1);
+  }
+
+    byte width = 1;
+    byte tailSize;
+    byte space = 1;
     
-    byte prevXPos = 0;
-    byte stickCount = displayW/2/width;
+    byte xPos = 0;
+    
+    byte maxStickCount = displayW/2/width;
+
+    Palette* palette;
 
 };
 
