@@ -8,6 +8,7 @@
 class Rectangle : public Scene {
   friend class RectangleGroup;
 public:
+  //ratio : 1,2 or 4
   Rectangle(Palette* palette, bool direction = false, byte ratio = 1, byte position = 0, byte offset = 0) : palette(palette), direction(direction), ratio(ratio), position(position), offset(offset)  {
     rectCount = palette->size;
   }

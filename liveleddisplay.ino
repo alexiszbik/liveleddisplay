@@ -20,11 +20,14 @@
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
 Palette* blueTest = new Palette(3, blueArray);
 
-Palette* blue = new Palette(8, 0, 4, 7);
+Palette* blue = new Palette(8, 0, 0, 7);
 Palette* blueSmall = new Palette(4, 0, 0, 7);
+
+Palette* redSmall = new Palette(4, 7, 0, 0);
 
 
 Scene* scenes[] = {
+  new SquareTrail(redSmall, true),
   new RectangleGroup(blueSmall),
   new Rectangle(blueSmall),
   new Sticks(blue),
@@ -83,7 +86,7 @@ Ticker ticker(2000);
 void loop() {
   
   MIDI.read();
-
+  
   bool newCvInState = analogRead(CVCLOCK) > 200;
   isOtherDisplay = analogRead(DISPLAY_SWITCH) > 200;
 
@@ -93,6 +96,7 @@ void loop() {
   scenes[sceneIndex]->showFrame(isOtherDisplay);
 
   cvInState = newCvInState;
+
   
 /*
   if (ticker.checkTime()) {
@@ -100,10 +104,6 @@ void loop() {
     messages[index]->prepareFrame();
   }
 */
-  
-
-  //messages[index]->showFrame();
-
   
 
   /*
