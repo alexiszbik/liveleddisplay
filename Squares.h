@@ -47,7 +47,7 @@ public:
     }
 
 private:
-    byte size = 8;
+    const byte size = 8;
 
     byte xPos = 0;
     byte yPos = 0;

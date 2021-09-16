@@ -6,11 +6,7 @@
 
 #define RECT_COUNT 4
 
-Palette* redSmall = new Palette(4, 7, 0, 0);
-Palette* greenSmall = new Palette(4, 0, 7, 0);
-
 class RectangleGroup : public Scene {
-  
   
 public:
   RectangleGroup(Palette* palette) : palette(palette)  {

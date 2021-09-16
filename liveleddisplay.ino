@@ -14,6 +14,7 @@
 #include "Message.h"
 #include "Rectangle.h"
 #include "RectangleGroup.h"
+#include "SquareTrail.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
