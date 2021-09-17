@@ -15,6 +15,8 @@
 #include "Rectangle.h"
 #include "RectangleGroup.h"
 #include "SquareTrail.h"
+#include "RainDrops.h"
+#include "Arrows.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
@@ -25,8 +27,12 @@ Palette* blueSmall = new Palette(4, 0, 0, 7);
 
 Palette* redSmall = new Palette(4, 7, 0, 0);
 
+Palette* rainbowP = new Palette(rainbowCount, rainbow);
+
 
 Scene* scenes[] = {
+  new RainDrops(blue),
+  new Arrows(rainbowP),
   new SquareTrail(redSmall, true),
   new RectangleGroup(blueSmall),
   new Rectangle(blueSmall),
