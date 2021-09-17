@@ -22,6 +22,9 @@
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
 Palette* blueTest = new Palette(3, blueArray);
 
+color_t blueAndWhiteArray[] = {COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)};
+Palette* blueAndWhite = new Palette(3, blueAndWhiteArray);
+
 Palette* blue = new Palette(8, 0, 0, 7);
 Palette* blueSmall = new Palette(4, 0, 0, 7);
 
@@ -31,13 +34,13 @@ Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
 
 Scene* scenes[] = {
+  new Message("BRIGHTER", blueAndWhite),
   new RainDrops(blue),
   new Arrows(rainbowP),
   new SquareTrail(redSmall, true),
   new RectangleGroup(blueSmall),
   new Rectangle(blueSmall),
   new Sticks(blue),
-  new Message("BRIGHTER"),
   new Squares(),
   new Squares(false)
 };

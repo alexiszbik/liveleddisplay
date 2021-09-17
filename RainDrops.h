@@ -27,7 +27,6 @@ public:
         pos[i] = ((pos[i] + 1) + dropCounts[i]) % dropCounts[i];
         
       }
-      
     }
   }
 
