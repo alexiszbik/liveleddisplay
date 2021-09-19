@@ -17,6 +17,7 @@
 #include "RainDrops.h"
 #include "Arrows.h"
 #include "FlashingSign.h"
+#include "SquareDrops.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
@@ -34,7 +35,8 @@ Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
 
 Scene* scenes[] = {
-  new FlashingSign("BRIGHTER", blueAndWhite),
+  new SquareDrops(blue),
+  /*new FlashingSign("BRIGHTER", blueAndWhite),
   new RainDrops(blue),
   new Arrows(rainbowP),
   new SquareTrail(redSmall, true),
@@ -42,7 +44,7 @@ Scene* scenes[] = {
   new Rectangle(blueSmall),
   new Sticks(blue),
   new Squares(),
-  new Squares(false)
+  new Squares(false)*/
 };
 
 byte sceneIndex = 0;
