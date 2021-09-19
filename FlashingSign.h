@@ -1,13 +1,13 @@
 
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#ifndef FLASHING_SIGN_H
+#define FLASHING_SIGN_H
 
 #include "Palette.h"
 
-class Message : public Scene {
+class FlashingSign : public Scene {
   
   public:
-  Message(String text, Palette* palette) : text(text), palette(palette) {
+  FlashingSign(String text, Palette* palette) : text(text), palette(palette) {
     colorCount = palette->size;
   }
 
@@ -16,8 +16,6 @@ class Message : public Scene {
       needRefresh = true;
 
       colorIndex = (colorIndex + 1) % colorCount;
-
-      pos = (pos + 1) % lineTotal;
       
     }
   }
@@ -35,108 +33,28 @@ class Message : public Scene {
 
 
   virtual void draw() override {
-    /*
+    
     matrix.setTextSize(1);
     matrix.setTextColor(palette->colors[colorIndex]);
     matrix.setTextWrap(false);
     drawCentreString(text);
-    */
 
-    matrix.startWrite();
+    byte xOffset = isOtherDisplay ? displayW/2 : 0;
 
-    /*
-    int x = -pos;
-    
-    while (x < width) {
-      matrix.writeFastHLine(x, 0, lineW, color);
-      x += lineW;
-      matrix.writeFastHLine(x, 0, lineP, CLEAR);
-      x += lineP;
+    for (byte i = 0; i < 3; i++) {
+      byte cIndex = (colorIndex + 1 + i) % colorCount;
+      matrix.drawRect(i - xOffset,i, displayW - i*2, displayH - i*2, palette->colors[cIndex]);
     }
-
-    int y = pos - lineTotal - 3;
     
-    while (y < displayH) {
-      matrix.writeFastVLine(0, y, lineW, color);
-      y += lineW;
-      matrix.writeFastVLine(0, y, lineP, CLEAR);
-      y += lineP;
-    }
-    */
-
-    byte l = pos;
-
-    byte total = width*2 + height*2 - 4;
-
-    bool fill = true;
-
-    int i = 0;
-    int xPos = 0;
-    int yPos = 0;
-
-    int xIt = 1;
-    int yIt = 0;
     
-    while (i < total) {
-
-      if (l >= lineW + lineP) {
-        fill = true;
-        l = 0;
-      }
-      else if (l >= lineW) {
-        fill = false;
-      }
-
-      color_t color = fill ? palette->colors[0] : CLEAR;
-
-      if (i == width) {
-        xPos = width - 1;
-        yPos = 1; 
-
-        xIt = 0;
-        yIt = 1;
-      } else if (i == (width + height - 2)) {
-        xPos = width - 1;
-        yPos = displayH - 1; 
-
-        xIt = -1;
-        yIt = 0;
-      } else if (i == (width + height + width - 2)) {
-        xPos = 0;
-        yPos = height - 2; 
-
-        xIt = 0;
-        yIt = -1;
-      }
-      
-      matrix.drawPixel(xPos, yPos, color);
-        
-      xPos = xPos + xIt;
-      yPos = yPos + yIt;
-      
-      l++;
-      i++;
-      
-    }
-
-
-    matrix.endWrite();
   }
 
   protected:
   byte colorCount;  
   byte colorIndex = 0; 
-  byte pos = 0;
   
   Palette* palette;
   String text;
-
-  byte width = displayW/2;
-  byte height = displayH;
-
-  byte lineW = 4;
-  byte lineP = 2;
-  byte lineTotal = lineW + lineP;
   
 };
 /*
@@ -214,4 +132,4 @@ Message* messages[] = {
 
 byte messagesCount;
 */
-#endif //MESSAGE_H
+#endif //FLASHING_SIGN_H

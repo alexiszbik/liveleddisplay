@@ -11,12 +11,12 @@
 #include "Palette.h"
 #include "Squares.h"
 #include "Sticks.h"
-#include "Message.h"
 #include "Rectangle.h"
 #include "RectangleGroup.h"
 #include "SquareTrail.h"
 #include "RainDrops.h"
 #include "Arrows.h"
+#include "FlashingSign.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
@@ -34,7 +34,7 @@ Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
 
 Scene* scenes[] = {
-  new Message("BRIGHTER", blueAndWhite),
+  new FlashingSign("BRIGHTER", blueAndWhite),
   new RainDrops(blue),
   new Arrows(rainbowP),
   new SquareTrail(redSmall, true),
