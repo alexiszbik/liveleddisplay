@@ -46,7 +46,6 @@ class FlashingSign : public Scene {
       matrix.drawRect(i - xOffset,i, displayW - i*2, displayH - i*2, palette->colors[cIndex]);
     }
     
-    
   }
 
   protected:

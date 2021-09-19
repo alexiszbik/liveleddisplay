@@ -18,6 +18,8 @@
 #include "Arrows.h"
 #include "FlashingSign.h"
 #include "SquareDrops.h"
+#include "RandomYMNK.h"
+#include "BigYMNK.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
@@ -35,7 +37,9 @@ Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
 
 Scene* scenes[] = {
-  new SquareDrops(blue),
+  new BigYMNK(rainbowP),
+  //new RandomYMNK(rainbowP),
+  //new SquareDrops(blue),
   /*new FlashingSign("BRIGHTER", blueAndWhite),
   new RainDrops(blue),
   new Arrows(rainbowP),
