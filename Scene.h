@@ -1,19 +1,19 @@
 
 #ifndef SCENE_H
-
 #define SCENE_H
 
 class Scene {
   public:
 
   	virtual void tick(bool state) {};
+    virtual void midiNote(byte noteValue) {};   
 
   	void prepareFrame() {
     	initFrame();
     	needRefresh = true;
   	}
 
-  	void showFrame(bool _isOtherDisplay) {
+  	virtual void showFrame(bool _isOtherDisplay) {
       
       if (isOtherDisplay != _isOtherDisplay) {
         initFrame();

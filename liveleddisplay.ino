@@ -20,10 +20,14 @@
 #include "SquareDrops.h"
 #include "RandomYMNK.h"
 #include "BigYMNK.h"
+#include "VuMeter.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
 Palette* blueTest = new Palette(3, blueArray);
+
+color_t vuPaletteArray[] = {COLOR(0,0,7), COLOR(0,7,0), COLOR(7,7,0), COLOR(7,0,0)};
+Palette* vuPalette = new Palette(4, vuPaletteArray);
 
 color_t blueAndWhiteArray[] = {COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)};
 Palette* blueAndWhite = new Palette(3, blueAndWhiteArray);
@@ -37,7 +41,8 @@ Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
 
 Scene* scenes[] = {
-  new BigYMNK(rainbowP),
+  new VuMeter(vuPalette),
+  //new BigYMNK(rainbowP),
   //new RandomYMNK(rainbowP),
   //new SquareDrops(blue),
   /*new FlashingSign("BRIGHTER", blueAndWhite),
@@ -70,21 +75,10 @@ void setup() {
   scenes[0]->prepareFrame();
 }
 
-/*
-int check = 0;
-int frequency = 4;
-int height[2] = {0, 0};
-int increment[2] = {0, 0};
-*/
-bool boom[2] = {false, false};
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
   if (velocity > 0) {
-    if (note == 48) {
-      boom[0] = true;
-    } else {
-      boom[1] = true;
-    }
+    scenes[0]->midiNote(note);
   }
 }
 
@@ -95,8 +89,6 @@ void handleProgramChange(byte channel, byte program) {
 
 bool cvInState = false;
 bool isOtherDisplay = false;
-
-Ticker ticker(2000);
 
 void loop() {
   
@@ -112,39 +104,5 @@ void loop() {
 
   cvInState = newCvInState;
 
-  
-/*
-  if (ticker.checkTime()) {
-    index = (index + 1) % messagesCount;
-    messages[index]->prepareFrame();
-  }
-*/
-  
-
-  /*
-  check = (check + 1) % 400;
-
-  if (check != 0) return;
-
-  for (byte i = 0; i < 2; i++) {
-    if (boom[i]) {
-      increment[i] = 8;
-    }
-  
-    height[i] = fmax(height[i] + increment[i], 0);
-    
-    if (height[i] >= 0) {
-      if (increment[i] > 0) {
-        matrix.fillRect(i*16, 16 - height[i], 16, 8, matrix.Color333(0, 4, i == 1 ? 4 : 0));
-      } else {
-        matrix.fillRect(i*16, 15 - height[i], 16, 1, matrix.Color333(0, 0, 0));
-      }
-    }
-    
-    if (height[i] >= 16 ) {
-      increment[i] = -1;
-      boom[i] = false;
-    }
-  }
-  */
+ 
 }
