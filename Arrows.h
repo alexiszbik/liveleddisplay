@@ -5,12 +5,14 @@
 #include "Scene.h"
 #include "Palette.h"
 
+#define SIZE 2
+
 class Arrows : public Scene {
 
 public:
 
-  Arrows(Palette* palette) : palette(palette)  {
-    arrowsSize = palette->size;
+  Arrows() {
+
   }
   
 public:
@@ -18,7 +20,7 @@ public:
     if (state)  {
       needRefresh = true;
 
-      xPos = ((xPos - 1) + maxXPos) % (maxXPos);
+      xPos = ((xPos - 1 * (isOtherDisplay ? 1 : -1)) + maxXPos) % (maxXPos);
 
     }
   }
@@ -26,25 +28,26 @@ public:
   virtual void draw() override {
     matrix.startWrite();
 
-    for (byte a = 0; a < arrowsSize + 1; a++) {
+    for (byte a = 0; a < displayW/2/SIZE; a++) {
       
       byte pixX = 0;
+
+      color_t color = matrix.ColorHSV((1535/(displayW/2/SIZE))*a, 255, 255, true);
       
       for (byte y = 0; y < displayH; y++) {
-        color_t color = a < arrowsSize ? palette->colors[a] : CLEAR;
-  
+
         byte halfDisplay = displayH/2;
-  
-        byte x = (pixX + xPos + a*2 + maxXPos) % (maxXPos);
+
+        byte x = (pixX + xPos + a*SIZE + maxXPos) % (maxXPos);
         
-        matrix.writeFastHLine(x, y, 2, color);
+        matrix.writeFastHLine(x, y, SIZE, color);
   
         if (y == halfDisplay - 1) {
   
         } else if (y > halfDisplay - 1) {
-          pixX++;
+          isOtherDisplay ? pixX++ : pixX--;
         } else {
-          pixX--;
+          isOtherDisplay ? pixX-- : pixX++;
         }
       }
       
@@ -56,9 +59,7 @@ public:
 
 
 private:
-  byte arrowsSize;
-  Palette* palette;
-
+  
   byte xPos = 0;
   byte maxXPos = displayW/2;
 

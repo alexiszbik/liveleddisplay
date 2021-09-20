@@ -44,6 +44,12 @@ Palette* redSmall = new Palette(4, 7, 0, 0);
 Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
 /*
+color_t fatRainbowArray[] =  {COLOR(7,0,0), COLOR(7,2,0), COLOR(7,4,0), COLOR(7,7,0), COLOR(4,7,0), COLOR(2,7,0), COLOR(0,7,0), COLOR(0,7,2), COLOR(0,7,4), COLOR(0,7,7), COLOR(0,2,7), COLOR(0,0,7), COLOR(2,0,7), COLOR(4,0,7), COLOR(7,0,7), COLOR(7,0,2)};
+Palette* fatRainbowP = new Palette(16, fatRainbowArray);
+*/
+//color_t test = matrix.ColorHSV(1535, 255, 255, true);
+
+/*
 Scene* scenes[] = {
   new BigVu(vuPalette),
   //new QuadVu(vuPalette),
@@ -76,7 +82,7 @@ void setup() {
   MIDI.setHandleProgramChange(handleProgramChange);
   MIDI.begin(MIDI_CHANNEL_OMNI);
 
-  scene = new Squares();
+  scene = new Arrows();
 
   scene->prepareFrame();
 }
@@ -156,7 +162,7 @@ void handleProgramChange(byte channel, byte program) {
       case 27 : scene = new SquareTrail(redSmall, true);
         break;
       //Animaux kick
-      case 28 : scene = new Arrows(rainbowP);
+      case 28 : scene = new Arrows();
         break;
       //Animaux end
       case 29 : scene = new BigYMNK(rainbowP);

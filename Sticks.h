@@ -42,7 +42,7 @@ public:
 
 private:
   int direction() {
-    return (isOtherDisplay ? -1 : 1);
+    return (isOtherDisplay ? 1 : -1);
   }
 
   byte width = 2;
