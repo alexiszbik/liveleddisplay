@@ -5,6 +5,7 @@
 #include "Palette.h"
 #include "Scene.h"
 
+
 class Kaomojis : public Scene {
   
   public:
@@ -38,9 +39,29 @@ class Kaomojis : public Scene {
     matrix.setTextSize(2);
     matrix.setTextColor(palette->colors[colorIndex]);
     matrix.setTextWrap(false);
-    byte randomStringIndex = random(1000) % 10;
-    //drawCentreString(text[randomStringIndex]);
     
+    byte randomStringIndex = random(1000) % 10;
+    String toDraw;
+
+    switch (randomStringIndex) {
+      case 0 : toDraw = F("(*^o^)"); break;
+      case 1 : toDraw = F("(>m<)"); break;
+      case 2 : toDraw = F("(*'o'*)"); break;
+      case 3 : toDraw = F("=^..^="); break;
+      case 4 : toDraw = F("(;-_-)"); break;
+      case 5 : toDraw = F("(o_O)"); break;
+      case 6 : toDraw = F("(>_<~)"); break;
+      case 7 : toDraw = F("(T^T)"); break;
+      case 8 : toDraw = F("(^_^*)"); break;
+      default : toDraw = F("U=x=U"); break;
+    }
+
+    
+    drawCentreString(toDraw);
+
+    //strcpy_P(buffer, (char *)pgm_read_word(&(string_table[0])));
+    //drawCentreString(buffer);
+    //matrix.print(buffer);
   }
 
   protected:
@@ -48,7 +69,7 @@ class Kaomojis : public Scene {
   byte colorIndex = 0; 
   
   Palette* palette;
-  String text[10] = {"(*^o^)", "(>m<)", "(*'o'*)", "=^..^=", "(;-_-)", "(o_O)", "(>_<~)", "(T^T)", "(^_^*)", "U=x=U" } ;
+  
   
 };
 

@@ -4,7 +4,7 @@
 
 #include "Palette.h"
 
-#define WORD "BRIGHTER"
+#define WORD F("BRIGHTER")
 
 class FlashingSign : public Scene {
   

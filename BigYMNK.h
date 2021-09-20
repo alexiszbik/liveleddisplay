@@ -30,14 +30,14 @@ public:
 
     matrix.setTextColor(palette->colors[cIndex]);
     matrix.setCursor(3,1);
-    matrix.print(isOtherDisplay ? "N" : "Y");
+    matrix.print(isOtherDisplay ? F("N") : F("Y"));
 
     cIndex = (cIndex + 1) % palette->size;
 
 
     matrix.setTextColor(palette->colors[cIndex]);
     matrix.setCursor(19,1);
-    matrix.print(isOtherDisplay ? "K" : "M");
+    matrix.print(isOtherDisplay ? F("K") : F("M"));
   }
 
 

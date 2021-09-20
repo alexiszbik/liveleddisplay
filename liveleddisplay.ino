@@ -140,8 +140,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers End
-      /*case 18 : scene = new Kaomojis(rainbowP);
-        break;*/
+      case 18 : scene = new Kaomojis(rainbowP);
+        break;
 
 
       //Hopes

@@ -45,9 +45,9 @@ private:
     return (isOtherDisplay ? -1 : 1);
   }
 
-  byte width = 1;
+  byte width = 2;
   byte tailSize;
-  byte space = 1;
+  byte space = 2;
   
   byte xPos = 0;
   
