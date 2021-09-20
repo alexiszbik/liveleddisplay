@@ -16,6 +16,7 @@ public:
   
 public:
   virtual void midiNote(byte noteValue) override {
+    
     if (noteValue == (isOtherDisplay ? 62 : 60)) {
       vuSize[0] = 0;
       vuUp[0] = true;
@@ -38,6 +39,7 @@ public:
   virtual void draw() override {
 
     for (byte i = 0; i < 2; i++) {
+      
       byte x = i * displayW/2/2;
 
       byte colorIndex = i + (isOtherDisplay ? 2 : 0);
@@ -56,11 +58,10 @@ public:
         vuSize[i] = vuSize[i] - 0.75;
       }
     }
-
   }
 
+private: 
 
-private:
   Palette* palette;
   Ticker *ticker = new Ticker(20);
 

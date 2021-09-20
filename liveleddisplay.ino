@@ -21,6 +21,7 @@
 #include "RandomYMNK.h"
 #include "BigYMNK.h"
 #include "VuMeter.h"
+#include "QuadVu.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
@@ -41,7 +42,8 @@ Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
 
 Scene* scenes[] = {
-  new VuMeter(vuPalette),
+  new QuadVu(vuPalette),
+  ///new VuMeter(vuPalette),
   //new BigYMNK(rainbowP),
   //new RandomYMNK(rainbowP),
   //new SquareDrops(blue),
