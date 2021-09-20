@@ -14,6 +14,13 @@ public:
        rectangles[i] = new Rectangle(palette, true, RECT_COUNT, i, i*2);
     }
   }
+
+  virtual ~RectangleGroup() {
+    for (byte i = 0; i < RECT_COUNT; i++) {
+       delete rectangles[i];
+    }
+
+  }
   
 public:
   virtual void tick(bool state) override {

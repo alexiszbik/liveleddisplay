@@ -23,6 +23,7 @@
 #include "VuMeter.h"
 #include "QuadVu.h"
 #include "BigVu.h"
+#include "Kaomojis.h"
 
 
 color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
@@ -37,11 +38,12 @@ Palette* blueAndWhite = new Palette(3, blueAndWhiteArray);
 Palette* blue = new Palette(8, 0, 0, 7);
 Palette* blueSmall = new Palette(4, 0, 0, 7);
 
+Palette* red = new Palette(8, 7, 0, 0);
 Palette* redSmall = new Palette(4, 7, 0, 0);
 
 Palette* rainbowP = new Palette(rainbowCount, rainbow);
 
-
+/*
 Scene* scenes[] = {
   new BigVu(vuPalette),
   //new QuadVu(vuPalette),
@@ -49,7 +51,7 @@ Scene* scenes[] = {
   //new BigYMNK(rainbowP),
   //new RandomYMNK(rainbowP),
   //new SquareDrops(blue),
-  /*new FlashingSign("BRIGHTER", blueAndWhite),
+  new FlashingSign("BRIGHTER", blueAndWhite),
   new RainDrops(blue),
   new Arrows(rainbowP),
   new SquareTrail(redSmall, true),
@@ -57,38 +59,117 @@ Scene* scenes[] = {
   new Rectangle(blueSmall),
   new Sticks(blue),
   new Squares(),
-  new Squares(false)*/
-};
+  new Squares(false)
+};*/
 
-byte sceneIndex = 0;
-byte sceneCount;
+Scene* scene = NULL;
+byte currentProgram = 0;
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
   Serial.begin(9600);
-  sceneCount = sizeof(scenes)/sizeof(scenes[0]);
 
   matrix.begin();
-  //messagesCount = sizeof(messages)/sizeof(messages[0]);
   
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
   MIDI.begin(MIDI_CHANNEL_OMNI);
 
-  scenes[0]->prepareFrame();
+  scene = new Squares();
+
+  scene->prepareFrame();
 }
 
 
 void handleNoteOn(byte channel, byte note, byte velocity) {
   if (velocity > 0) {
-    scenes[0]->midiNote(note);
+    scene->midiNote(note);
   }
 }
 
 void handleProgramChange(byte channel, byte program) {
-  sceneIndex = min(program, sceneCount - 1);
-  scenes[sceneIndex]->prepareFrame();
+  if (program != currentProgram) {
+  
+    delete scene;
+    scene = NULL;
+    
+    switch(program) {
+      
+      //Intro
+      case 0 : scene = new Squares();
+        break;
+
+      //Brighter Beat
+      case 2 : scene = new VuMeter(vuPalette);
+        break;
+
+      //Brighter Drop
+      case 4 : scene = new Squares();
+        break;
+
+      //Say : Brighter
+      case 5 : scene = new FlashingSign(blueAndWhite);
+        break;
+
+
+
+      //End Brighter // The Great Escape
+      case 6 : scene = new SquareDrops(blue);
+        break;
+
+        
+     
+      //The Great Scape, + drums
+      case 10 : scene = new RandomYMNK(rainbowP);
+        break;
+
+
+      //THANK you ???
+
+      //Pers intro
+      case 15 : scene = new Sticks(red);
+        break;
+
+      //Pers Kick
+      case 16 : scene = new BigVu(red);
+        break;
+
+      //Pers Drop
+      case 17 : scene = new RectangleGroup(blueSmall);
+        break;
+
+      //Pers End
+      /*case 18 : scene = new Kaomojis(rainbowP);
+        break;*/
+
+
+      //Hopes
+      //intro
+      case 22 : scene = new RainDrops(blue);
+        break;
+      //toms
+      case 23 : scene = new QuadVu(blue);
+        break;
+
+      //Animaux intro
+      case 27 : scene = new SquareTrail(redSmall, true);
+        break;
+      //Animaux kick
+      case 28 : scene = new Arrows(rainbowP);
+        break;
+      //Animaux end
+      case 29 : scene = new BigYMNK(rainbowP);
+        break;
+    
+  
+      default: scene = new Squares();
+        break;
+    }
+    scene->prepareFrame();
+
+    currentProgram = program;
+  }
 }
 
 bool cvInState = false;
@@ -103,10 +184,9 @@ void loop() {
 
   bool tick = newCvInState && !cvInState;
 
-  scenes[sceneIndex]->tick(tick);
-  scenes[sceneIndex]->showFrame(isOtherDisplay);
+  scene->tick(tick);
+  scene->showFrame(isOtherDisplay);
 
   cvInState = newCvInState;
 
- 
 }

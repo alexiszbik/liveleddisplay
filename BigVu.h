@@ -13,6 +13,10 @@ class BigVu : public Scene {
 public:
   BigVu(Palette* palette) : palette(palette)  {
   }
+
+  virtual ~BigVu() {
+    delete ticker;
+  }
   
 public:
   virtual void midiNote(byte noteValue) override {

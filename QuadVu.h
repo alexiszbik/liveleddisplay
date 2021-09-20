@@ -20,6 +20,10 @@ public:
 public:
   QuadVu(Palette* palette) : palette(palette)  {
   }
+
+  virtual ~QuadVu() {
+    delete ticker;
+  }
   
 public:
   virtual void midiNote(byte noteValue) override {

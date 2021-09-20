@@ -5,6 +5,9 @@
 class Scene {
   public:
 
+    virtual ~Scene() {
+      
+    }
   	virtual void tick(bool state) {};
     virtual void midiNote(byte noteValue) {};   
 

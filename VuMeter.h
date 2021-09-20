@@ -13,6 +13,11 @@ class VuMeter : public Scene {
 public:
   VuMeter(Palette* palette) : palette(palette)  {
   }
+
+  virtual ~VuMeter() {
+    delete ticker;
+  }
+  
   
 public:
   virtual void midiNote(byte noteValue) override {

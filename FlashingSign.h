@@ -4,10 +4,12 @@
 
 #include "Palette.h"
 
+#define WORD "BRIGHTER"
+
 class FlashingSign : public Scene {
   
   public:
-  FlashingSign(String text, Palette* palette) : text(text), palette(palette) {
+  FlashingSign(Palette* palette) : palette(palette) {
     colorCount = palette->size;
   }
 
@@ -20,15 +22,15 @@ class FlashingSign : public Scene {
     }
   }
 
-  void drawCentreString(const String &buf) {
+  void drawCentreString() {
     byte xOffset = isOtherDisplay ? displayW/2 : 0;
     
     matrix.setCursor(0, 0);
     int16_t x1, y1;
     uint16_t w, h;
-    matrix.getTextBounds(buf, 0, 0, &x1, &y1, &w, &h);
+    matrix.getTextBounds(WORD, 0, 0, &x1, &y1, &w, &h);
     matrix.setCursor(displayW/2 - w/2 - xOffset, displayH/2 - h/2);
-    matrix.print(buf);
+    matrix.print(WORD);
   }
 
 
@@ -37,7 +39,7 @@ class FlashingSign : public Scene {
     matrix.setTextSize(1);
     matrix.setTextColor(palette->colors[colorIndex]);
     matrix.setTextWrap(false);
-    drawCentreString(text);
+    drawCentreString();
 
     byte xOffset = isOtherDisplay ? displayW/2 : 0;
 
@@ -53,8 +55,6 @@ class FlashingSign : public Scene {
   byte colorIndex = 0; 
   
   Palette* palette;
-  String text;
-  
 };
 /*
 class MultiColorMessage : public Message {
