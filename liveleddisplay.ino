@@ -71,6 +71,8 @@ Scene* scenes[] = {
 Scene* scene = NULL;
 byte currentProgram = 0;
 
+bool isPlaying = false;
+
 MIDI_CREATE_DEFAULT_INSTANCE();
 
 void setup() {
@@ -82,9 +84,21 @@ void setup() {
   MIDI.setHandleProgramChange(handleProgramChange);
   MIDI.begin(MIDI_CHANNEL_OMNI);
 
-  scene = new Arrows();
+  MIDI.setHandleStart(handleStart);
+  MIDI.setHandleStop(handleStop);
+
+  scene = new Squares();
 
   scene->prepareFrame();
+}
+
+void handleStart() {
+  isPlaying = true;
+}
+
+void handleStop() {
+  clearScreen();
+  isPlaying = false;
 }
 
 
@@ -138,7 +152,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Kick
-      case 16 : scene = new BigVu(red);
+      case 16 : scene = new BigVu(red, 36);
         break;
 
       //Pers Drop
@@ -191,7 +205,10 @@ void loop() {
   bool tick = newCvInState && !cvInState;
 
   scene->tick(tick);
-  scene->showFrame(isOtherDisplay);
+  
+  if (isPlaying) {
+    scene->showFrame(isOtherDisplay);
+  }
 
   cvInState = newCvInState;
 

@@ -32,7 +32,12 @@ public:
       
       byte pixX = 0;
 
-      color_t color = matrix.ColorHSV((1535/(displayW/2/SIZE))*a, 255, 255, true);
+      byte c = a;
+      if (isOtherDisplay) {
+        c = displayW/2/SIZE - 1 - a;
+      }
+
+      color_t color = matrix.ColorHSV((1535/(displayW/2/SIZE)) * c, 255, 255, true);
       
       for (byte y = 0; y < displayH; y++) {
 

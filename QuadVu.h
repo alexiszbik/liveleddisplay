@@ -10,6 +10,8 @@
 #define VU_H 16
 #define VU_W 8
 
+#define START_NOTE 48
+
 class QuadVu : public Scene {
 public:
   struct VuState {
@@ -28,9 +30,9 @@ public:
 public:
   virtual void midiNote(byte noteValue) override {
 
-    if (noteValue >= 60 && noteValue <= 63)
+    if (noteValue >= START_NOTE && noteValue <= (START_NOTE + 3))
     {
-      byte vuIndex = noteValue - 60;
+      byte vuIndex = noteValue - START_NOTE;
       vuStates[vuIndex].vuUp = true;
       vuStates[vuIndex].vuSize = 0;
     }

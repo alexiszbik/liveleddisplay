@@ -11,7 +11,8 @@
 class BigVu : public Scene {
   
 public:
-  BigVu(Palette* palette) : palette(palette)  {
+  BigVu(Palette* palette, byte note) : palette(palette), note(note) {
+
   }
 
   virtual ~BigVu() {
@@ -21,7 +22,7 @@ public:
 public:
   virtual void midiNote(byte noteValue) override {
     
-    if (noteValue == 60) {
+    if (noteValue == note) {
       vuSize = 0;
       vuUp = true;
     }
@@ -65,6 +66,7 @@ private:
 
   float vuSize = 0;
   bool vuUp = false;
+  byte note;
 
 };
 
