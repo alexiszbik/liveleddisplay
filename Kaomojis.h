@@ -40,7 +40,7 @@ class Kaomojis : public Scene {
     matrix.setTextColor(palette->colors[colorIndex]);
     matrix.setTextWrap(false);
     
-    byte randomStringIndex = random(1000) % 10;
+    byte randomStringIndex = random(1000) % 6;//10;
     String toDraw;
 
     switch (randomStringIndex) {

@@ -7,7 +7,7 @@
 class Squares : public Scene {
   
 public:
-  Squares(bool randomMode = true) : randomMode(randomMode) {
+  Squares(Palette* palette, bool randomMode = true) : palette(palette), randomMode(randomMode) {
   }
   
 public:
@@ -43,7 +43,9 @@ public:
       byte _prevXPos = prevXPos - half;
     
       matrix.fillRect(_prevXPos * size, prevYPos * size , size, size, matrix.Color333(0, 0, 0));
-      matrix.fillRect(_xPos * size, yPos * size, size, size, randomColor());
+
+      byte colorIndex = random(1000) % palette->size;
+      matrix.fillRect(_xPos * size, yPos * size, size, size, palette->colors[colorIndex]);
     }
 
 private:
@@ -56,6 +58,8 @@ private:
     byte prevYPos = 0;
 
     bool randomMode = true;
+
+    Palette* palette;
 };
 
 
