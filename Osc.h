@@ -4,15 +4,19 @@
 
 #include "Scene.h"
 
+#define NO_VALUE 100
+
 class Osc : public Scene {
   
 public:
   Osc(Palette* palette) : palette(palette) {
     waveCount = palette->size;
+    buf = (byte*)malloc(sizeof(byte)*waveCount);
   }
 
   virtual ~Osc() {
       delete palette;
+      free(buf);
   }
   
 public:
@@ -26,12 +30,10 @@ public:
   virtual void draw() override {
       const byte w = displayW/2;
 
-      //clearScreen();
-
       for (byte i = 0; i < w; i++) {
+        
         for (byte s = 0; s < waveCount; s++) {
 
-          color_t c = palette->colors[s];
           byte waveOffset = (displayW/waveCount) * s;
           
           float x = ((float)(i + offset + waveOffset + (isOtherDisplay ? displayW/2 : 0)))/(float)w;
@@ -42,11 +44,13 @@ public:
           float prevy = cos(PI*(x+off_x)) * displayH/2 + displayH/2; 
           prevy = fmin(prevy,displayH - 1);
 
-          if (prevy != y) {
-            matrix.drawPixel(i, prevy, COLOR(0,0,0));
-          }
-                    
-          matrix.drawPixel(i, y, c);
+          matrix.drawPixel(i, prevy, COLOR(0,0,0));
+          buf[s] = y;
+        }
+
+        for (byte s = 0; s < waveCount; s++) {
+          color_t c = palette->colors[s];
+          matrix.drawPixel(i, buf[s], c);
         }
       }
   }
@@ -54,6 +58,7 @@ public:
 private:
   byte offset = 0;
   byte waveCount = 0;
+  byte* buf;
   Palette* palette;
 };
 
