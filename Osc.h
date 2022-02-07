@@ -7,11 +7,12 @@
 class Osc : public Scene {
   
 public:
-  Osc() {
+  Osc(Palette* palette) : palette(palette) {
+    waveCount = palette->size;
   }
 
   virtual ~Osc() {
-
+      delete palette;
   }
   
 public:
@@ -23,21 +24,37 @@ public:
   }
 
   virtual void draw() override {
-      byte w = displayW/2;
+      const byte w = displayW/2;
 
-      clearScreen();
+      //clearScreen();
 
       for (byte i = 0; i < w; i++) {
-        float x = ((float)(i + offset + (isOtherDisplay ? displayW/2 : 0)))/(float)w;
-        float y = cos(PI*x) * displayH/2 + displayH/2; 
-        
-        matrix.drawPixel(i, y, COLOR(0,4,7));
+        for (byte s = 0; s < waveCount; s++) {
+
+          color_t c = palette->colors[s];
+          byte waveOffset = (displayW/waveCount) * s;
+          
+          float x = ((float)(i + offset + waveOffset + (isOtherDisplay ? displayW/2 : 0)))/(float)w;
+          float y = cos(PI*x) * displayH/2 + displayH/2; 
+          y = fmin(y,displayH - 1);
+
+          float off_x = -1.0/(float)w;
+          float prevy = cos(PI*(x+off_x)) * displayH/2 + displayH/2; 
+          prevy = fmin(prevy,displayH - 1);
+
+          if (prevy != y) {
+            matrix.drawPixel(i, prevy, COLOR(0,0,0));
+          }
+                    
+          matrix.drawPixel(i, y, c);
+        }
       }
-      
   }
 
 private:
   byte offset = 0;
+  byte waveCount = 0;
+  Palette* palette;
 };
 
 
