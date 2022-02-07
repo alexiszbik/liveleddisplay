@@ -26,23 +26,11 @@
 #include "Kaomojis.h"
 #include "Osc.h"
 
+#define BLUE_P new Palette(8, 0, 0, 7)
+#define BLUE_P_S new Palette(4, 0, 0, 7)
 
-color_t blueArray[] = {COLOR(0,0,7), COLOR(0,0,5), COLOR(0,0,3)};
-
-color_t vuPaletteArray[] = {COLOR(0,0,7), COLOR(0,7,0), COLOR(7,7,0), COLOR(7,0,0)};
-Palette* vuPalette = new Palette(4, vuPaletteArray);
-
-color_t blueAndWhiteArray[] = {COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)};
-Palette* blueAndWhite = new Palette(3, blueAndWhiteArray);
-
-Palette* blue = new Palette(8, 0, 0, 7);
-Palette* blueSmall = new Palette(4, 0, 0, 7);
-
-Palette* red = new Palette(8, 7, 0, 0);
-Palette* redSmall = new Palette(4, 7, 0, 0);
-
-color_t rainbow[] = {COLOR(7,0,0), COLOR(7,4,0), COLOR(7,7,0), COLOR(4,7,0), COLOR(0,7,0), COLOR(0,7,4), COLOR(0,7,7), COLOR(0,4,7), COLOR(0,0,7), COLOR(4,0,7), COLOR(7,0,7), COLOR(7,0,4)};
-Palette* rainbowP = new Palette(12, rainbow);
+#define RED_P new Palette(8, 7, 0, 0)
+#define RED_P_S new Palette(4, 7, 0, 0)
 
 
 Scene* scene = NULL;
@@ -64,7 +52,7 @@ void setup() {
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
 
-  scene = new Squares(rainbowP);
+  scene = new Squares(new RainbowPalette());
 
   scene->prepareFrame();
 }
@@ -94,31 +82,31 @@ void handleProgramChange(byte channel, byte program) {
     switch(program) {
       
       //Intro
-      case 0 : scene = new Squares(rainbowP);
+      case 0 : scene = new Squares(new RainbowPalette());
         break;
 
       //Brighter Beat
-      case 2 : scene = new VuMeter(vuPalette);
+      case 2 : scene = new VuMeter(new VuPalette());
         break;
 
       //Brighter Drop
-      case 4 : scene = new Squares(rainbowP);
+      case 4 : scene = new Squares(new RainbowPalette());
         break;
 
       //Say : Brighter
-      case 5 : scene = new FlashingSign(blueAndWhite);
+      case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
         break;
 
 
 
       //End Brighter // The Great Escape
-      case 6 : scene = new SquareDrops(blue);
+      case 6 : scene = new SquareDrops(BLUE_P);
         break;
 
         
      
       //The Great Scape, + drums
-      case 10 : scene = new RandomYMNK(rainbowP);
+      case 10 : scene = new RandomYMNK(new RainbowPalette());
         break;
 
        
@@ -126,19 +114,19 @@ void handleProgramChange(byte channel, byte program) {
       //THANK you ???
 
       //Pers intro
-      case 15 : scene = new Sticks(red);
+      case 15 : scene = new Sticks(RED_P);
         break;
 
       //Pers Kick
-      case 16 : scene = new BigVu(red, 36);
+      case 16 : scene = new BigVu(RED_P, 36);
         break;
 
       //Pers Drop
-      case 17 : scene = new RectangleGroup(blueSmall);
+      case 17 : scene = new RectangleGroup(BLUE_P_S);
         break;
 
       //Pers End
-      case 18 : scene = new Kaomojis(rainbowP);
+      case 18 : scene = new Kaomojis(new RainbowPalette());
         break;
 
       //Water
@@ -149,24 +137,24 @@ void handleProgramChange(byte channel, byte program) {
 
       //Hopes
       //intro
-      case 22 : scene = new RainDrops(blue);
+      case 22 : scene = new RainDrops(BLUE_P);
         break;
       //toms
-      case 23 : scene = new QuadVu(blue);
+      case 23 : scene = new QuadVu(BLUE_P);
         break;
 
       //Animaux intro
-      case 27 : scene = new SquareTrail(redSmall, true);
+      case 27 : scene = new SquareTrail(RED_P_S, true);
         break;
       //Animaux kick
       case 28 : scene = new Arrows();
         break;
       //Animaux end
-      case 29 : scene = new BigYMNK(rainbowP);
+      case 29 : scene = new BigYMNK(new RainbowPalette());
         break;
     
   
-      default: scene = new Squares(rainbowP);
+      default: scene = new Squares(new RainbowPalette());
         break;
     }
     scene->prepareFrame();

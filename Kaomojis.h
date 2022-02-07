@@ -13,6 +13,10 @@ class Kaomojis : public Scene {
     colorCount = palette->size;
   }
 
+  virtual ~Kaomojis() {
+     delete palette;
+  }
+
   virtual void tick(bool state) override {
     if (state)  {
       needRefresh = true;

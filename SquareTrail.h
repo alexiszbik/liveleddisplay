@@ -15,6 +15,10 @@ public:
     }
     posMax = wCount * displayH/size;
   }
+
+  virtual ~SquareTrail() {
+     delete palette;
+  }
   
   
 public:

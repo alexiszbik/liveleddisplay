@@ -21,6 +21,10 @@ public:
   RandomYMNK(Palette* palette) : palette(palette)  {
 
   }
+
+  virtual ~RandomYMNK() {
+     delete palette;
+  }
   
 public:
   virtual void tick(bool state) override {

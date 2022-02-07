@@ -19,7 +19,7 @@ public:
     for (byte i = 0; i < RECT_COUNT; i++) {
        delete rectangles[i];
     }
-
+    delete palette;
   }
   
 public:

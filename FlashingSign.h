@@ -13,6 +13,10 @@ class FlashingSign : public Scene {
     colorCount = palette->size;
   }
 
+  virtual ~FlashingSign() {
+     delete palette;
+  }
+
   virtual void tick(bool state) override {
     if (state)  {
       needRefresh = true;

@@ -16,7 +16,10 @@ public:
       dropCounts[i] = displayH + random(10);
     }
   }
-  
+
+  virtual ~RainDrops() {
+     delete palette;
+  }
   
 public:
   virtual void tick(bool state) override {

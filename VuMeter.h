@@ -16,6 +16,7 @@ public:
 
   virtual ~VuMeter() {
     delete ticker;
+    delete palette;
   }
   
   

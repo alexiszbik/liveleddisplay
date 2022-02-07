@@ -17,6 +17,7 @@ public:
 
   virtual ~BigVu() {
     delete ticker;
+    delete palette;
   }
   
 public:

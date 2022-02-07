@@ -24,6 +24,7 @@ public:
   }
 
   virtual ~QuadVu() {
+    delete palette;
     delete ticker;
   }
   

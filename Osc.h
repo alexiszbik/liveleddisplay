@@ -9,13 +9,16 @@ class Osc : public Scene {
 public:
   Osc() {
   }
+
+  virtual ~Osc() {
+
+  }
   
 public:
   virtual void tick(bool state) override {
     if (state)  {
       needRefresh = true;
-      offset = (offset + 1) % displayW;
-      
+      offset = (offset + 1) % displayW; 
     }
   }
 

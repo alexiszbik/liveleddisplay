@@ -12,16 +12,13 @@ class Arrows : public Scene {
 public:
 
   Arrows() {
-
   }
   
 public:
   virtual void tick(bool state) override {
     if (state)  {
       needRefresh = true;
-
       xPos = ((xPos - 1 * (isOtherDisplay ? 1 : -1)) + maxXPos) % (maxXPos);
-
     }
   }
 
@@ -55,11 +52,9 @@ public:
           isOtherDisplay ? pixX-- : pixX++;
         }
       }
-      
     }
     
     matrix.endWrite();
-
   }
 
 

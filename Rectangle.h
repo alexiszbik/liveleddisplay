@@ -53,7 +53,7 @@ private:
   bool direction = true;
   byte offset = 0;
 
-  Palette* palette;
+  Palette* palette; //Palette is a reference here, we don't delete it
 
 };
 

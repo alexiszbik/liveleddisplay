@@ -11,6 +11,11 @@ public:
   Sticks(Palette* palette) : palette(palette)  {
     tailSize = palette->size;
   }
+
+  virtual ~Sticks() {
+     delete palette;
+  }
+  
   
 public:
   virtual void tick(bool state) override {

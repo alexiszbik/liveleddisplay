@@ -26,13 +26,5 @@ void clearScreen() {
   matrix.fillScreen(CLEAR);
 }
 
-/*
-
-
-color_t randomColor() {
-  byte chosen = random(rainbowCount);
-  return rainbow[chosen];  
-
-}*/
 
 #endif //COLOR_H

@@ -11,6 +11,10 @@ public:
   BigYMNK(Palette* palette) : palette(palette)  {
 
   }
+
+  virtual ~BigYMNK() {
+     delete palette;
+  }
   
 public:
   virtual void tick(bool state) override {

@@ -9,6 +9,10 @@ class Squares : public Scene {
 public:
   Squares(Palette* palette, bool randomMode = true) : palette(palette), randomMode(randomMode) {
   }
+
+  virtual ~Squares() {
+     delete palette;
+  }
   
 public:
   virtual void tick(bool state) override {
