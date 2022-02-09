@@ -25,6 +25,7 @@
 #include "BigVu.h"
 #include "Kaomojis.h"
 #include "Osc.h"
+#include "Turnstile.h"
 
 #define BLUE_P new Palette(8, 0, 0, 7)
 #define BLUE_P_S new Palette(4, 0, 0, 7)
@@ -99,19 +100,16 @@ void handleProgramChange(byte channel, byte program) {
 
 
 
-      //End Brighter // The Great Escape
+      //End Brighter // Expect the Unexpected
       case 6 : scene = new SquareDrops(BLUE_P);
         break;
 
         
      
-      //The Great Scape, + drums
+      //Expect the Unexpected, + drums
       case 10 : scene = new RandomYMNK(new RainbowPalette());
         break;
 
-       
-
-      //THANK you ???
 
       //Pers intro
       case 15 : scene = new Sticks(RED_P);
@@ -129,10 +127,6 @@ void handleProgramChange(byte channel, byte program) {
       case 18 : scene = new Kaomojis(new RainbowPalette());
         break;
 
-      //Water
-      case 20 : scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
-         break;
-
 
 
       //Hopes
@@ -142,6 +136,18 @@ void handleProgramChange(byte channel, byte program) {
       //toms
       case 23 : scene = new QuadVu(BLUE_P);
         break;
+
+        
+
+        //Water
+      case 24 : scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
+         break;
+
+
+      case 25 : scene = new Turnstile(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
+         break;
+
+         
 
       //Animaux intro
       case 27 : scene = new SquareTrail(RED_P_S, true);
