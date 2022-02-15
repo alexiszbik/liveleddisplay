@@ -140,11 +140,14 @@ void handleProgramChange(byte channel, byte program) {
         
 
         //Water
-      case 24 : scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
+      
+      case 24 : scene = new Osc(new Palette(COLOR(0,7,7)));
          break;
 
-
       case 25 : scene = new Turnstile(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
+         break;
+
+      case 26 : scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
          break;
 
          

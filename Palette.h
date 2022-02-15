@@ -12,6 +12,12 @@ class Palette {
   }
 
   Palette() {}
+
+  Palette(uint16_t color_a) {
+    size = 1;
+    colors = (color_t*)malloc(sizeof(color_t)*size);
+    colors[0] = color_a;
+  }
   
   Palette(uint16_t color_a, uint16_t color_b, uint16_t color_c) {
     size = 3;
