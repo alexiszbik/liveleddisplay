@@ -7,6 +7,9 @@
 #define NO_VALUE 100
 
 #define START_NOTE 48
+
+#define NOTE_ON_OFF 60
+
 #define VU_H 16
 #define VU_W 16
 
@@ -25,7 +28,7 @@ public:
   
 public:
   virtual void tick(bool state) override {
-    if (state)  {
+    if (state && !squareMode)  {
       needRefresh = true;
       offset = (offset + 1) % displayW; 
     }
@@ -35,20 +38,30 @@ public:
 
     if (noteValue >= START_NOTE && noteValue <= (START_NOTE + 3))
     {
+      if (!squareMode) {
+        needsClear = true;
+      }
       squareMode = true;
       squarePosition = noteValue - START_NOTE;
-      needRefresh = true;
+    } 
+    else if (noteValue == NOTE_ON_OFF) {
+      needsClear = true;
+      showOsc = !showOsc;
     } else {
       if (squareMode) {
         needsClear = true;
       }
       squareMode = false;
-      needRefresh = true;
     }
- 
+    needRefresh = true;
   }
 
   virtual void draw() override {
+
+    if (needsClear) {
+      clearScreen();
+      needsClear = false;
+    }
 
     if (squareMode) {
       if (xSqr >= 0) {
@@ -65,14 +78,7 @@ public:
       }
       
       
-    } else {
-      if (needsClear) {
-        if (xSqr >= 0) {
-          matrix.fillRect(xSqr, 0, VU_W, VU_H, COLOR(0,0,0));
-        }
-        needsClear = false;
-      }
-      
+    } else if (showOsc) {
       const byte w = displayW/2;
 
       for (byte i = 0; i < w; i++) {
@@ -110,6 +116,8 @@ private:
   bool squareMode = false;
   bool needsClear = false;
   byte squarePosition = 0;
+
+  bool showOsc = true;
 
   int xSqr = 0;
 };
