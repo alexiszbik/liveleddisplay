@@ -13,24 +13,42 @@
 #define VU_H 16
 #define VU_W 16
 
+class WaveData {
+  public:
+  byte buf = 0;
+  byte offset = 0;
+  byte speed = 1;
+
+  void updateOffset() {
+    offset = (offset + speed) % displayW; 
+  }
+};
+
+
+
 class Osc : public Scene {
   
 public:
   Osc(Palette* palette) : palette(palette) {
     waveCount = palette->size;
-    buf = (byte*)malloc(sizeof(byte)*waveCount);
+    waveData = new WaveData[waveCount];
+    for (byte w = 0; w < waveCount; w++) {
+      waveData[w].speed = (w+1);
+    }
   }
 
   virtual ~Osc() {
       delete palette;
-      free(buf);
+      delete[] waveData;
   }
   
 public:
   virtual void tick(bool state) override {
     if (state && !squareMode)  {
       needRefresh = true;
-      offset = (offset + 1) % displayW; 
+      for (byte w = 0; w < waveCount; w++) {
+        waveData[w].updateOffset();
+      } 
     }
   }
 
@@ -46,12 +64,14 @@ public:
     } 
     else if (noteValue == NOTE_ON_OFF) {
       needsClear = true;
-      showOsc = !showOsc;
+      showOsc = false;
+      
     } else {
       if (squareMode) {
         needsClear = true;
       }
       squareMode = false;
+      showOsc = true;
     }
     needRefresh = true;
   }
@@ -87,30 +107,28 @@ public:
 
           byte waveOffset = (displayW/waveCount) * s;
           
-          float x = ((float)(i + offset + waveOffset + (isOtherDisplay ? displayW/2 : 0)))/(float)w;
+          float x = ((float)(i + waveData[s].offset + waveOffset + (isOtherDisplay ? displayW/2 : 0)))/(float)w;
           float y = cos(PI*x) * displayH/2 + displayH/2; 
           y = fmin(y,displayH - 1);
 
-          float off_x = -1.0/(float)w;
+          float off_x = -((float)waveData[s].speed)/(float)w;
           float prevy = cos(PI*(x+off_x)) * displayH/2 + displayH/2; 
           prevy = fmin(prevy,displayH - 1);
 
           matrix.drawPixel(i, prevy, COLOR(0,0,0));
-          buf[s] = y;
+          waveData[s].buf = y;
         }
 
         for (byte s = 0; s < waveCount; s++) {
           color_t c = palette->colors[s];
-          matrix.drawPixel(i, buf[s], c);
+          matrix.drawPixel(i,  waveData[s].buf, c);
         }
       }
     }
   }
 
 private:
-  byte offset = 0;
   byte waveCount = 0;
-  byte* buf;
   Palette* palette;
 
   bool squareMode = false;
@@ -118,6 +136,8 @@ private:
   byte squarePosition = 0;
 
   bool showOsc = true;
+
+  WaveData* waveData = NULL;
 
   int xSqr = 0;
 };
