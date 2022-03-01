@@ -17,7 +17,10 @@ public:
       states[i] = random(1000) % (colorCount + 1);
     }
   }
-  
+
+  virtual ~SquareDrops() {
+    delete palette;
+  }
   
 public:
   virtual void tick(bool state) override {
