@@ -161,6 +161,9 @@ void handleProgramChange(byte channel, byte program) {
       //Animaux end
       case 29 : scene = new BigYMNK(new RainbowPalette());
         break;
+
+      case 30 : scene = new BigYMNK(new RainbowPalette(), true);
+        break;
     
   
       default: scene = new Squares(new RainbowPalette());
