@@ -5,29 +5,32 @@
 #include "Scene.h"
 #include "Ticker.h"
 
-#define VU_H 16
 #define VU_W 32
 
 class BigVu : public Scene {
   
 public:
-  BigVu(Palette* palette, byte note) : palette(palette), note(note) {
+  BigVu(color_t color, byte note, byte noteCount = 1) : color(color), note(note), noteCount(noteCount) {
 
   }
 
   virtual ~BigVu() {
     delete ticker;
-    delete palette;
   }
   
 public:
   virtual void midiNote(byte noteValue) override {
     
     if (noteValue == note) {
-      vuSize = 0;
-      vuUp = true;
+      vuSize[0] = 0;
+      vuUp[0] = true;
     }
-    
+    if (noteCount == 2) {
+      if (noteValue == (note + 1)) {
+        vuSize[1] = 0;
+        vuUp[1] = true;
+      }
+    }
   }
 
   virtual void showFrame(bool _isOtherDisplay) {
@@ -39,35 +42,42 @@ public:
   }
 
   virtual void draw() override {
-
-    if (vuUp) {
+    
+    for (byte i = 0; i < noteCount; i++) {
       
-      vuSize += 16;
-
-      byte x = isOtherDisplay ? (VU_W - vuSize) : 0;
-      
-      matrix.fillRect(x, 0, vuSize, VU_H, palette->colors[0]);
-      
-      if (vuSize >= VU_W) {
-        vuUp = false;
+      byte vuH = displayH/noteCount;
+      byte y = i*vuH;
+  
+      if (vuUp[i]) {
+        
+        vuSize[i] += 16;
+  
+        byte x = isOtherDisplay ? (VU_W - vuSize[i]) : 0;
+        
+        matrix.fillRect(x, y, vuSize[i], vuH, color);
+        
+        if (vuSize[i] >= VU_W) {
+          vuUp[i] = false;
+        }
+      } else if (vuUp[i] == false && vuSize[i] >= 0) {
+  
+        byte x = isOtherDisplay ? (VU_W - vuSize[i]) : vuSize[i];
+        
+        matrix.fillRect(x, y, 2, vuH, CLEAR);
+        vuSize[i] = vuSize[i] - 2;
       }
-    } else if (vuUp == false && vuSize >= 0) {
-
-      byte x = isOtherDisplay ? (VU_W - vuSize) : vuSize;
-      
-      matrix.fillRect(x, 0, 2, VU_H, CLEAR);
-      vuSize = vuSize - 2;
     }
   }
 
 private: 
 
-  Palette* palette;
+  color_t color;
   Ticker *ticker = new Ticker(20);
 
-  float vuSize = 0;
-  bool vuUp = false;
+  float vuSize[2] = {0, 0};
+  bool vuUp[2] = {false, false};
   byte note;
+  byte noteCount = 1;
 
 };
 

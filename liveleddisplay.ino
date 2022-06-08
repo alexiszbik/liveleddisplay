@@ -25,7 +25,9 @@
 #include "BigVu.h"
 #include "Kaomojis.h"
 #include "Osc.h"
+#include "PixNoise.h"
 #include "Turnstile.h"
+#include "Vortex.h"
 
 #define BLUE_P new Palette(8, 0, 0, 7)
 #define BLUE_P_S new Palette(4, 0, 0, 7)
@@ -116,7 +118,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Kick
-      case 16 : scene = new BigVu(RED_P, 36);
+      case 16 : scene = new BigVu(COLOR(7,0,0), 36);
         break;
 
       //Pers Drop
@@ -125,6 +127,9 @@ void handleProgramChange(byte channel, byte program) {
 
       //Pers End
       case 18 : scene = new Kaomojis(new RainbowPalette());
+        break;
+
+      case 19 : scene = new PixNoise();
         break;
 
 
@@ -162,7 +167,18 @@ void handleProgramChange(byte channel, byte program) {
       case 29 : scene = new BigYMNK(new RainbowPalette());
         break;
 
+      //Fill outside
       case 30 : scene = new BigYMNK(new RainbowPalette(), true);
+        break;
+
+      // BiBimBap
+      case 35 : scene = new BigVu(COLOR(0,7,0), 36, 2);
+        break;
+      case 36 : scene = new Vortex(COLOR(0,7,0));
+        break;
+        
+      //Raindrops Rainbow
+      case 40 : scene = new RainDrops(new RainbowPalette());
         break;
     
   
