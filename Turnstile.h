@@ -29,18 +29,10 @@ public:
   }
 
   void makeLine(int off, color_t color) {
-
-    //off = off % ((displayH + 1) + (32 + 1));
-
+    
     off = off % ((displayH + 1) + (64 + 1));
     
     const byte width = displayW/2;
-
-    /*
-    const byte yOffset = fmin(off, (displayH + 1));
-    int xOffset = fmax(0, off - (displayH + 1));
-
-    matrix.drawLine(xOffset, displayH - yOffset, width - xOffset, -1 + yOffset , color);*/
 
     if (off < ((displayH + 1) + (32 + 1))) {
       const byte yOffset = fmin(off, (displayH + 1));

@@ -62,10 +62,6 @@ class Kaomojis : public Scene {
 
     
     drawCentreString(toDraw);
-
-    //strcpy_P(buffer, (char *)pgm_read_word(&(string_table[0])));
-    //drawCentreString(buffer);
-    //matrix.print(buffer);
   }
 
   protected:

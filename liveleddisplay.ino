@@ -28,6 +28,7 @@
 #include "PixNoise.h"
 #include "Turnstile.h"
 #include "Vortex.h"
+#include "StarTour.h"
 
 #define BLUE_P new Palette(8, 0, 0, 7)
 #define BLUE_P_S new Palette(4, 0, 0, 7)
@@ -179,6 +180,11 @@ void handleProgramChange(byte channel, byte program) {
         
       //Raindrops Rainbow
       case 40 : scene = new RainDrops(new RainbowPalette());
+        break;
+
+
+      //Tir3d of Technology
+      case 42 : scene = new StarTour();
         break;
     
   

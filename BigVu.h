@@ -11,7 +11,6 @@ class BigVu : public Scene {
   
 public:
   BigVu(color_t color, byte note, byte noteCount = 1) : color(color), note(note), noteCount(noteCount) {
-
   }
 
   virtual ~BigVu() {
