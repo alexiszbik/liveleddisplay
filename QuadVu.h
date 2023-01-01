@@ -37,7 +37,6 @@ public:
       vuStates[vuIndex].vuUp = true;
       vuStates[vuIndex].vuSize = 0;
     }
- 
   }
 
   virtual void showFrame(bool _isOtherDisplay) {

@@ -36,6 +36,8 @@
 #define RED_P new Palette(8, 7, 0, 0)
 #define RED_P_S new Palette(4, 7, 0, 0)
 
+__FlashStringHelper * brighterWords[1];// = {F("BRIGHTER")}; 
+__FlashStringHelper * friendshipWords[3];// = {F("FRIENDSHIP"), F("&"), F("BRAVERY")}; 
 
 Scene* scene = NULL;
 byte currentProgram = 0;
@@ -48,6 +50,11 @@ void setup() {
   Serial.begin(9600);
 
   matrix.begin();
+
+  brighterWords[0] = F("BRIGHTER");
+  friendshipWords[0] = F("FRIENDSHIP");
+  friendshipWords[1] = F("&");
+  friendshipWords[2] = F("BRAVERY");
   
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
@@ -98,7 +105,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Say : Brighter
-      case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
+      case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)), brighterWords, 1);
         break;
 
 
@@ -185,6 +192,12 @@ void handleProgramChange(byte channel, byte program) {
 
       //Tir3d of Technology
       case 42 : scene = new StarTour();
+        break;
+
+      case 43 : scene = new SquareDrops(new RainbowPalette());
+        break;
+      //Friendship & Bravery
+      case 44 : scene = new FlashingSign(new RainbowPalette(), friendshipWords, 3, 1);
         break;
     
   

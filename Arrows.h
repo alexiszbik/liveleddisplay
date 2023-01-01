@@ -26,7 +26,6 @@ public:
     matrix.startWrite();
 
     for (byte a = 0; a < displayW/2/SIZE; a++) {
-      
       byte pixX = 0;
 
       byte c = a;
