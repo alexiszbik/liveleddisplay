@@ -3,7 +3,6 @@
 #define QUAD_VU_H
 
 #include "Scene.h"
-#include "Ticker.h"
 
 #define VU_COUNT 4
 
@@ -12,7 +11,7 @@
 
 #define START_NOTE 48
 
-class QuadVu : public Scene {
+class QuadVu : public TickerScene {
 public:
   struct VuState {
     bool vuUp = false;
@@ -25,7 +24,6 @@ public:
 
   virtual ~QuadVu() {
     delete palette;
-    delete ticker;
   }
   
 public:
@@ -76,7 +74,6 @@ public:
 private: 
 
   Palette* palette;
-  Ticker *ticker = new Ticker(20);
 
   VuState vuStates[VU_COUNT];
 

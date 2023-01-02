@@ -2,11 +2,12 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "Ticker.h"
+
 class Scene {
   public:
 
     virtual ~Scene() {
-      
     }
   	virtual void tick(bool state) {};
     virtual void midiNote(byte noteValue) {};   
@@ -42,6 +43,19 @@ class Scene {
   protected:
   	bool needRefresh = true;
     bool isOtherDisplay = false;
+
+};
+
+
+class TickerScene : public Scene {
+  public:
+
+    virtual ~TickerScene() {
+      delete ticker;
+    }
+
+  protected:
+    Ticker *ticker = new Ticker(20);
 
 };
 

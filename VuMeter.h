@@ -3,19 +3,17 @@
 #define VU_METER_H
 
 #include "Scene.h"
-#include "Ticker.h"
 
 #define VU_H 16
 #define VU_W 16
 
-class VuMeter : public Scene {
+class VuMeter : public TickerScene {
   
 public:
   VuMeter(Palette* palette) : palette(palette)  {
   }
 
   virtual ~VuMeter() {
-    delete ticker;
     delete palette;
   }
   
@@ -69,7 +67,6 @@ public:
 private: 
 
   Palette* palette;
-  Ticker *ticker = new Ticker(20);
 
   float vuSize[2] = {0, 0};
   bool vuUp[2] = {false, false};

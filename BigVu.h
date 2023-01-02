@@ -3,18 +3,16 @@
 #define BIG_VU_H
 
 #include "Scene.h"
-#include "Ticker.h"
 
 #define VU_W 32
 
-class BigVu : public Scene {
+class BigVu : public TickerScene {
   
 public:
   BigVu(color_t color, byte note, byte noteCount = 1) : color(color), note(note), noteCount(noteCount) {
   }
 
   virtual ~BigVu() {
-    delete ticker;
   }
   
 public:
@@ -71,7 +69,6 @@ public:
 private: 
 
   color_t color;
-  Ticker *ticker = new Ticker(20);
 
   float vuSize[2] = {0, 0};
   bool vuUp[2] = {false, false};

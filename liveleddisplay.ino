@@ -6,7 +6,6 @@
 #include <MIDI.h>
 
 #include "ColorsAndMatrix.h"
-#include "Ticker.h"
 
 #include "Palette.h"
 #include "Squares.h"
