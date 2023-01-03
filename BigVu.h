@@ -4,12 +4,10 @@
 
 #include "Scene.h"
 
-#define VU_W 32
-
 class BigVu : public TickerScene {
   
 public:
-  BigVu(color_t color, byte note, byte noteCount = 1) : color(color), note(note), noteCount(noteCount) {
+  BigVu(color_t color, byte note, byte noteCount = 1, bool isHorizontal = true) : color(color), note(note), noteCount(noteCount), isHorizontal(isHorizontal) {
   }
 
   virtual ~BigVu() {
@@ -29,40 +27,54 @@ public:
     
     for (byte i = 0; i < noteCount; i++) {
       
-      byte vuH = displayH/noteCount;
-      byte y = i*vuH;
+      byte vuH, vuW, x, y;
 
       VuState* state = &vuStates[i];
-  
+
+      if (state->vuUp) {
+        state->vuSize += isHorizontal ? 16 : 8;
+      }
+
+      if (isHorizontal) {
+        x = isOtherDisplay ? (displayHalfW - state->vuSize) : (state->vuUp ? 0 : state->vuSize);
+        y = i*vuH;
+
+        vuW = state->vuUp ? state->vuSize : 2;
+        vuH = displayH/noteCount;
+
+      } else {
+        vuW = (displayW/2)/noteCount;
+
+        x = isOtherDisplay ? (displayW/2 - ((i+1) * vuW)) : i * vuW;
+        y = displayH - vuStates[i].vuSize;
+
+        vuH = state->vuUp ? vuStates[i].vuSize : 1;
+      }
+
       if (state->vuUp) {
         
-        state->vuSize += 16;
-  
-        byte x = isOtherDisplay ? (VU_W - state->vuSize) : 0;
+        matrix.fillRect(x, y, vuW, vuH, color);
         
-        matrix.fillRect(x, y, state->vuSize, vuH, color);
-        
-        if (state->vuSize >= VU_W) {
+        if (state->vuSize >= (isHorizontal ? displayHalfW : displayH)) {
           state->vuUp = false;
         }
+
       } else if (state->vuUp == false && state->vuSize >= 0) {
-  
-        byte x = isOtherDisplay ? (VU_W - state->vuSize) : state->vuSize;
         
-        matrix.fillRect(x, y, 2, vuH, CLEAR);
-        state->vuSize = state->vuSize - 2;
+        matrix.fillRect(x, y, vuW, vuH, CLEAR);
+        state->vuSize = state->vuSize - (isHorizontal ? 2 : 0.75f);
       }
     }
   }
 
 private: 
-
   color_t color;
 
-  VuState vuStates[2];
+  VuState vuStates[4];
   
   byte note;
   byte noteCount = 1;
+  bool isHorizontal;
 
 };
 

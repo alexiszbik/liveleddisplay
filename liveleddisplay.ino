@@ -20,7 +20,6 @@
 #include "RandomYMNK.h"
 #include "BigYMNK.h"
 #include "VuMeter.h"
-#include "QuadVu.h"
 #include "BigVu.h"
 #include "Kaomojis.h"
 #include "Osc.h"
@@ -55,11 +54,6 @@ void setup() {
   Serial.begin(9600);
 
   matrix.begin();
-
-  //brighterWords[0] = "BRIGHTER";
-  /*friendshipWords[0] = F("FRIENDSHIP");
-  friendshipWords[1] = F("&");
-  friendshipWords[2] = F("BRAVERY");*/
   
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
@@ -152,7 +146,7 @@ void handleProgramChange(byte channel, byte program) {
       case 22 : scene = new RainDrops(BLUE_P);
         break;
       //toms
-      case 23 : scene = new QuadVu(BLUE_P);
+      case 23 : scene = new BigVu(COLOR(0,0,7), 48, 4, false);
         break;
 
         

@@ -12,6 +12,7 @@
 #include <RGBmatrixPanel.h>
 
 #define displayW (32 * 2)
+#define displayHalfW 32
 #define displayH 16
 
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
