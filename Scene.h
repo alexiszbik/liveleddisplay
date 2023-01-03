@@ -50,13 +50,31 @@ class Scene {
 class TickerScene : public Scene {
   public:
 
-    virtual ~TickerScene() {
-      delete ticker;
+  virtual ~TickerScene() {
+    delete ticker;
+  }
+
+  virtual void showFrame(bool _isOtherDisplay) {
+    Scene::showFrame(_isOtherDisplay);
+    
+    if (ticker->checkTime()) {
+      needRefresh = true;
     }
+  }
 
   protected:
     Ticker *ticker = new Ticker(20);
 
+};
+
+struct VuState {
+  bool vuUp = false;
+  float vuSize = 0;
+
+  void reset() {
+    vuUp = true;
+    vuSize = 0;
+  }
 };
 
 

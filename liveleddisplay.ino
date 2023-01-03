@@ -35,8 +35,14 @@
 #define RED_P new Palette(8, 7, 0, 0)
 #define RED_P_S new Palette(4, 7, 0, 0)
 
-__FlashStringHelper * brighterWords[1];// = {F("BRIGHTER")}; 
-__FlashStringHelper * friendshipWords[3];// = {F("FRIENDSHIP"), F("&"), F("BRAVERY")}; 
+
+const char string_0[] PROGMEM = "BRIGHTER";
+const char string_1[] PROGMEM = "FRIENDSHIP";
+const char string_2[] PROGMEM = "&";
+const char string_3[] PROGMEM = "BRAVERY";
+
+const char *const brighterWords[1] PROGMEM = {string_0};
+const char *const friendshipWords[3] PROGMEM = {string_1, string_2, string_3};
 
 Scene* scene = NULL;
 byte currentProgram = 0;
@@ -50,10 +56,10 @@ void setup() {
 
   matrix.begin();
 
-  brighterWords[0] = F("BRIGHTER");
-  friendshipWords[0] = F("FRIENDSHIP");
+  //brighterWords[0] = "BRIGHTER";
+  /*friendshipWords[0] = F("FRIENDSHIP");
   friendshipWords[1] = F("&");
-  friendshipWords[2] = F("BRAVERY");
+  friendshipWords[2] = F("BRAVERY");*/
   
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);

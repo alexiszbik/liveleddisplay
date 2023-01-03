@@ -17,25 +17,12 @@ public:
   
 public:
   virtual void midiNote(byte noteValue) override {
-    
-    if (noteValue == note) {
-      vuSize[0] = 0;
-      vuUp[0] = true;
-    }
-    if (noteCount == 2) {
-      if (noteValue == (note + 1)) {
-        vuSize[1] = 0;
-        vuUp[1] = true;
-      }
-    }
-  }
 
-  virtual void showFrame(bool _isOtherDisplay) {
-      Scene::showFrame(_isOtherDisplay);
-      
-      if (ticker->checkTime()) {
-        needRefresh = true;
-      }
+    if (noteValue >= note && noteValue < (note + noteCount))
+    {
+      byte vuIndex = noteValue - note;
+      vuStates[vuIndex].reset();
+    }
   }
 
   virtual void draw() override {
@@ -44,24 +31,26 @@ public:
       
       byte vuH = displayH/noteCount;
       byte y = i*vuH;
+
+      VuState* state = &vuStates[i];
   
-      if (vuUp[i]) {
+      if (state->vuUp) {
         
-        vuSize[i] += 16;
+        state->vuSize += 16;
   
-        byte x = isOtherDisplay ? (VU_W - vuSize[i]) : 0;
+        byte x = isOtherDisplay ? (VU_W - state->vuSize) : 0;
         
-        matrix.fillRect(x, y, vuSize[i], vuH, color);
+        matrix.fillRect(x, y, state->vuSize, vuH, color);
         
-        if (vuSize[i] >= VU_W) {
-          vuUp[i] = false;
+        if (state->vuSize >= VU_W) {
+          state->vuUp = false;
         }
-      } else if (vuUp[i] == false && vuSize[i] >= 0) {
+      } else if (state->vuUp == false && state->vuSize >= 0) {
   
-        byte x = isOtherDisplay ? (VU_W - vuSize[i]) : vuSize[i];
+        byte x = isOtherDisplay ? (VU_W - state->vuSize) : state->vuSize;
         
         matrix.fillRect(x, y, 2, vuH, CLEAR);
-        vuSize[i] = vuSize[i] - 2;
+        state->vuSize = state->vuSize - 2;
       }
     }
   }
@@ -70,8 +59,8 @@ private:
 
   color_t color;
 
-  float vuSize[2] = {0, 0};
-  bool vuUp[2] = {false, false};
+  VuState vuStates[2];
+  
   byte note;
   byte noteCount = 1;
 

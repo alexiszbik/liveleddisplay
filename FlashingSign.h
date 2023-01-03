@@ -8,22 +8,24 @@ class FlashingSign : public Scene {
   
   public:
   FlashingSign(Palette* palette, 
-               __FlashStringHelper**  texts,
+               const char * const *  texts,
                byte textCount,
                byte contourSize = 3)
                
-  : palette(palette), texts(texts), contourSize(contourSize), textCount(textCount) {
-    
+  : palette(palette), contourSize(contourSize), textCount(textCount), texts(texts) {
+
+    strcpy_P(txtbuf, (char *)pgm_read_word(&(texts[0])));
     colorCount = palette->size;
   }
 
   virtual ~FlashingSign() {
-     delete palette;
+    delete palette;
   }
 
   virtual void midiNote(byte noteValue) override {
     if (textCount > 1) {
       textIndex = noteValue % textCount;
+      strcpy_P(txtbuf, (char *)pgm_read_word(&(texts[textIndex])));
       needClear = true;
     }
     
@@ -42,9 +44,9 @@ class FlashingSign : public Scene {
     matrix.setCursor(0, 0);
     int16_t x1, y1;
     uint16_t w, h;
-    matrix.getTextBounds(texts[textIndex], 0, 0, &x1, &y1, &w, &h);
+    matrix.getTextBounds(txtbuf, 0, 0, &x1, &y1, &w, &h);
     matrix.setCursor(displayW/2 - w/2 - xOffset, displayH/2 - h/2);
-    matrix.print(texts[textIndex]);
+    matrix.print(txtbuf);
   }
 
 
@@ -74,7 +76,9 @@ class FlashingSign : public Scene {
   byte colorIndex = 0;
   bool needClear = false; 
 
-  __FlashStringHelper ** texts;
+  const char * const *  texts;
+
+  char txtbuf[30];
   byte textCount;
   Palette* palette;
   byte contourSize;

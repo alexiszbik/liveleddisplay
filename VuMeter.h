@@ -32,14 +32,6 @@ public:
       
   }
 
-  virtual void showFrame(bool _isOtherDisplay) {
-      Scene::showFrame(_isOtherDisplay);
-      
-      if (ticker->checkTime()) {
-        needRefresh = true;
-      }
-  }
-
   virtual void draw() override {
 
     for (byte i = 0; i < 2; i++) {

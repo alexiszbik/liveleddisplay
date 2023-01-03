@@ -12,11 +12,6 @@
 #define START_NOTE 48
 
 class QuadVu : public TickerScene {
-public:
-  struct VuState {
-    bool vuUp = false;
-    float vuSize = 0;
-  };
   
 public:
   QuadVu(Palette* palette) : palette(palette)  {
@@ -32,17 +27,8 @@ public:
     if (noteValue >= START_NOTE && noteValue <= (START_NOTE + 3))
     {
       byte vuIndex = noteValue - START_NOTE;
-      vuStates[vuIndex].vuUp = true;
-      vuStates[vuIndex].vuSize = 0;
+      vuStates[vuIndex].reset();
     }
-  }
-
-  virtual void showFrame(bool _isOtherDisplay) {
-      Scene::showFrame(_isOtherDisplay);
-      
-      if (ticker->checkTime()) {
-        needRefresh = true;
-      }
   }
 
   virtual void draw() override {
