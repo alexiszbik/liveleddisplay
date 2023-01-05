@@ -19,8 +19,8 @@
 #include "SquareDrops.h"
 #include "RandomYMNK.h"
 #include "BigYMNK.h"
-#include "VuMeter.h"
 #include "BigVu.h"
+#include "AutoVu.h"
 #include "Kaomojis.h"
 #include "Osc.h"
 #include "PixNoise.h"
@@ -96,8 +96,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Brighter Beat
-      case 2 : scene = new VuMeter(new VuPalette());
-        break;
+      case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::verticalWide);
 
       //Brighter Drop
       case 4 : scene = new Squares(new RainbowPalette());
@@ -125,7 +124,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Kick
-      case 16 : scene = new BigVu(COLOR(7,0,0), 36);
+      case 16 : scene = new BigVu(new Palette(COLOR(7,0,0)), 36);
         break;
 
       //Pers Drop
@@ -146,7 +145,7 @@ void handleProgramChange(byte channel, byte program) {
       case 22 : scene = new RainDrops(BLUE_P);
         break;
       //toms
-      case 23 : scene = new BigVu(COLOR(0,0,7), 48, 4, false);
+      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 4, BigVu::Mode::verticalMirrored);
         break;
 
         
@@ -179,7 +178,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       // BiBimBap
-      case 35 : scene = new BigVu(COLOR(0,7,0), 36, 2);
+      case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2);
         break;
       case 36 : scene = new Vortex(COLOR(0,7,0));
         break;
@@ -193,11 +192,16 @@ void handleProgramChange(byte channel, byte program) {
       case 42 : scene = new StarTour();
         break;
 
-      case 43 : scene = new SquareDrops(new RainbowPalette());
+       //Friendship & Bravery
+      case 43 : scene = new AutoVu(new RainbowPalette());
         break;
-      //Friendship & Bravery
-      case 44 : scene = new FlashingSign(new RainbowPalette(), friendshipWords, 3, 1);
+     
+      case 44 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), friendshipWords, 3, 1);
         break;
+
+      case 45 : scene = new FlashingSign(new RainbowPalette(), friendshipWords, 3, 1);
+        break;
+      
     
   
       default: scene = new Squares(new RainbowPalette());

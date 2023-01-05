@@ -5,12 +5,20 @@
 #include "Scene.h"
 
 class BigVu : public TickerScene {
+public:
+enum Mode {
+  horizontal,
+  verticalMirrored,
+  verticalWide
+};
   
 public:
-  BigVu(color_t color, byte note, byte noteCount = 1, bool isHorizontal = true) : color(color), note(note), noteCount(noteCount), isHorizontal(isHorizontal) {
+  BigVu(Palette* palette, byte note, byte noteCount = 1, Mode mode = horizontal) 
+  : palette(palette), note(note), noteCount(noteCount), mode(mode) {
   }
 
   virtual ~BigVu() {
+    delete palette;
   }
   
 public:
@@ -24,31 +32,53 @@ public:
   }
 
   virtual void draw() override {
-    
     for (byte i = 0; i < noteCount; i++) {
       
       byte vuH, vuW, x, y;
 
+      bool isHorizontal = (mode == horizontal);
+
+      color_t color = palette->colors[i % palette->size];
+
       VuState* state = &vuStates[i];
 
       if (state->vuUp) {
-        state->vuSize += isHorizontal ? 16 : 8;
+        state->vuSize += getRiseAmount();
       }
 
-      if (isHorizontal) {
-        x = isOtherDisplay ? (displayHalfW - state->vuSize) : (state->vuUp ? 0 : state->vuSize);
-        y = i*vuH;
+      switch(mode) {
+        case horizontal : {
+          x = isOtherDisplay ? (displayHalfW - state->vuSize) : (state->vuUp ? 0 : state->vuSize);
+          y = i*vuH;
 
-        vuW = state->vuUp ? state->vuSize : 2;
-        vuH = displayH/noteCount;
+          vuW = state->vuUp ? state->vuSize : 2;
+          vuH = displayH/noteCount;
+        }
+        break;
+        case verticalMirrored : {
+          vuW = displayHalfW/noteCount;
 
-      } else {
-        vuW = (displayW/2)/noteCount;
+          x = isOtherDisplay ? (displayHalfW - ((i+1) * vuW)) : i * vuW;
+          y = displayH - vuStates[i].vuSize;
 
-        x = isOtherDisplay ? (displayW/2 - ((i+1) * vuW)) : i * vuW;
-        y = displayH - vuStates[i].vuSize;
+          vuH = state->vuUp ? vuStates[i].vuSize : 1;
+        }
+        break;
+        case verticalWide : {
+          vuW = displayHalfW/2;
 
-        vuH = state->vuUp ? vuStates[i].vuSize : 1;
+          if (isOtherDisplay == false && i >= 2) {
+            continue;
+          } else if (isOtherDisplay && i < 2) {
+            continue;
+          }
+
+          x = (i * vuW) - (isOtherDisplay ? displayHalfW : 0);
+          y = displayH - vuStates[i].vuSize;
+
+          vuH = state->vuUp ? vuStates[i].vuSize : 1;
+        }
+        break;
       }
 
       if (state->vuUp) {
@@ -67,15 +97,20 @@ public:
     }
   }
 
+  virtual float getRiseAmount() {
+    return mode == horizontal ? 16 : 8;
+  }
+
+protected:
+  VuState vuStates[8];
+  byte noteCount;
+
 private: 
-  color_t color;
-
-  VuState vuStates[4];
-  
+  Palette* palette;
   byte note;
-  byte noteCount = 1;
-  bool isHorizontal;
-
+  Mode mode;
+  
 };
+
 
 #endif //BIG_VU_H
