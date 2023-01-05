@@ -27,9 +27,12 @@
 #include "Turnstile.h"
 #include "Vortex.h"
 #include "StarTour.h"
+#include "Circles.h"
 
 #define BLUE_P new Palette(8, 0, 0, 7)
 #define BLUE_P_S new Palette(4, 0, 0, 7)
+
+#define ORANGE_P new Palette(8, 7, 2, 0)
 
 #define RED_P new Palette(8, 7, 0, 0)
 #define RED_P_S new Palette(4, 7, 0, 0)
@@ -193,13 +196,19 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
        //Friendship & Bravery
-      case 43 : scene = new AutoVu(new RainbowPalette());
-        break;
-     
-      case 44 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), friendshipWords, 3, 1);
+      case 43 : scene = new AutoVu(ORANGE_P);
         break;
 
-      case 45 : scene = new FlashingSign(new RainbowPalette(), friendshipWords, 3, 1);
+      case 44 : scene = new Circles(ORANGE_P);
+        break;
+
+      case 45 : scene = new AutoVu(new RainbowPalette());
+        break;
+     
+      case 46 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), friendshipWords, 3, 1);
+        break;
+
+      case 47 : scene = new FlashingSign(new RainbowPalette(), friendshipWords, 3, 1);
         break;
       
     
