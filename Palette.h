@@ -31,7 +31,7 @@ class Palette {
     free(colors);
   }
 
-  Palette(byte size, byte r, byte g, byte b) : size(size) {
+  Palette(byte size, byte r, byte g, byte b, bool ceilValues = false) : size(size) {
     
     colors = (color_t*)malloc(sizeof(color_t)*size);
     
@@ -40,7 +40,12 @@ class Palette {
       float fsize = (float)size;
       float fratio = ((fsize - i)/fsize);
       
-      colors[i] = COLOR(fratio * r, fratio * g, fratio * b);
+      if (ceilValues) {
+        colors[i] = COLOR(ceil(fratio * r), ceil(fratio * g), ceil(fratio * b));
+      } else {
+        colors[i] = COLOR((fratio * r), (fratio * g), (fratio * b));
+      }
+      
     }
   }
 

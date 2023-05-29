@@ -7,7 +7,7 @@
 class BigVu : public TickerScene {
 public:
 enum Mode {
-  horizontal,
+  horizontal = 0,
   verticalMirrored,
   verticalWide
 };

@@ -28,11 +28,10 @@
 #include "Vortex.h"
 #include "StarTour.h"
 #include "Circles.h"
+#include "Hearth.h"
 
 #define BLUE_P new Palette(8, 0, 0, 7)
 #define BLUE_P_S new Palette(4, 0, 0, 7)
-
-#define ORANGE_P new Palette(8, 7, 2, 0)
 
 #define RED_P new Palette(8, 7, 0, 0)
 #define RED_P_S new Palette(4, 7, 0, 0)
@@ -100,6 +99,7 @@ void handleProgramChange(byte channel, byte program) {
 
       //Brighter Beat
       case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::verticalWide);
+        break;
 
       //Brighter Drop
       case 4 : scene = new Squares(new RainbowPalette());
@@ -177,8 +177,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Fill outside
-      case 30 : scene = new BigYMNK(new RainbowPalette(), true);
-        break;
+      /*case 30 : scene = new BigYMNK(new RainbowPalette(), true);
+        break;*/
 
       // BiBimBap
       case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2);
@@ -196,10 +196,10 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
        //Friendship & Bravery
-      case 43 : scene = new AutoVu(ORANGE_P);
+      case 43 : scene = new AutoVu(new Palette(8,0,0,7, true));
         break;
 
-      case 44 : scene = new Circles(ORANGE_P);
+      case 44 : scene = new Circles(BLUE_P);
         break;
 
       case 45 : scene = new AutoVu(new RainbowPalette());
@@ -212,6 +212,10 @@ void handleProgramChange(byte channel, byte program) {
         break;
       
     
+      //test hearth
+      case 50 : scene = new Circles(RED_P, true);
+        break;
+
   
       default: scene = new Squares(new RainbowPalette());
         break;
