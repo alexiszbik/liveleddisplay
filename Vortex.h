@@ -19,7 +19,7 @@ public:
     if (state)  {
       needRefresh = true;
       previousAngle = angle;
-      angle = angle + 0.2;
+      angle = fmod((angle + 0.2), 2.0 * PI);
       c = (c + 1) % COLOR_MAX;
       offset = (offset + 1) % 16;
     }
@@ -53,11 +53,11 @@ public:
       float vectors[4][2] = {{x,y}, {_x, y}, {_x, _y}, {x,_y}};
   
       for (byte i = 0; i < 4; i++) {
-        float X, Y, _X, _Y;
+        float X, Y, XX, YY;
         byte nextIndex = (i + 1) % 4;
         getRotation(vectors[i][0], vectors[i][1], X, Y, angle);
-        getRotation(vectors[nextIndex][0], vectors[nextIndex][1], _X, _Y, angle);
-        matrix.drawLine(X, Y, _X, _Y, _color);
+        getRotation(vectors[nextIndex][0], vectors[nextIndex][1], XX, YY, angle);
+        matrix.drawLine(X, Y, XX, YY, _color);
         
       }
     }
