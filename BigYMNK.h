@@ -5,10 +5,10 @@
 #include "Scene.h"
 
 
-class BigYMNK : public Scene {
+class BigYMNK : public AutoRefreshedScene {
   
 public:
-  BigYMNK(Palette* palette, bool inverted = false) : palette(palette), inverted(inverted)  {
+  BigYMNK(Palette* palette/*, bool inverted = false*/) : palette(palette)/*, inverted(inverted)*/  {
   }
 
   virtual ~BigYMNK() {
@@ -16,20 +16,16 @@ public:
   }
   
 public:
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
+  virtual void updateOffsets() override {
       colorIndex = (colorIndex + 1) % palette->size;
-    }
   }
 
 
   virtual void draw() override {
 
     matrix.setTextSize(2);
-    matrix.setTextWrap(false);
 
-    if (inverted) {
+    /*if (inverted) {
 
         matrix.fillScreen(COLOR(0,0,7));
 
@@ -40,7 +36,7 @@ public:
         matrix.setTextColor(COLOR(0,0,0));
         matrix.setCursor(19,1);
         matrix.print(isOtherDisplay ? F("K") : F("M"));   
-    } else {
+    } else {*/
       byte cIndex = (colorIndex + (isOtherDisplay ? 2 : 0)) % palette->size;
 
       matrix.setTextColor(palette->colors[cIndex]);
@@ -52,14 +48,14 @@ public:
       matrix.setTextColor(palette->colors[cIndex]);
       matrix.setCursor(19,1);
       matrix.print(isOtherDisplay ? F("K") : F("M"));
-    }
+    //}
   }
 
 
 private:
   Palette* palette;
   byte colorIndex;
-  bool inverted = false;
+  //bool inverted = false;
 };
 
 #endif //BIG_YMNK_H

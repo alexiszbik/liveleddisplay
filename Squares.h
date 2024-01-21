@@ -46,9 +46,9 @@ public:
       byte _xPos = xPos - half;
       byte _prevXPos = prevXPos - half;
     
-      matrix.fillRect(_prevXPos * size, prevYPos * size , size, size, matrix.Color333(0, 0, 0));
+      matrix.fillRect(_prevXPos * size, prevYPos * size , size, size, clearColor());
 
-      byte colorIndex = random(1000) % palette->size;
+      byte colorIndex = getRandom() % palette->size;
       matrix.fillRect(_xPos * size, yPos * size, size, size, palette->colors[colorIndex]);
     }
 

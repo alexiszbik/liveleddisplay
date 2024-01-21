@@ -7,14 +7,14 @@
 #define SQR_SIZE 4
 #define SQR_COUNT 32
 
-class SquareDrops : public Scene {
+class SquareDrops : public AutoRefreshedScene {
   
 public:
   SquareDrops(Palette* palette) : palette(palette) {
     colorCount = palette->size;
 
     for (byte i = 0; i < SQR_COUNT; i++) {
-      states[i] = random(1000) % (colorCount + 1);
+      states[i] = getRandom() % (colorCount + 1);
     }
   }
 
@@ -23,17 +23,13 @@ public:
   }
   
 public:
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
+   virtual void updateOffsets() override {
+    if (isOtherDisplay) {
+      randomSeed(5555);
+    }
 
-      if (isOtherDisplay) {
-        randomSeed(5555);
-      }
-
-      for (byte i = 0; i < SQR_COUNT; i++) {
-        states[i] = (states[i] + 1) % (colorCount + random(10));
-      }
+    for (byte i = 0; i < SQR_COUNT; i++) {
+      states[i] = (states[i] + 1) % (colorCount + random(10));
     }
   }
 
@@ -41,7 +37,7 @@ public:
     
     if (!reInit && isOtherDisplay) {
       for (byte i = 0; i < SQR_COUNT; i++) {
-        states[i] = random(1000) % (colorCount + 1);
+        states[i] = getRandom() % (colorCount + 1);
       }
       reInit = true;
     }
@@ -52,7 +48,7 @@ public:
         byte index = i + j * (displayW/2/SQR_SIZE);
         byte colorIndex = states[index];
 
-        color_t color = colorIndex >= colorCount ? CLEAR : palette->colors[colorIndex];
+        color_t color = colorIndex >= colorCount ? clearColor() : palette->colors[colorIndex];
       
         matrix.fillRect(i * SQR_SIZE, j * SQR_SIZE, SQR_SIZE, SQR_SIZE, color);
       }

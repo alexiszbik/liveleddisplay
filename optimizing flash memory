@@ -1,0 +1,39 @@
+32284
+31631 sans ColorHSV
+
+32284
+
+BigYMNK remove inverted
+32136
+
+use setTextWrap once
+32128
+
+factorize random(1000)
+31988
+
+31984
+
+31960
+
+remove useless code in Sticks
+31870
+
+factorize tick(state) > needRefresh
+31858
+
+pre allocated colors
+30984
+
+more factorize tick(state) > needRefresh 
+30954
+30948
+
+pixnoize optimization
+30940
+
+factorize messages (kamojis & flashing sign)
+30848
+
+optimize vortex
+30700

@@ -32,10 +32,22 @@ class Scene {
   	}
 
   protected:
+    void initCursor() {
+      matrix.setCursor(0, 0);
+    }
+
   	void initFrame() {
     	clearScreen();
-   		matrix.setCursor(0, 0);
+      initCursor();
   	}
+
+    int getRandom() {
+      return random(1000);
+    }
+
+    void setNeedsRefresh() {
+      needRefresh = true;
+    }
 
   	virtual void draw() = 0;
   	
@@ -43,9 +55,19 @@ class Scene {
   protected:
   	bool needRefresh = true;
     bool isOtherDisplay = false;
-
 };
 
+class AutoRefreshedScene : public Scene {
+  public:
+  virtual void tick(bool state) override {
+    if (state)  {
+      needRefresh = true;
+      updateOffsets();
+    }
+  }
+
+  virtual void updateOffsets() {};
+};
 
 class TickerScene : public Scene {
   public:

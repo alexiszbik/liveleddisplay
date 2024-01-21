@@ -24,8 +24,6 @@ class WaveData {
   }
 };
 
-
-
 class Osc : public Scene {
   
 public:
@@ -45,7 +43,7 @@ public:
 public:
   virtual void tick(bool state) override {
     if (state && !squareMode)  {
-      needRefresh = true;
+      setNeedsRefresh();
       for (byte w = 0; w < waveCount; w++) {
         waveData[w].updateOffset();
       } 
@@ -73,7 +71,7 @@ public:
       squareMode = false;
       showOsc = true;
     }
-    needRefresh = true;
+    setNeedsRefresh();
   }
 
   virtual void draw() override {
@@ -88,7 +86,7 @@ public:
         matrix.fillRect(xSqr, 0, VU_W, VU_H, COLOR(0,0,0));
       }
 
-      byte colorIndex = random(1000) % palette->size;
+      byte colorIndex = getRandom() % palette->size;
       color_t c = palette->colors[colorIndex];
 
       xSqr = isOtherDisplay ? (((int)squarePosition - 2) * (int)VU_W) : (int)squarePosition * (int)VU_W;
@@ -99,7 +97,7 @@ public:
       
       
     } else if (showOsc) {
-      const byte w = displayW/2;
+      const byte w = displayHalfW;
 
       for (byte i = 0; i < w; i++) {
         
@@ -107,12 +105,12 @@ public:
 
           byte waveOffset = (displayW/waveCount) * s;
           
-          float x = ((float)(i + waveData[s].offset + waveOffset + (isOtherDisplay ? displayW/2 : 0)))/(float)w;
-          float y = cos(PI*x) * displayH/2 + displayH/2; 
+          float x = ((float)(i + waveData[s].offset + waveOffset + (isOtherDisplay ? displayHalfW : 0)))/(float)w;
+          float y = cos(PI*x) * displayHalfH + displayHalfH; 
           y = fmin(y,displayH - 1);
 
           float off_x = -((float)waveData[s].speed)/(float)w;
-          float prevy = cos(PI*(x+off_x)) * displayH/2 + displayH/2; 
+          float prevy = cos(PI*(x+off_x)) * displayHalfH + displayHalfH; 
           prevy = fmin(prevy,displayH - 1);
 
           matrix.drawPixel(i, prevy, COLOR(0,0,0));

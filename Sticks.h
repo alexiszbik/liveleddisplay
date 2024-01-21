@@ -16,7 +16,6 @@ public:
      delete palette;
   }
   
-  
 public:
   virtual void tick(bool state) override {
     if (state)  {
@@ -37,11 +36,6 @@ public:
       matrix.fillRect(x * width, 0, width, displayH, color);
       
     }
-
-    if (space == 1) {
-      byte x = ((xPos - tailSize * direction()) + maxStickCount) % maxStickCount;
-      matrix.fillRect(x * width, 0, width, displayH, CLEAR);
-    }
     
   }
 
@@ -52,7 +46,7 @@ private:
 
   byte width = 2;
   byte tailSize;
-  byte space = 2;
+  const byte space = 2;
   
   byte xPos = 0;
   

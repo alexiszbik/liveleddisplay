@@ -91,7 +91,7 @@ public:
 
       } else if (state->vuUp == false && state->vuSize >= 0) {
         
-        matrix.fillRect(x, y, vuW, vuH, CLEAR);
+        matrix.fillRect(x, y, vuW, vuH, clearColor());
         state->vuSize = state->vuSize - (isHorizontal ? 2 : 0.75f);
       }
     }

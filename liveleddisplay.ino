@@ -42,6 +42,7 @@ const char string_1[] PROGMEM = "FRIENDSHIP";
 const char string_2[] PROGMEM = "&";
 const char string_3[] PROGMEM = "BRAVERY";
 
+
 const char *const brighterWords[1] PROGMEM = {string_0};
 const char *const friendshipWords[3] PROGMEM = {string_1, string_2, string_3};
 
@@ -56,6 +57,7 @@ void setup() {
   Serial.begin(9600);
 
   matrix.begin();
+  matrix.setTextWrap(false);
   
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
@@ -135,6 +137,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers End
+      
       case 18 : scene = new Kaomojis(new RainbowPalette());
         break;
 
@@ -215,6 +218,11 @@ void handleProgramChange(byte channel, byte program) {
       //test hearth
       case 50 : scene = new Circles(RED_P, true);
         break;
+
+      //Sexy boy
+      /*
+      case 53 : scene = new FlashingSign(COLOR(0,0,7), sexyboysWords, 3, 1);
+        break;*/
 
   
       default: scene = new Squares(new RainbowPalette());

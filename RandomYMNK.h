@@ -10,7 +10,7 @@
 
 #define LETTER_COUNT 4
 
-class RandomYMNK : public Scene {
+class RandomYMNK : public AutoRefreshedScene {
   
 public:
   struct Point {
@@ -27,11 +27,6 @@ public:
   }
   
 public:
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
-    }
-  }
 
   bool verify(byte x, byte y, byte letterIndex) {
     if (letterIndex == 0) {
@@ -44,29 +39,26 @@ public:
       }
     }
 
-
     return true;
   }
 
   virtual void draw() override {
 
     matrix.setTextSize(1);
-    matrix.setTextWrap(false);
-
     clearScreen();
 
-    byte xOffset = isOtherDisplay ? displayW/2 : 0;
+    byte xOffset = isOtherDisplay ? displayHalfW : 0;
     
     for (byte i = 0; i < LETTER_COUNT; i++) {
       char letter = letters[i];
-      byte colorIndex = random(1000) % palette->size;
+      byte colorIndex = getRandom() % palette->size;
       matrix.setTextColor(palette->colors[colorIndex]);
 
       byte x, y; 
 
       do {
-        x = (random(1000) % TILE_X_MAX) * TILE_SIZE;
-        y = (random(1000) % TILE_Y_MAX) * TILE_SIZE;
+        x = (getRandom() % TILE_X_MAX) * TILE_SIZE;
+        y = (getRandom() % TILE_Y_MAX) * TILE_SIZE;
         
         positions[i].x = x;
         positions[i].y = y;

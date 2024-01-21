@@ -4,7 +4,7 @@
 
 #include "Scene.h"
 
-class SquareTrail : public Scene {
+class SquareTrail : public AutoRefreshedScene {
   
 public:
   SquareTrail(Palette* palette, bool mirror = false) : palette(palette), mirror(mirror) {
@@ -22,18 +22,14 @@ public:
   
   
 public:
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
-          
-      pos = ((pos + 1 * direction()) + posMax) % posMax;
-    }
+  virtual void updateOffsets() override {
+    pos = ((pos + 1 * direction()) + posMax) % posMax;
   }
 
   virtual void draw() override {
 
     for (byte i = 0; i < (squareCount + 1); i++) {
-        color_t color = i == squareCount ? CLEAR : palette->colors[i];
+        color_t color = i == squareCount ? clearColor() : palette->colors[i];
 
         int p = ((pos - i * direction()) + posMax) % posMax;
 
@@ -58,7 +54,6 @@ private:
 
   byte wCount;
   byte posMax;
-  
 
   Palette* palette;
   bool mirror = false;

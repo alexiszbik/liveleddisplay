@@ -5,35 +5,26 @@
 
 #include "ColorsAndMatrix.h"
 
+#define MAX_COLORS 12
+
 class Palette {
   public:
-  
-  Palette(byte size, color_t* colors) : size(size), colors(colors) {
-  }
 
   Palette() {}
 
   Palette(uint16_t color_a) {
     size = 1;
-    colors = (color_t*)malloc(sizeof(color_t)*size);
     colors[0] = color_a;
   }
   
   Palette(uint16_t color_a, uint16_t color_b, uint16_t color_c) {
     size = 3;
-    colors = (color_t*)malloc(sizeof(color_t)*size);
     colors[0] = color_a;
     colors[1] = color_b;
     colors[2] = color_c;
   }
 
-  virtual ~Palette() {
-    free(colors);
-  }
-
   Palette(byte size, byte r, byte g, byte b, bool ceilValues = false) : size(size) {
-    
-    colors = (color_t*)malloc(sizeof(color_t)*size);
     
     for (byte i = 0; i < size; i++) {
 
@@ -51,15 +42,13 @@ class Palette {
 
 public:
   byte size;
-  color_t* colors;
+  color_t colors[MAX_COLORS];
 };
 
 class RainbowPalette : public Palette {
   public:
   RainbowPalette() : Palette() {
     size = 12;
-    colors = (color_t*)malloc(sizeof(color_t)*size);
-
     colors[0] = COLOR(7,0,0);
     colors[1] = COLOR(7,4,0);
     colors[2] = COLOR(7,7,0);
@@ -79,7 +68,6 @@ class VuPalette : public Palette {
   public:
   VuPalette() : Palette() {
     size = 4;
-    colors = (color_t*)malloc(sizeof(color_t)*size);
     colors[0] = COLOR(0,0,7);
     colors[1] = COLOR(0,7,0);
     colors[2] = COLOR(7,7,0);

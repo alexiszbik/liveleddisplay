@@ -28,7 +28,7 @@ public:
       
         byte p = ((hPos + offset - i * getDirection()) + maxHPos) % maxHPos;
 
-        color_t color = i == rectCount ? CLEAR : palette->colors[i];
+        color_t color = i == rectCount ? clearColor() : palette->colors[i];
 
         int x = p + (displayW/ratio)*position - (isOtherDisplay ? displayW/2 : 0);
         

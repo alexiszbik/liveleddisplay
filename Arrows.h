@@ -17,7 +17,7 @@ public:
 public:
   virtual void tick(bool state) override {
     if (state)  {
-      needRefresh = true;
+      setNeedsRefresh();
       xPos = ((xPos - 1 * (isOtherDisplay ? 1 : -1)) + maxXPos) % (maxXPos);
     }
   }
@@ -37,7 +37,7 @@ public:
       
       for (byte y = 0; y < displayH; y++) {
 
-        byte halfDisplay = displayH/2;
+        byte halfDisplay = displayHalfH;
 
         byte x = (pixX + xPos + a*SIZE + maxXPos) % (maxXPos);
         

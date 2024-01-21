@@ -2,9 +2,9 @@
 #ifndef FLASHING_SIGN_H
 #define FLASHING_SIGN_H
 
-#include "Palette.h"
+#include "MessageScene.h"
 
-class FlashingSign : public Scene {
+class FlashingSign : public MessageScene {
   
   public:
   FlashingSign(Palette* palette, 
@@ -12,14 +12,10 @@ class FlashingSign : public Scene {
                byte textCount,
                byte contourSize = 3)
                
-  : palette(palette), contourSize(contourSize), textCount(textCount), texts(texts) {
+  : MessageScene(palette), contourSize(contourSize), textCount(textCount), texts(texts) {
 
     strcpy_P(txtbuf, (char *)pgm_read_word(&(texts[0])));
     colorCount = palette->size;
-  }
-
-  virtual ~FlashingSign() {
-    delete palette;
   }
 
   virtual void midiNote(byte noteValue) override {
@@ -28,27 +24,7 @@ class FlashingSign : public Scene {
       strcpy_P(txtbuf, (char *)pgm_read_word(&(texts[textIndex])));
       needClear = true;
     }
-    
   }
-
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
-      colorIndex = (colorIndex + 1) % colorCount;
-    }
-  }
-
-  void drawCentreString() {
-    byte xOffset = isOtherDisplay ? displayW/2 : 0;
-    
-    matrix.setCursor(0, 0);
-    int16_t x1, y1;
-    uint16_t w, h;
-    matrix.getTextBounds(txtbuf, 0, 0, &x1, &y1, &w, &h);
-    matrix.setCursor(displayW/2 - w/2 - xOffset, displayH/2 - h/2);
-    matrix.print(txtbuf);
-  }
-
 
   virtual void draw() override {
 
@@ -59,8 +35,7 @@ class FlashingSign : public Scene {
     
     matrix.setTextSize(1);
     matrix.setTextColor(palette->colors[colorIndex]);
-    matrix.setTextWrap(false);
-    drawCentreString();
+    drawCentreString(txtbuf);
 
     byte xOffset = isOtherDisplay ? displayW/2 : 0;
 
@@ -72,15 +47,12 @@ class FlashingSign : public Scene {
   }
 
   protected:
-  byte colorCount;  
-  byte colorIndex = 0;
   bool needClear = false; 
 
   const char * const *  texts;
 
   char txtbuf[30];
   byte textCount;
-  Palette* palette;
   byte contourSize;
   byte textIndex = 0;
 };

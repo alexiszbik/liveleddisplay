@@ -6,11 +6,10 @@
 
 #include "Scene.h"
 
-class Turnstile : public Scene {
+class Turnstile : public AutoRefreshedScene {
   
 public:
   Turnstile(Palette* palette) : palette(palette) {
-
   }
 
   virtual ~Turnstile() {
@@ -18,14 +17,8 @@ public:
   }
   
 public:
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
-
-      //offset = (offset + 2) % ((displayH + 1) + (32 + 1));
-
+  virtual void updateOffsets() override {
       offset = (offset + 2) % ((displayH + 1) + (64 + 1));
-    }
   }
 
   void makeLine(int off, color_t color) {
@@ -58,10 +51,10 @@ public:
 
   virtual void draw() override {
     
-    makeLine(offset + CLEAR_OFFSET + 16, COLOR(0,0,0));
-    makeLine(offset + CLEAR_OFFSET + 16 + 1, COLOR(0,0,0));
-    makeLine(offset, COLOR(0,0,7));
-    makeLine(offset + 1, COLOR(0,0,7));
+    for (byte i = 0; i < 2; i++) {
+      makeLine(offset + CLEAR_OFFSET + i, clearColor());
+      makeLine(offset + i, COLOR(0,0,7));
+    }
     
   }
 

@@ -20,7 +20,7 @@ public:
 public:
   virtual void tick(bool state) override {
     if (state)  {
-      needRefresh = true;
+      setNeedsRefresh();
 
       offset = (offset + 1) % C_SIZE;
       hOffset = (hOffset + 1) % 16;
@@ -64,11 +64,9 @@ public:
         int idx = (offset - i);
         byte r = (idx + C_SIZE) % C_SIZE;
         byte x = isOtherDisplay ? 0 : displayHalfW;
-        matrix.drawCircle(x, displayH/2, r * 4, palette->colors[i]);
+        matrix.drawCircle(x, displayHalfH, r * 4, palette->colors[i]);
       }
     }
-    
-    
   }
 
 private:

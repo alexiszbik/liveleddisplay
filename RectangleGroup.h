@@ -6,7 +6,7 @@
 
 #define RECT_COUNT 4
 
-class RectangleGroup : public Scene {
+class RectangleGroup : public AutoRefreshedScene {
   
 public:
   RectangleGroup(Palette* palette) : palette(palette)  {
@@ -24,9 +24,7 @@ public:
   
 public:
   virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
-    }
+    AutoRefreshedScene::tick(state);
     for (byte i = 0; i < RECT_COUNT; i++) {
        rectangles[i]->tick(state);
     }
@@ -35,7 +33,7 @@ public:
   virtual void draw() override {
     for (byte i = 0; i < RECT_COUNT; i++) {
       rectangles[i]->isOtherDisplay = isOtherDisplay;
-       rectangles[i]->draw();
+      rectangles[i]->draw();
     }
   }
 
