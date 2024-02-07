@@ -26,6 +26,18 @@ class FlashingSign : public MessageScene {
     }
   }
 
+  void drawString() {
+    byte xOffset = isOtherDisplay ? displayW/2 : 0;
+    
+    matrix.setCursor(0, 0);
+    int16_t x1, y1;
+    uint16_t w, h;
+    matrix.getTextBounds(txtbuf, 0, 0, &x1, &y1, &w, &h);
+    matrix.setCursor(displayW/2 - w/2 - xOffset, displayH/2 - h/2);
+    matrix.print(txtbuf);
+  }
+
+
   virtual void draw() override {
 
     if (needClear) {
@@ -34,8 +46,9 @@ class FlashingSign : public MessageScene {
     }
     
     matrix.setTextSize(1);
+    matrix.setTextWrap(false);
     matrix.setTextColor(palette->colors[colorIndex]);
-    drawCentreString(txtbuf);
+    drawString();
 
     byte xOffset = isOtherDisplay ? displayW/2 : 0;
 
