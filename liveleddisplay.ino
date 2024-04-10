@@ -61,7 +61,7 @@ void setup() {
   
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
-  MIDI.begin(MIDI_CHANNEL_OMNI);
+  MIDI.begin(16);
 
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
