@@ -12,7 +12,10 @@ class SquareDrops : public AutoRefreshedScene {
 public:
   SquareDrops(Palette* palette) : palette(palette) {
     colorCount = palette->size;
+    initialize();
+  }
 
+  void initialize() {
     for (byte i = 0; i < SQR_COUNT; i++) {
       states[i] = getRandom() % (colorCount + 1);
     }
@@ -36,9 +39,7 @@ public:
   virtual void draw() override {
     
     if (!reInit && isOtherDisplay) {
-      for (byte i = 0; i < SQR_COUNT; i++) {
-        states[i] = getRandom() % (colorCount + 1);
-      }
+      initialize();
       reInit = true;
     }
 
