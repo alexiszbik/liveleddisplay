@@ -2,66 +2,38 @@
 #ifndef SQUARES_H
 #define SQUARES_H
 
-#include "Scene.h"
+#include "SquareScene.h"
 
-class Squares : public Scene {
-  
-public:
-  Squares(Palette* palette, bool randomMode = true) : palette(palette), randomMode(randomMode) {
-  }
-
-  virtual ~Squares() {
-     delete palette;
-  }
-  
-public:
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
-
-        prevXPos = xPos;
-        prevYPos = yPos;
-
-        if (randomMode) {
-          
-          while(prevXPos == xPos && prevYPos == yPos) {
-            xPos = random(displayW/size);
-            yPos = random(displayH/size);
-          }
-          
-        } else {
-          
-          xPos = (xPos + 1) % (displayW/size);
-
-          if (xPos == 0) {
-           yPos = (yPos + 1) % (displayH/size);
-          }
-          
-        }
-      }
-    }
-
-    virtual void draw() override {
-      byte half = isOtherDisplay ? ((displayW/size)/2) : 0;
-      byte _xPos = xPos - half;
-      byte _prevXPos = prevXPos - half;
+class Squares : public SquareScene {
     
-      matrix.fillRect(_prevXPos * size, prevYPos * size , size, size, clearColor());
-
-      byte colorIndex = getRandom() % palette->size;
-      matrix.fillRect(_xPos * size, yPos * size, size, size, palette->colors[colorIndex]);
+public:
+    Squares(Palette* palette, bool randomMode = false) : SquareScene(8), palette(palette) {
     }
-
+    
+    virtual ~Squares() {
+        delete palette;
+    }
+    
+public:
+    virtual void updateOffsets() override {
+        prevPos = pos;
+        
+        while(pos == prevPos) {
+            pos = random(fullSquareCount());
+        }
+    }
+    
+    virtual void draw() override {
+        byte half = isOtherDisplay ? halfSquareCount() : 0;
+        drawSquare(prevPos - half, clearColor());
+        byte colorIndex = getRandom() % palette->size;
+        drawSquare(pos - half, palette->colors[colorIndex]);
+    }
+    
 private:
-    const byte size = 8;
-
-    byte xPos = 0;
-    byte yPos = 0;
-
-    byte prevXPos = 0;
-    byte prevYPos = 0;
-
-    bool randomMode = true;
+    byte pos = 0;
+    
+    byte prevPos = 0;
 
     Palette* palette;
 };
