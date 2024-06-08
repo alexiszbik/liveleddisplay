@@ -3,6 +3,7 @@
 #define SCENE_H
 
 #include "Ticker.h"
+#include "ColorsAndMatrix.h"
 
 class Scene {
   public:
@@ -37,7 +38,7 @@ class Scene {
     }
 
   	void initFrame() {
-    	clearScreen();
+        clearScreen();
       initCursor();
   	}
 
