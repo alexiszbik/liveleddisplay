@@ -19,7 +19,7 @@ public:
   }
 
   void makePixel() {
-    byte x = random(halfDisplayW);
+    byte x = random(displayHalfW);
     byte y = random(displayH);
     color_t c = COLOR(getRandomColor(isOtherDisplay), getRandomColor(isOtherDisplay), getRandomColor(isOtherDisplay));
     matrix.writePixel(x, y, random(4) >= 3 ? clearColor() : c);
