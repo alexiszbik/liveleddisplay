@@ -31,11 +31,12 @@ public:
             byte s = (noteValue - 37);
             index = iMap[s];
             state = stateB;
+            
         } if (noteValue == 52) {
             state = stateC;
-        } if (noteValue == 54) {
-            state = stateD;
-        } if (noteValue >= 68 && noteValue <= 83 && (state >= stateC)) {
+            clearScreen();
+            index = 0;
+        } if (noteValue >= 68 && noteValue <= 83 && (state == stateC)) {
             index = (noteValue - 68);
         } if (noteValue == 84) {
             state = clear;
@@ -60,24 +61,29 @@ public:
                 
             } break;
             case stateB : {
+              if (index != prevIndex) {
                 clearScreen();
+                prevIndex = index;
+
+                 int i = index;
                 if (isOtherDisplay) {
-                    index -= 8;
+                    i -= 8;
                 }
                 byte r = 2 + (getRandom()%6);
-                drawSquare(index, COLOR(r,r,r));
+                drawSquare(i, COLOR(r,r,r));
+              }
+               
                 
             } break;
-            case stateC :
-            case stateD : {
+            case stateC : {
                 
                 byte parts = 16;
                 byte width = displayW/parts;
-                for (int x = 0; x < index + 1; x++) {
+                for (int x = 0; x < (index + 1); x++) {
                     byte posx = x - (isOtherDisplay ? (parts/2) : 0);
                     byte hw = width/2;
                     if (posx>=0) {
-                        if (state == stateC) {
+                        if (index < 8) {
                             matrix.fillRect(posx * width, 0, hw, displayH, COLOR(2,2,2));
                             matrix.fillRect(posx * width + hw, 0, hw, displayH, COLOR(7,7,7));
                         } else {
@@ -91,10 +97,8 @@ public:
                         }
                     }
                 }
-                
             } break;
         }
-        
     }
     
 private:
@@ -102,18 +106,18 @@ private:
         clear,
         stateA,
         stateB,
-        stateC,
-        stateD
+        stateC
     };
     
     int index = 0;
+    int prevIndex = -999;
     byte offset = 0;
     IntroState state = clear;
     IntroState previousState = clear;
     
     int iMap[16] = {5,9,11,3,8,4,12,0,14,1,6,15,13,2,7,10};
     
-    Ticker ticker = Ticker(20);
+    Ticker ticker = Ticker(40);
     Palette rainbow = RainbowPalette();
 };
 

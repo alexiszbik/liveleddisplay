@@ -115,8 +115,8 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //End Brighter // Expect the Unexpected
-      case 6 : scene = new SquareDrops(BLUE_P);
-        break;
+      /*case 6 : scene = new SquareDrops(BLUE_P);
+        break;*/
 
         
      
@@ -134,8 +134,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Drop
-      case 17 : scene = new RectangleGroup(BLUE_P_S);
-        break;
+      /*case 17 : scene = new RectangleGroup(BLUE_P_S);
+        break;*/
 
       //Pers End
       
