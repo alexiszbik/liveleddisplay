@@ -25,8 +25,8 @@ public:
 
     matrix.setTextSize(2);
 
-    if (inverted && !once) {
-
+    if (inverted) {
+      if (!once) {
         matrix.fillScreen(COLOR(0,0,7));
 
         matrix.setTextColor(COLOR(0,0,0));
@@ -37,7 +37,7 @@ public:
         matrix.print(isOtherDisplay ? F("K") : F("M")); 
 
         once = true;
-
+      }
     } else {
       byte cIndex = (colorIndex + (isOtherDisplay ? 2 : 0)) % palette->size;
 
