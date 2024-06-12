@@ -60,13 +60,13 @@ public:
                 
                 byte parts = 16;
                 byte width = displayW/parts;
-                for (int x = 0; x < index; x++) {
-                    x = x - (isOtherDisplay ? (parts/2) : 0);
+                for (int x = 0; x < index + 1; x++) {
+                    byte posx = x - (isOtherDisplay ? (parts/2) : 0);
                     byte hw = width/2;
-                    if (x>=0) {
-                      matrix.fillRect(x * width, 0, hw, displayH, COLOR(2,2,2));
-                      matrix.fillRect(x * width + hw, 0, hw, displayH, COLOR(7,7,7));
-                    } 
+                    if (posx>=0) {
+                      matrix.fillRect(posx * width, 0, hw, displayH, COLOR(2,2,2));
+                      matrix.fillRect(posx * width + hw, 0, hw, displayH, COLOR(7,7,7));
+                    }
                 }
                 
             } break;
