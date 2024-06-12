@@ -33,7 +33,6 @@ static inline color_t clearColor() {
   return 0;
 }
 
-
 static inline void clearScreen() {
   matrix.fillScreen(clearColor());
 }

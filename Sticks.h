@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include "Palette.h"
 
-class Sticks : public Scene {
+class Sticks : public AutoRefreshedScene {
   
 public:
   Sticks(Palette* palette) : palette(palette)  {
@@ -17,13 +17,9 @@ public:
   }
   
 public:
-  virtual void tick(bool state) override {
-    if (state)  {
-      needRefresh = true;
-
-      xPos = ((xPos + 1 * direction()) + maxStickCount) % maxStickCount;
+    virtual void updateOffsets() override {
+        xPos = ((xPos + 1 * direction()) + maxStickCount) % maxStickCount;
     }
-  }
 
   virtual void draw() override {
 
@@ -34,7 +30,6 @@ public:
       color_t color = (i % space == 0) ? palette->colors[(int)ceil(i/space)] : COLOR(0, 0, 0);
       
       matrix.fillRect(x * width, 0, width, displayH, color);
-      
     }
     
   }
