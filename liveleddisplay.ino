@@ -29,6 +29,7 @@
 #include "StarTour.h"
 #include "Circles.h"
 #include "Hearth.h"
+#include "Intro.h"
 
 #define BLUE_P new Palette(8, 0, 0, 7)
 #define BLUE_P_S new Palette(4, 0, 0, 7)
@@ -120,8 +121,8 @@ void handleProgramChange(byte channel, byte program) {
         
      
       //Expect the Unexpected, + drums
-      case 10 : scene = new RandomYMNK(new RainbowPalette());
-        break;
+      /*case 10 : scene = new RandomYMNK(new RainbowPalette());
+        break;*/
 
 
       //Pers intro
@@ -143,7 +144,6 @@ void handleProgramChange(byte channel, byte program) {
 
       case 19 : scene = new PixNoise();
         break;
-
 
 
       //Hopes
@@ -179,20 +179,18 @@ void handleProgramChange(byte channel, byte program) {
       case 29 : scene = new BigYMNK(new RainbowPalette());
         break;
 
-      //Fill outside
-      /*case 30 : scene = new BigYMNK(new RainbowPalette(), true);
-        break;*/
+     
 
       // BiBimBap
       case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2);
         break;
-      case 36 : scene = new Vortex(COLOR(0,7,0));
+      case 36 : scene = new Vortex();
         break;
-        
+        /*
       //Raindrops Rainbow
       case 40 : scene = new RainDrops(new RainbowPalette());
         break;
-
+*/
 
       //Tir3d of Technology
       case 42 : scene = new StarTour();
@@ -223,6 +221,12 @@ void handleProgramChange(byte channel, byte program) {
       /*
       case 53 : scene = new FlashingSign(COLOR(0,0,7), sexyboysWords, 3, 1);
         break;*/
+
+      case 52 : scene = new Intro();
+        break;
+         //Fill outside
+      case 53 : scene = new BigYMNK(new RainbowPalette(), true);
+        break;
 
   
       default: scene = new Squares(new RainbowPalette());

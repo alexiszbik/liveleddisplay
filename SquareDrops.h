@@ -4,8 +4,6 @@
 
 #include "SquareScene.h"
 
-#define SQR_SIZE 4
-
 class SquareDrops : public SquareScene {
     
 public:

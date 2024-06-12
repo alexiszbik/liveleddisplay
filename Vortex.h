@@ -9,7 +9,7 @@ class Vortex : public AutoRefreshedScene {
 
 public:
 
-  Vortex(color_t color) : color(color) {
+  Vortex() {
   }
   
 public:
@@ -69,7 +69,6 @@ private:
   float angle = 0;
   byte offset = 0;
   float previousAngle = 0;
-  color_t color;
 
   byte center_x = 0;
   byte center_y = displayHalfH;

@@ -17,40 +17,56 @@ public:
         if (noteValue == 36) {
             state = stateA;
         } if (noteValue >= 37 && noteValue <= 51) {
-            sqrPos = (noteValue - 37);
+            byte s = (noteValue - 37);
+            index = iMap[s];
             state = stateB;
         } if (noteValue == 52) {
             state = stateC;
+        } if (noteValue >= 68 && noteValue <= 83 && (state == stateC)) {
+          index = (noteValue - 68);
+        } if (noteValue == 84) {
+          state = clear;
         }
         
         needRefresh = true;
     }
     
     virtual void draw() override {
+
+      
+        if (previousState != state) {
+          previousState = state;
+          clearScreen();
+        }
         
         switch(state) {
             case clear : {
-                
+                clearScreen();
             } break;
             case stateA : {
-                
+              matrix.writeFastHLine(0, displayHalfH, displayHalfW, COLOR(7,7,7));
+
             } break;
             case stateB : {
                 
                 if (isOtherDisplay) {
-                    sqrPos -= 8;
+                    index -= 8;
                 }
-                drawSquare(sqrPos, COLOR(0,7,7));
+                byte r = 2 + (getRandom()%6);
+                drawSquare(index, COLOR(r,r,r));
                 
             } break;
             case stateC : {
                 
                 byte parts = 16;
                 byte width = displayW/parts;
-                for (byte x = 0; x < parts; x++) {
+                for (int x = 0; x < index; x++) {
+                    x = x - (isOtherDisplay ? (parts/2) : 0);
                     byte hw = width/2;
-                    matrix.fillRect(x * width, 0, hw, displayH, COLOR(2,2,2));
-                    matrix.fillRect(x * width + hw, 0, hw, displayH, COLOR(7,7,7));
+                    if (x>=0) {
+                      matrix.fillRect(x * width, 0, hw, displayH, COLOR(2,2,2));
+                      matrix.fillRect(x * width + hw, 0, hw, displayH, COLOR(7,7,7));
+                    } 
                 }
                 
             } break;
@@ -66,8 +82,11 @@ private:
         stateC,
     };
     
-    int sqrPos;
-    IntroState state;
+    int index = 0;
+    IntroState state = clear;
+    IntroState previousState = clear;
+
+    int iMap[16] = {5,9,11,3,8,4,12,0,14,1,6,15,13,2,7,10};
 };
 
 
