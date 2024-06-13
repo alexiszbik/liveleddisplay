@@ -7,8 +7,7 @@
 class RectangleGroup : public AutoRefreshedScene {
     
     struct Rectangle  {
-        Rectangle(Palette* palette, byte ratio = 1, byte position = 0) : position(position), ratio(ratio), palette(palette)  {
-            rectCount = palette->size;
+        Rectangle(byte position = 0) : position(position)  {
             offset = position*2;
         }
         
@@ -18,38 +17,36 @@ class RectangleGroup : public AutoRefreshedScene {
             }
         }
         
-        void draw(bool isOtherDisplay) {
+        void draw(bool isOtherDisplay, Palette* palette) {
             
-            for (byte i = 0; i < rectCount; i++) {
+            byte size = palette->size;
+            
+            for (byte i = 0; i < (size + 1); i++) {
                 
                 byte p = ((hPos + offset - i) + maxHPos) % maxHPos;
                 
-                color_t color = i == rectCount ? clearColor() : palette->colors[i];
+                color_t color = i == size ? clearColor() : palette->colors[i];
                 
-                int x = p + (displayW/ratio)*position - (isOtherDisplay ? displayW/2 : 0);
+                int x = p + (displayW/RECT_COUNT)*position - (isOtherDisplay ? displayW/2 : 0);
                 
-                byte w = displayW/ratio - p*2;
+                byte w = displayW/RECT_COUNT - p*2;
                 
                 matrix.drawRect(x, p, w, displayH - p*2, color);
             }
         }
-        
-        byte rectCount;
+    
         byte hPos = 0;
         
         const byte maxHPos = (displayH/2);
         byte position = 0;
-        byte ratio = 1;
         byte offset = 0;
-        
-        Palette* palette; //Palette is a reference here, we don't delete it
         
     };
   
 public:
   RectangleGroup(Palette* palette) : palette(palette)  {
     for (byte i = 0; i < RECT_COUNT; i++) {
-       rectangles[i] = new Rectangle(palette, RECT_COUNT, i);
+       rectangles[i] = new Rectangle(i);
     }
   }
 
@@ -70,7 +67,7 @@ public:
 
   virtual void draw() override {
     for (byte i = 0; i < RECT_COUNT; i++) {
-      rectangles[i]->draw(isOtherDisplay);
+      rectangles[i]->draw(isOtherDisplay, palette);
     }
   }
 
