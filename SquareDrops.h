@@ -7,15 +7,22 @@
 class SquareDrops : public SquareScene {
     
 public:
-    SquareDrops(Palette* palette) : SquareScene(4), palette(palette) {
+    SquareDrops(Palette* palette, bool mode) : SquareScene(4), palette(palette), mode(mode) {
         colorCount = palette->size;
         initialize();
     }
     
     void initialize() {
-        for (byte i = 0; i < halfSquareCount(); i++) {
-            states[i] = getRandom() % (colorCount + 1);
+        if (mode) {
+            for (byte i = 0; i < halfSquareCount(); i++) {
+                states[i] = getRandom() % (colorCount + 1);
+            }
+        } else {
+            for (byte i = 0; i < halfSquareCount(); i++) {
+                states[i] = colorCount;
+            }
         }
+        
     }
     
     virtual ~SquareDrops() {
@@ -24,12 +31,25 @@ public:
     
 public:
     virtual void updateOffsets() override {
-        if (isOtherDisplay) {
-            randomSeed(5555);
-        }
-        
-        for (byte i = 0; i < halfSquareCount(); i++) {
-            states[i] = (states[i] + 1) % (colorCount + (getRandom() % 10));
+        if (mode) {
+            if (isOtherDisplay) {
+                randomSeed(5555);
+            }
+            
+            for (byte i = 0; i < halfSquareCount(); i++) {
+                states[i] = (states[i] + 1) % (colorCount + (getRandom() % 10));
+            }
+        } else {
+            pos = (halfSquareCount() + (pos + 1 * (isOtherDisplay ? -1 : 1))) % halfSquareCount();
+            
+            for (byte i = 0; i < halfSquareCount(); i++) {
+                if (i == pos) {
+                    states[i] = 0;
+                } else {
+                    states[i] = (states[i] + 1);
+                }
+                
+            }
         }
     }
     
@@ -49,7 +69,10 @@ private:
     
     Palette* palette;
     
+    byte pos = 0;
+    
     bool reInit = false;
+    bool mode = false;
 };
 
 #endif //SQUARE_DROPS_H

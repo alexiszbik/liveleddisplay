@@ -170,7 +170,7 @@ void handleProgramChange(byte channel, byte program) {
          
 
       //Animaux intro
-      case 27 : scene = new SquareTrail(RED_P_S, true);
+      case 27 : scene = new SquareTrail(RED_P_S);
         break;
       //Animaux kick
       case 28 : scene = new Arrows();

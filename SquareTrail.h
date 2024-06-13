@@ -7,9 +7,9 @@
 class SquareTrail : public SquareScene {
     
 public:
-    SquareTrail(Palette* palette, bool mirror = true) : SquareScene(4), palette(palette), mirror(mirror) {
+    SquareTrail(Palette* palette) : SquareScene(4), palette(palette) {
         trailLength = palette->size;
-        posMax = mirror ? halfSquareCount() : fullSquareCount();
+        posMax = halfSquareCount();
     }
     
     virtual ~SquareTrail() {
@@ -28,14 +28,13 @@ public:
             color_t color = i == trailLength ? clearColor() : palette->colors[i];
             
             int p = ((pos - i * direction()) + posMax) % posMax;
-            int offset = mirror ? 0 : (isOtherDisplay ? (displayHalfW/sqrSize) : 0);
-            drawSquare(p - offset, color, !mirror);
+            drawSquare(p, color, false);
         }
     }
     
 private:
     int direction() {
-        return mirror ? (isOtherDisplay ? -1 : 1) : 1;
+        return (isOtherDisplay ? -1 : 1);
     }
     
 private:
@@ -46,7 +45,6 @@ private:
     byte posMax;
     
     Palette* palette;
-    bool mirror = false;
 };
 
 #endif //SQUARE_TRAIL_H
