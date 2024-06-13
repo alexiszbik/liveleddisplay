@@ -134,8 +134,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Drop
-      /*case 17 : scene = new RectangleGroup(BLUE_P_S);
-        break;*/
+      case 17 : scene = new RectangleGroup(BLUE_P_S);
+        break;
 
       //Pers End
       
