@@ -22,7 +22,6 @@ public:
                 states[i] = colorCount;
             }
         }
-        
     }
     
     virtual ~SquareDrops() {
@@ -48,7 +47,6 @@ public:
                 } else {
                     states[i] = (states[i] + 1);
                 }
-                
             }
         }
     }
