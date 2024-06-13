@@ -8,7 +8,6 @@
 #include "ColorsAndMatrix.h"
 
 #include "Palette.h"
-#include "Squares.h"
 #include "Sticks.h"
 #include "Rectangle.h"
 #include "RectangleGroup.h"
@@ -37,15 +36,18 @@
 #define RED_P new Palette(8, 7, 0, 0)
 #define RED_P_S new Palette(4, 7, 0, 0)
 
-
+//note : PROGMEM don't do shit here
 const char string_0[] PROGMEM = "BRIGHTER";
 const char string_1[] PROGMEM = "FRIENDSHIP";
 const char string_2[] PROGMEM = "&";
 const char string_3[] PROGMEM = "BRAVERY";
 
+const char string_4[] PROGMEM = "v1.1.0";
+
 
 const char *const brighterWords[1] PROGMEM = {string_0};
 const char *const friendshipWords[3] PROGMEM = {string_1, string_2, string_3};
+const char *const version[1] PROGMEM = {string_4};
 
 Scene* scene = NULL;
 byte currentProgram = 0;
@@ -69,7 +71,7 @@ void setup() {
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
 
-  scene = new Squares(new RainbowPalette());
+  scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
 
   scene->prepareFrame();
 }
@@ -117,7 +119,7 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //End Brighter // Expect the Unexpected
-      case 6 : scene = new SquareDrops(BLUE_P, true);
+      case 6 : scene = new SquareDrops(BLUE_P, SquareDrops::randDrops);
         break;
 
         
@@ -136,8 +138,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Drop
-      /*case 17 : scene = new RectangleGroup(BLUE_P_S);
-        break;*/
+      case 17 : scene = new RectangleGroup(BLUE_P_S);
+        break;
 
       //Pers End
       
@@ -172,7 +174,7 @@ void handleProgramChange(byte channel, byte program) {
          
 
       //Animaux intro
-      case 27 : scene = new SquareDrops(RED_P_S, false);
+      case 27 : scene = new SquareDrops(RED_P_S,  SquareDrops::trail);
         break;
       //Animaux kick
       case 28 : scene = new Arrows();
@@ -226,12 +228,16 @@ void handleProgramChange(byte channel, byte program) {
 
       case 52 : scene = new Intro();
         break;
+      
          //Fill outside
       case 53 : scene = new BigYMNK(new RainbowPalette(), true);
         break;
 
+      case 54 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), version, 1, 0);
+        break;
+
   
-      default: scene = new Squares(new RainbowPalette());
+      default: scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
         break;
     }
     scene->prepareFrame();

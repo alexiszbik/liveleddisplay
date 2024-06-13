@@ -72,7 +72,6 @@ public:
                     states[pos] = colorCount;
                     states[newPos] = getRandom() % colorCount;
                     pos = newPos;
-                    std::cout << pos << std::endl;
                 }
                 
             }
