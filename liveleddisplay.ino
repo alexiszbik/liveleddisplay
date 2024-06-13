@@ -12,7 +12,7 @@
 #include "Sticks.h"
 #include "Rectangle.h"
 #include "RectangleGroup.h"
-#include "SquareTrail.h"
+//#include "SquareTrail.h"
 #include "RainDrops.h"
 #include "Arrows.h"
 #include "FlashingSign.h"
@@ -60,6 +60,8 @@ void setup() {
   matrix.begin();
   matrix.setTextWrap(false);
   
+  delay(1000); 
+
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
   MIDI.begin(16);
@@ -97,16 +99,16 @@ void handleProgramChange(byte channel, byte program) {
     switch(program) {
       
       //Intro
-      case 0 : scene = new Squares(new RainbowPalette());
-        break;
+      /*case 0 : scene = new Squares(new RainbowPalette());
+        break;*/
 
       //Brighter Beat
       case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::verticalWide);
         break;
 
       //Brighter Drop
-      case 4 : scene = new Squares(new RainbowPalette());
-        break;
+      /*case 4 : scene = new Squares(new RainbowPalette());
+        break;*/
 
       //Say : Brighter
       case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)), brighterWords, 1);
@@ -115,8 +117,8 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //End Brighter // Expect the Unexpected
-      /*case 6 : scene = new SquareDrops(BLUE_P);
-        break;*/
+      case 6 : scene = new SquareDrops(BLUE_P, true);
+        break;
 
         
      
@@ -134,8 +136,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Drop
-      case 17 : scene = new RectangleGroup(BLUE_P_S);
-        break;
+      /*case 17 : scene = new RectangleGroup(BLUE_P_S);
+        break;*/
 
       //Pers End
       
@@ -170,7 +172,7 @@ void handleProgramChange(byte channel, byte program) {
          
 
       //Animaux intro
-      case 27 : scene = new SquareTrail(RED_P_S);
+      case 27 : scene = new SquareDrops(RED_P_S, false);
         break;
       //Animaux kick
       case 28 : scene = new Arrows();
