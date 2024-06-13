@@ -9,11 +9,10 @@
 class Turnstile : public AutoRefreshedScene {
   
 public:
-  Turnstile(Palette* palette) : palette(palette) {
+  Turnstile() {
   }
 
   virtual ~Turnstile() {
-     delete palette;
   }
   
 public:
@@ -60,7 +59,6 @@ public:
 
 
 private:
-  Palette* palette;
 
   int offset = 0;
 
