@@ -11,7 +11,7 @@ class RectangleGroup : public AutoRefreshedScene {
 public:
   RectangleGroup(Palette* palette) : palette(palette)  {
     for (byte i = 0; i < RECT_COUNT; i++) {
-       rectangles[i] = new Rectangle(palette, true, RECT_COUNT, i, i*2);
+       rectangles[i] = new Rectangle(palette, RECT_COUNT, i);
     }
   }
 

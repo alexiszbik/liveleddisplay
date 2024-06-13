@@ -29,16 +29,11 @@ public:
         }
         
         for (byte i = 0; i < halfSquareCount(); i++) {
-            states[i] = (states[i] + 1) % (colorCount + random(10));
+            states[i] = (states[i] + 1) % (colorCount + (getRandom() % 10));
         }
     }
     
     virtual void draw() override {
-        
-        if (!reInit && isOtherDisplay) {
-            initialize();
-            reInit = true;
-        }
         
         for (byte index = 0; index < halfSquareCount(); index++) {
             byte colorIndex = states[index];
