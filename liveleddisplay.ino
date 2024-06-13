@@ -8,7 +8,6 @@
 #include "ColorsAndMatrix.h"
 
 #include "Palette.h"
-#include "Squares.h"
 #include "Sticks.h"
 #include "Rectangle.h"
 #include "RectangleGroup.h"
@@ -69,7 +68,7 @@ void setup() {
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
 
-  scene = new Squares(new RainbowPalette());
+  scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
 
   scene->prepareFrame();
 }
@@ -117,7 +116,7 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //End Brighter // Expect the Unexpected
-      case 6 : scene = new SquareDrops(BLUE_P, true);
+      case 6 : scene = new SquareDrops(BLUE_P, SquareDrops::randDrops);
         break;
 
         
@@ -136,8 +135,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Drop
-      /*case 17 : scene = new RectangleGroup(BLUE_P_S);
-        break;*/
+      case 17 : scene = new RectangleGroup(BLUE_P_S);
+        break;
 
       //Pers End
       
@@ -172,7 +171,7 @@ void handleProgramChange(byte channel, byte program) {
          
 
       //Animaux intro
-      case 27 : scene = new SquareDrops(RED_P_S, false);
+      case 27 : scene = new SquareDrops(RED_P_S,  SquareDrops::trail);
         break;
       //Animaux kick
       case 28 : scene = new Arrows();
@@ -231,7 +230,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
   
-      default: scene = new Squares(new RainbowPalette());
+      default: scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
         break;
     }
     scene->prepareFrame();
