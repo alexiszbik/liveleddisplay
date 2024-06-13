@@ -5,10 +5,10 @@
 #include "Scene.h"
 #include "Ticker.h"
 
-class Intro : public SquareScene {
+class Intro : public Scene {
     
 public:
-    Intro() : SquareScene(8) {
+    Intro() {
     }
     
     virtual ~Intro() {
@@ -45,6 +45,14 @@ public:
         needRefresh = true;
     }
     
+    void drawSquare(int index, color_t color, bool fullWidth = false) {
+        byte sqrSize = 8;
+        byte perW = ((fullWidth ? displayW : displayHalfW)/sqrSize);
+        byte xPos = index % perW;
+        byte yPos = index / perW;
+        matrix.fillRect(xPos * sqrSize, yPos * sqrSize, sqrSize, sqrSize, color);
+    }
+    
     virtual void draw() override {
         
         if (previousState != state) {
@@ -71,6 +79,7 @@ public:
                 }
                 byte r = 2 + (getRandom()%6);
                 drawSquare(i, COLOR(r,r,r));
+                  
               }
                
                 
