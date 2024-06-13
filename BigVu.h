@@ -14,7 +14,7 @@ enum Mode {
   
 public:
   BigVu(Palette* palette, byte note, byte noteCount = 1, Mode mode = horizontal) 
-  : palette(palette), note(note), noteCount(noteCount), mode(mode) {
+    : noteCount(noteCount), palette(palette), note(note), mode(mode) {
   }
 
   virtual ~BigVu() {

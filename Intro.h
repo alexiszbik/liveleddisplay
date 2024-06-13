@@ -69,19 +69,19 @@ public:
                 
             } break;
             case stateB : {
-              if (index != prevIndex) {
-                clearScreen();
-                prevIndex = index;
-
-                 int i = index;
-                if (isOtherDisplay) {
-                    i -= 8;
+                if (index != prevIndex) {
+                    clearScreen();
+                    prevIndex = index;
+                    
+                    int i = index;
+                    if (isOtherDisplay) {
+                        i -= 8;
+                    }
+                    byte r = 2 + (getRandom()%6);
+                    drawSquare(i, COLOR(r,r,r));
+                    
                 }
-                byte r = 2 + (getRandom()%6);
-                drawSquare(i, COLOR(r,r,r));
-                  
-              }
-               
+                
                 
             } break;
             case stateC : {
