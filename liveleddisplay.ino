@@ -36,15 +36,18 @@
 #define RED_P new Palette(8, 7, 0, 0)
 #define RED_P_S new Palette(4, 7, 0, 0)
 
-
+//note : PROGMEM don't do shit here
 const char string_0[] PROGMEM = "BRIGHTER";
 const char string_1[] PROGMEM = "FRIENDSHIP";
 const char string_2[] PROGMEM = "&";
 const char string_3[] PROGMEM = "BRAVERY";
 
+const char string_4[] PROGMEM = "v1.1.0";
+
 
 const char *const brighterWords[1] PROGMEM = {string_0};
 const char *const friendshipWords[3] PROGMEM = {string_1, string_2, string_3};
+const char *const version[1] PROGMEM = {string_4};
 
 Scene* scene = NULL;
 byte currentProgram = 0;
@@ -225,8 +228,12 @@ void handleProgramChange(byte channel, byte program) {
 
       case 52 : scene = new Intro();
         break;
+      
          //Fill outside
       case 53 : scene = new BigYMNK(new RainbowPalette(), true);
+        break;
+
+      case 54 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), version, 1, 0);
         break;
 
   
