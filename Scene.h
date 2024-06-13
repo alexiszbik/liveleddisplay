@@ -38,7 +38,7 @@ class Scene {
     }
 
   	void initFrame() {
-        clearScreen();
+      clearScreen();
       initCursor();
   	}
 
@@ -73,20 +73,16 @@ class AutoRefreshedScene : public Scene {
 class TickerScene : public Scene {
   public:
 
-  virtual ~TickerScene() {
-    delete ticker;
-  }
-
   virtual void showFrame(bool _isOtherDisplay) {
     Scene::showFrame(_isOtherDisplay);
     
-    if (ticker->checkTime()) {
+    if (ticker.checkTime()) {
       needRefresh = true;
     }
   }
 
   protected:
-    Ticker *ticker = new Ticker(20);
+    Ticker ticker = Ticker(20);
 
 };
 

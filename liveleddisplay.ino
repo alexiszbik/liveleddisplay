@@ -11,7 +11,7 @@
 #include "Sticks.h"
 #include "Rectangle.h"
 #include "RectangleGroup.h"
-//#include "SquareTrail.h"
+#include "Explode.h"
 #include "RainDrops.h"
 #include "Arrows.h"
 #include "FlashingSign.h"
@@ -42,7 +42,7 @@ const char string_1[] PROGMEM = "FRIENDSHIP";
 const char string_2[] PROGMEM = "&";
 const char string_3[] PROGMEM = "BRAVERY";
 
-const char string_4[] PROGMEM = "v1.1.0";
+const char string_4[] PROGMEM = "v1.1.3";
 
 
 const char *const brighterWords[1] PROGMEM = {string_0};
@@ -235,6 +235,10 @@ void handleProgramChange(byte channel, byte program) {
 
       case 54 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), version, 1, 0);
         break;
+
+      case 59 : scene = new Explode();
+        break;
+
 
   
       default: scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
