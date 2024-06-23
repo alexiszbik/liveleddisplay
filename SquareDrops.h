@@ -7,9 +7,10 @@
 class SquareDrops : public AutoRefreshedScene {
 public:
     enum Mode {
-        randDrops,
+        randDrops = 0,
         trail,
-        randomOnce
+        randomOnce,
+        wash
     };
     
 public:
@@ -25,6 +26,7 @@ public:
                     states[i] = getRandom() % (colorCount + 1);
                 }
             } break;
+            case wash :
             case trail : {
                 for (byte i = 0; i < halfSquareCount(); i++) {
                     states[i] = colorCount;
@@ -34,7 +36,7 @@ public:
                 for (byte i = 0; i < fullSquareCount(); i++) {
                     states[i] = colorCount;
                 }
-            }
+            } break;
         }
     }
     
@@ -73,8 +75,21 @@ public:
                     states[newPos] = getRandom() % colorCount;
                     pos = newPos;
                 }
+            } break;
+            case wash : {
+                const byte len = 8;
+                pos = (pos + 1) % len;
+                for (byte i = 0; i < halfSquareCount(); i++) {
+                    byte y = (i / 8);
+                    if (((i + y) % len) == pos) {
+                        states[i] = 0;
+                    } else {
+                        states[i] = (states[i] + 1);
+                    }
+                }
                 
-            }
+                
+            } break;
         }
     }
     
