@@ -30,11 +30,15 @@
 #include "Hearth.h"
 #include "Intro.h"
 
-#define BLUE_P new Palette(8, 0, 0, 7)
-#define BLUE_P_S new Palette(4, 0, 0, 7)
+static inline Palette* bluePalette(byte size = 8) {
+  return new Palette(size, 0, 0, 7);
+}
 
-#define RED_P new Palette(8, 7, 0, 0)
-#define RED_P_S new Palette(4, 7, 0, 0)
+static inline Palette* redPalette(byte size = 8) {
+  return new Palette(size, 7, 0, 0);
+}
+
+#define PINK_P new Palette(8, 0, 7, 7)
 
 //note : PROGMEM don't do shit here
 const char string_0[] PROGMEM = "BRIGHTER";
@@ -119,7 +123,7 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //End Brighter // Expect the Unexpected
-      case 6 : scene = new SquareDrops(BLUE_P, SquareDrops::randDrops);
+      case 6 : scene = new SquareDrops(bluePalette(), SquareDrops::randDrops);
         break;
 
         
@@ -130,7 +134,7 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //Pers intro
-      case 15 : scene = new Sticks(RED_P);
+      case 15 : scene = new Sticks(redPalette());
         break;
 
       //Pers Kick
@@ -138,7 +142,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Drop
-      case 17 : scene = new RectangleGroup(BLUE_P_S);
+      case 17 : scene = new RectangleGroup(bluePalette(4));
         break;
 
       //Pers End
@@ -148,11 +152,13 @@ void handleProgramChange(byte channel, byte program) {
 
       case 19 : scene = new PixNoise();
         break;
+      case 20 : scene = new SquareDrops(PINK_P, SquareDrops::wash);
+        break;
 
 
       //Hopes
       //intro
-      case 22 : scene = new RainDrops(BLUE_P);
+      case 22 : scene = new RainDrops(bluePalette());
         break;
       //toms
       case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 4, BigVu::Mode::verticalMirrored);
@@ -174,7 +180,7 @@ void handleProgramChange(byte channel, byte program) {
          
 
       //Animaux intro
-      case 27 : scene = new SquareDrops(RED_P_S,  SquareDrops::trail);
+      case 27 : scene = new SquareDrops(redPalette(4),  SquareDrops::trail);
         break;
       //Animaux kick
       case 28 : scene = new Arrows();
@@ -204,7 +210,7 @@ void handleProgramChange(byte channel, byte program) {
       case 43 : scene = new AutoVu(new Palette(8,0,0,7, true));
         break;
 
-      case 44 : scene = new Circles(BLUE_P);
+      case 44 : scene = new Circles(bluePalette());
         break;
 
       case 45 : scene = new AutoVu(new RainbowPalette());
@@ -218,13 +224,9 @@ void handleProgramChange(byte channel, byte program) {
       
     
       //test hearth
-      case 50 : scene = new Circles(RED_P, true);
+      case 50 : scene = new Circles(redPalette(), true);
         break;
 
-      //Sexy boy
-      /*
-      case 53 : scene = new FlashingSign(COLOR(0,0,7), sexyboysWords, 3, 1);
-        break;*/
 
       case 52 : scene = new Intro();
         break;
