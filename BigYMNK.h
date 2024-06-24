@@ -21,6 +21,16 @@ public:
   }
 
 
+  void writeLetter(bool first) {
+    if (first) {
+       matrix.setCursor(3,1);
+       matrix.print(isOtherDisplay ? F("N") : F("Y"));
+    } else {
+      matrix.setCursor(19,1);
+      matrix.print(isOtherDisplay ? F("K") : F("M"));
+    }
+  }
+
   virtual void draw() override {
 
     matrix.setTextSize(2);
@@ -30,11 +40,9 @@ public:
         matrix.fillScreen(COLOR(0,0,7));
 
         matrix.setTextColor(COLOR(0,0,0));
-        matrix.setCursor(3,1);
-        matrix.print(isOtherDisplay ? F("N") : F("Y"));
+        writeLetter(true);
 
-        matrix.setCursor(19,1);
-        matrix.print(isOtherDisplay ? F("K") : F("M")); 
+        writeLetter(false);
 
         once = true;
       }
@@ -42,14 +50,12 @@ public:
       byte cIndex = (colorIndex + (isOtherDisplay ? 2 : 0)) % palette->size;
 
       matrix.setTextColor(palette->colors[cIndex]);
-      matrix.setCursor(3,1);
-      matrix.print(isOtherDisplay ? F("N") : F("Y"));
+      writeLetter(true);
 
       cIndex = (cIndex + 1) % palette->size;
 
       matrix.setTextColor(palette->colors[cIndex]);
-      matrix.setCursor(19,1);
-      matrix.print(isOtherDisplay ? F("K") : F("M"));
+      writeLetter(false);
     }
   }
 

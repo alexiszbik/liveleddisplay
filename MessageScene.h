@@ -21,14 +21,14 @@ class MessageScene : public AutoRefreshedScene {
       colorIndex = (colorIndex + 1) % colorCount;
   }
 
-  void drawCentreString(const String &buf) {
+  void drawCentreString(const String &buf, byte yOffset = 1) {
     byte xOffset = isOtherDisplay ? displayW/2 : 0;
     
     initCursor();
     int16_t x1, y1;
     uint16_t w, h;
     matrix.getTextBounds(buf, 0, 0, &x1, &y1, &w, &h);
-    matrix.setCursor(displayW/2 - w/2 - xOffset, displayH/2 - h/2 + 1);
+    matrix.setCursor(displayW/2 - w/2 - xOffset, displayH/2 - h/2 + yOffset);
     matrix.print(buf);
   }
 

@@ -38,21 +38,9 @@ static inline Palette* redPalette(byte size = 8) {
   return new Palette(size, 7, 0, 0);
 }
 
-#define PINK_P new Palette(8, 0, 7, 7)
+#define PINK_P new Palette(8, 7, 0, 7)
 
 //note : PROGMEM don't do shit here
-const char string_0[] PROGMEM = "BRIGHTER";
-const char string_1[] PROGMEM = "FRIENDSHIP";
-const char string_2[] PROGMEM = "&";
-const char string_3[] PROGMEM = "BRAVERY";
-
-const char string_4[] PROGMEM = "v1.1.3";
-
-
-const char *const brighterWords[1] PROGMEM = {string_0};
-const char *const friendshipWords[3] PROGMEM = {string_1, string_2, string_3};
-const char *const version[1] PROGMEM = {string_4};
-
 Scene* scene = NULL;
 byte currentProgram = 0;
 
@@ -117,7 +105,7 @@ void handleProgramChange(byte channel, byte program) {
         break;*/
 
       //Say : Brighter
-      case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)), brighterWords, 1);
+      case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)), FlashingSign::brighter, 3);
         break;
 
 
@@ -216,10 +204,10 @@ void handleProgramChange(byte channel, byte program) {
       case 45 : scene = new AutoVu(new RainbowPalette());
         break;
      
-      case 46 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), friendshipWords, 3, 1);
+      case 46 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), FlashingSign::friendship, 1);
         break;
 
-      case 47 : scene = new FlashingSign(new RainbowPalette(), friendshipWords, 3, 1);
+      case 47 : scene = new FlashingSign(new RainbowPalette(), FlashingSign::friendship, 1);
         break;
       
     
@@ -235,10 +223,13 @@ void handleProgramChange(byte channel, byte program) {
       case 53 : scene = new BigYMNK(new RainbowPalette(), true);
         break;
 
-      case 54 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), version, 1, 0);
+      case 54 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), FlashingSign::version, 0);
         break;
 
       case 59 : scene = new Explode();
+        break;
+
+      case 64 : scene = new FlashingSign(new RainbowPalette(), FlashingSign::front, 1);
         break;
 
 
