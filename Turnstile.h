@@ -27,25 +27,14 @@ public:
     const byte width = displayW/2;
 
     if (off < ((displayH + 1) + (32 + 1))) {
-      const byte yOffset = fmin(off, (displayH + 1));
-      int xOffset = fmax(0, off - (displayH + 1));
-
-      if (isOtherDisplay) {
-          matrix.drawLine(0, displayH/2, width - xOffset, -1 + yOffset , color);
-      } else {
-          matrix.drawLine(width, displayH/2, xOffset, displayH - yOffset , color);
-      }
+        const byte yOffset = fmin(off, (displayH + 1));
+        int xOffset = fmax(0, off - (displayH + 1));
+        matrix.drawLine(xOffset, displayH - yOffset, width*2 - xOffset, -1 + yOffset,  color);
       
     } else {
-      int xOffset = off - ((displayH + 1) + (32 + 1));
-
-      if (isOtherDisplay) {
-        matrix.drawLine(0, displayH/2, xOffset, 0, color);
-      } else {
-        matrix.drawLine(width, displayH/2, width - xOffset, displayH, color);
-      }
+        int xOffset = off - ((displayH + 1) + (32 + 1));
+        matrix.drawLine( width + xOffset, 0, width - xOffset, displayH, color);
     }
-    
   }
 
   virtual void draw() override {
@@ -54,7 +43,6 @@ public:
       makeLine(offset + CLEAR_OFFSET + i, clearColor());
       makeLine(offset + i, COLOR(0,0,7));
     }
-    
   }
 
 

@@ -63,7 +63,7 @@ public:
       for (byte i = 0; i < palette->size; i++) {
         int idx = (offset - i);
         byte r = (idx + C_SIZE) % C_SIZE;
-        byte x = isOtherDisplay ? 0 : displayHalfW;
+        byte x = displayHalfW;
         matrix.drawCircle(x, displayHalfH, r * 4, palette->colors[i]);
       }
     }

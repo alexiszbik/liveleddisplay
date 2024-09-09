@@ -23,7 +23,7 @@ public:
   }
 
   void getRotation(float x, float y, float &X, float &Y, float inAngle) {
-    float _angle = inAngle; //+ (isOtherDisplay ? PI : 0);
+    float _angle = inAngle;
     float s = sin(_angle);
     float c = cos(_angle);
     X = (x - center_x) * c - (y - center_y) * s + center_x;
@@ -35,11 +35,12 @@ public:
   }
 
   virtual void draw() override {
-    matrix.startWrite();
-    center_x = isOtherDisplay ? 0 : displayW/2;
-    clearScreen();
 
-    color_t _color = matrix.ColorHSV((1535/16 * offset), 255, 255, true);
+    clearScreen();
+    matrix.startWrite();
+    center_x = displayW/2;
+    
+    color_t _color = HSV((1535/16 * offset), 255, 255);
 
     for (byte sqr = 0; sqr < 4; sqr++) {
       byte sqSize = 16*sqr + offset;
@@ -63,7 +64,6 @@ public:
  
     matrix.endWrite();
   }
-
 
 private:
   float angle = 0;

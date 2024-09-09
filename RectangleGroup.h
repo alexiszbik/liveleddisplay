@@ -17,7 +17,7 @@ class RectangleGroup : public AutoRefreshedScene {
             }
         }
         
-        void draw(bool isOtherDisplay, Palette* palette) {
+        void draw(Palette* palette) {
             
             byte size = palette->size;
             
@@ -27,7 +27,7 @@ class RectangleGroup : public AutoRefreshedScene {
                 
                 color_t color = i == size ? clearColor() : palette->colors[i];
                 
-                int x = p + (displayW/RECT_COUNT)*position - (isOtherDisplay ? displayW/2 : 0);
+                int x = p + (displayW/RECT_COUNT)*position;
                 
                 byte w = displayW/RECT_COUNT - p*2;
                 
@@ -67,7 +67,7 @@ public:
 
   virtual void draw() override {
     for (byte i = 0; i < RECT_COUNT; i++) {
-      rectangles[i]->draw(isOtherDisplay, palette);
+      rectangles[i]->draw(palette);
     }
   }
 

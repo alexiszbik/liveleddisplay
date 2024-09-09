@@ -2,7 +2,6 @@
 #define CVCLOCK A5
 #define DISPLAY_SWITCH A4
 
-#include <RGBmatrixPanel.h>
 #include <MIDI.h>
 
 #include "ColorsAndMatrix.h"
@@ -11,7 +10,6 @@
 #include "Sticks.h"
 #include "Rectangle.h"
 #include "RectangleGroup.h"
-#include "Explode.h"
 #include "RainDrops.h"
 #include "Arrows.h"
 #include "FlashingSign.h"
@@ -29,6 +27,8 @@
 #include "Circles.h"
 #include "Hearth.h"
 #include "Intro.h"
+#include "Explode.h"
+
 
 static inline Palette* bluePalette(byte size = 8) {
   return new Palette(size, 0, 0, 7);
@@ -63,7 +63,14 @@ void setup() {
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
 
-  scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
+  matrix.println("YMNK"); // Default text color is white
+
+  // AFTER DRAWING, A show() CALL IS REQUIRED TO UPDATE THE MATRIX!
+
+  matrix.show(); // Copy data to matrix buffers
+
+  //scene = new Circles(redPalette(), true);
+  scene = new Turnstile();
 
   scene->prepareFrame();
 }
@@ -92,17 +99,10 @@ void handleProgramChange(byte channel, byte program) {
     
     switch(program) {
       
-      //Intro
-      /*case 0 : scene = new Squares(new RainbowPalette());
-        break;*/
 
       //Brighter Beat
       case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::verticalWide);
         break;
-
-      //Brighter Drop
-      /*case 4 : scene = new Squares(new RainbowPalette());
-        break;*/
 
       //Say : Brighter
       case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)), FlashingSign::brighter, 3);
@@ -117,8 +117,8 @@ void handleProgramChange(byte channel, byte program) {
         
      
       //Expect the Unexpected, + drums
-      /*case 10 : scene = new RandomYMNK(new RainbowPalette());
-        break;*/
+      case 10 : scene = new RandomYMNK(new RainbowPalette());
+        break;
 
 
       //Pers intro
@@ -126,7 +126,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Kick
-      case 16 : scene = new BigVu(new Palette(COLOR(7,0,0)), 36);
+      case 16 : scene = new BigVu(new Palette(COLOR(7,0,0)), 36); //TODO
         break;
 
       //Pers Drop
@@ -149,7 +149,7 @@ void handleProgramChange(byte channel, byte program) {
       case 22 : scene = new RainDrops(bluePalette());
         break;
       //toms
-      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 4, BigVu::Mode::verticalMirrored);
+      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 4, BigVu::Mode::verticalMirrored); //TODO
         break;
 
         
@@ -168,10 +168,10 @@ void handleProgramChange(byte channel, byte program) {
          
 
       //Animaux intro
-      case 27 : scene = new SquareDrops(redPalette(4),  SquareDrops::trail);
+      case 27 : scene = new SquareDrops(redPalette(4),  SquareDrops::trail); //TODO
         break;
       //Animaux kick
-      case 28 : scene = new Arrows();
+      case 28 : scene = new Arrows(); //TODO
         break;
       //Animaux end
       case 29 : scene = new BigYMNK(new RainbowPalette());
@@ -180,22 +180,22 @@ void handleProgramChange(byte channel, byte program) {
      
 
       // BiBimBap
-      case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2);
+      case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2); //TODO
         break;
       case 36 : scene = new Vortex();
         break;
-        /*
+        
       //Raindrops Rainbow
       case 40 : scene = new RainDrops(new RainbowPalette());
         break;
-*/
+
 
       //Tir3d of Technology
-      case 42 : scene = new StarTour();
+      case 42 : scene = new StarTour(); //TODO
         break;
 
        //Friendship & Bravery
-      case 43 : scene = new AutoVu(new Palette(8,0,0,7, true));
+      case 43 : scene = new AutoVu(new Palette(8,0,0,7, true)); //TODO
         break;
 
       case 44 : scene = new Circles(bluePalette());
@@ -212,11 +212,11 @@ void handleProgramChange(byte channel, byte program) {
       
     
       //test hearth
-      case 50 : scene = new Circles(redPalette(), true);
+      case 50 : scene = new Circles(redPalette(), true); //TODO
         break;
 
 
-      case 52 : scene = new Intro();
+      case 52 : scene = new Intro(); //TODO
         break;
       
          //Fill outside
@@ -229,9 +229,14 @@ void handleProgramChange(byte channel, byte program) {
       case 59 : scene = new Explode();
         break;
 
-      case 64 : scene = new FlashingSign(new RainbowPalette(), FlashingSign::front, 1);
+      case 64 : scene = new BigVu(new VuPalette(), 36, 4, BigVu::verticalWide);
         break;
 
+      case 65 : scene = new Sticks(new RainbowPalette(), 2, 3, 1); // TODO
+        break;
+
+      case 67 : scene = new SquareDrops(new RainbowPalette(), SquareDrops::wash);
+        break;
 
   
       default: scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
@@ -244,23 +249,33 @@ void handleProgramChange(byte channel, byte program) {
 }
 
 bool cvInState = false;
-bool isOtherDisplay = false;
+
+bool debug = true;
+
+long timer = 0;
 
 void loop() {
-  
+
   MIDI.read();
-  
+
   bool newCvInState = analogRead(CVCLOCK) > 200;
-  isOtherDisplay = analogRead(DISPLAY_SWITCH) > 200;
 
   bool tick = newCvInState && !cvInState;
 
-  scene->tick(tick);
-  
-  if (isPlaying) {
-    scene->showFrame(isOtherDisplay);
+  if (debug) {
+    long newTimer = millis();
+    if ((newTimer - timer) > 200) {
+      tick = true;
+      timer = newTimer;
+    }
   }
 
-  cvInState = newCvInState;
+  scene->tick(tick);
+  
+  if (isPlaying || debug) {
+    scene->showFrame(false);
+    matrix.show();
+  }
 
+  cvInState = newCvInState; 
 }

@@ -16,13 +16,13 @@ class Kaomojis : public MessageScene {
     matrix.setTextSize(2);
     matrix.setTextColor(palette->colors[colorIndex]);
     
-    byte randomStringIndex = getRandom() % 6;//10;
+    byte randomStringIndex = getRandom() % 9;//10;
     String toDraw;
 
     switch (randomStringIndex) {
       case 0 : toDraw = F("(*^o^)"); break;
       case 1 : toDraw = F("(>m<)"); break;
-      case 2 : toDraw = F("(*'o'*)"); break;
+      case 2 : toDraw = F("(*'o')"); break;
       case 3 : toDraw = F("=^..^="); break;
       case 4 : toDraw = F("(;-_-)"); break;
       case 5 : toDraw = F("(o_O)"); break;
@@ -32,7 +32,7 @@ class Kaomojis : public MessageScene {
       default : toDraw = F("U=x=U"); break;
     }
     
-    drawCentreString(toDraw);
+    drawCentreString(toDraw, 1);
   }
   
   

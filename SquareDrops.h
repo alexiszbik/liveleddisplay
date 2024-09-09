@@ -22,17 +22,13 @@ public:
     void initialize() {
         switch (mode) {
             case randDrops : {
-                for (byte i = 0; i < halfSquareCount(); i++) {
+                for (byte i = 0; i < fullSquareCount(); i++) {
                     states[i] = getRandom() % (colorCount + 1);
                 }
             } break;
             case wash :
+            case randomOnce :
             case trail : {
-                for (byte i = 0; i < halfSquareCount(); i++) {
-                    states[i] = colorCount;
-                }
-            } break;
-            case randomOnce : {
                 for (byte i = 0; i < fullSquareCount(); i++) {
                     states[i] = colorCount;
                 }
@@ -49,11 +45,8 @@ public:
         
         switch (mode) {
             case randDrops : {
-                if (isOtherDisplay) {
-                    randomSeed(5555);
-                }
                 
-                for (byte i = 0; i < halfSquareCount(); i++) {
+                for (byte i = 0; i < fullSquareCount(); i++) {
                     states[i] = (states[i] + 1) % (colorCount + (getRandom() % 10));
                 }
             } break;
@@ -69,17 +62,18 @@ public:
                 }
             } break;
             case randomOnce : {
-                byte newPos = getRandom() % fullSquareCount();
-                if (newPos != pos) {
+                byte newPos = pos;
+                while (pos == newPos) {
+                    newPos = getRandom() % fullSquareCount();
                     states[pos] = colorCount;
                     states[newPos] = getRandom() % colorCount;
-                    pos = newPos;
                 }
+                pos = newPos;
             } break;
             case wash : {
                 const byte len = 8;
                 pos = (pos + 1) % len;
-                for (byte i = 0; i < halfSquareCount(); i++) {
+                for (byte i = 0; i < fullSquareCount(); i++) {
                     byte y = (i / 8);
                     if (((i + y) % len) == pos) {
                         states[i] = 0;
@@ -95,13 +89,10 @@ public:
     
     virtual void draw() override {
         
-        for (byte index = 0; index < (mode == randomOnce ? fullSquareCount() : halfSquareCount()); index++) {
+        for (byte index = 0; index < fullSquareCount(); index++) {
             byte colorIndex = states[index];
             color_t color = colorIndex >= colorCount ? clearColor() : palette->colors[colorIndex];
             int i = index;
-            if (mode == randomOnce && isOtherDisplay) {
-                i -= 8;
-            }
             drawSquare(i, color);
         }
     }
@@ -114,7 +105,7 @@ public:
         return (displayHalfW/sqrSize) * (displayH/sqrSize);
     }
     
-    void drawSquare(int index, color_t color, bool fullWidth = false) {
+    void drawSquare(int index, color_t color, bool fullWidth = true) {
         byte perW = ((fullWidth ? displayW : displayHalfW)/sqrSize);
         byte xPos = index % perW;
         byte yPos = index / perW;
@@ -125,7 +116,7 @@ public:
 private:
     byte sqrSize;
     byte colorCount;
-    byte states[32];
+    byte states[64];
     
     Palette* palette;
     

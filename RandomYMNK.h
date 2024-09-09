@@ -19,7 +19,6 @@ public:
   };
 
   RandomYMNK(Palette* palette) : palette(palette)  {
-
   }
 
   virtual ~RandomYMNK() {
@@ -46,8 +45,6 @@ public:
 
     matrix.setTextSize(1);
     clearScreen();
-
-    byte xOffset = isOtherDisplay ? displayHalfW : 0;
     
     for (byte i = 0; i < LETTER_COUNT; i++) {
       char letter = letters[i];
@@ -65,7 +62,7 @@ public:
 
       } while ( verify(x, y, i) == false); 
       
-      matrix.setCursor(x - xOffset, y);
+      matrix.setCursor(x, y);
       matrix.print(letter);
     }
   }

@@ -67,13 +67,7 @@ public:
         case verticalWide : {
           vuW = displayHalfW/2;
 
-          if (isOtherDisplay == false && i >= 2) {
-            continue;
-          } else if (isOtherDisplay && i < 2) {
-            continue;
-          }
-
-          x = (i * vuW) - (isOtherDisplay ? displayHalfW : 0);
+          x = (i * vuW);
           y = displayH - vuStates[i].vuSize;
 
           vuH = state->vuUp ? vuStates[i].vuSize : 1;
@@ -102,7 +96,7 @@ public:
   }
 
 protected:
-  VuState vuStates[8];
+  VuState vuStates[16];
   byte noteCount;
 
 private: 

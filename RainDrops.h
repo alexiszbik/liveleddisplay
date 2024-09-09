@@ -4,7 +4,7 @@
 
 #include "Scene.h"
 
-#define DROP_COUNT 32
+#define DROP_COUNT displayW
 
 class RainDrops : public AutoRefreshedScene {
   
@@ -30,12 +30,6 @@ public:
   }
 
   virtual void draw() override {
-    if (!reInit && isOtherDisplay) {
-      for (byte i = 0; i < DROP_COUNT; i++) {
-        dropCounts[i] = displayH + random(10);
-      }
-      reInit = true;
-    }
     
     matrix.startWrite();
     for (byte j = 0; j < DROP_COUNT; j++) {
@@ -59,8 +53,6 @@ private:
   byte dropCounts[DROP_COUNT];
 
   Palette* palette;
-
-  bool reInit = false;
 };
 
 #endif //RAIN_DROPS_H

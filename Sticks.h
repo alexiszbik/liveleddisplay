@@ -6,49 +6,66 @@
 #include "Palette.h"
 
 class Sticks : public AutoRefreshedScene {
-  
+    
 public:
-  Sticks(Palette* palette) : palette(palette)  {
-    tailSize = palette->size;
-  }
-
-  virtual ~Sticks() {
-     delete palette;
-  }
-  
-public:
-    virtual void updateOffsets() override {
-        xPos = ((xPos + 1 * direction()) + maxStickCount) % maxStickCount;
-    }
-
-  virtual void draw() override {
-
-    for (byte i = 0; i < tailSize * space; i++) {
-      
-      byte x = ((xPos - i * direction()) + maxStickCount) % maxStickCount;
-      
-      color_t color = (i % space == 0) ? palette->colors[(int)ceil(i/space)] : COLOR(0, 0, 0);
-      
-      matrix.fillRect(x * width, 0, width, displayH, color);
+    Sticks(Palette* palette, byte width = 2, byte space = 2, byte speed = 2) : width(width), space(space), speed(speed), palette(palette)  {
+        colorSize = width + space;
+        maxStickCount = palette->size * (colorSize);
     }
     
-  }
+    virtual ~Sticks() {
+        delete palette;
+    }
+    
+public:
+    virtual void updateOffsets() override {
+        xPos = ((xPos + speed) + maxStickCount) % maxStickCount;
+    }
+    
+    virtual void draw() override {
+        
+        for (byte d = 0; d < 2; d++) { // mirroring
 
+            for (byte i = 0; i < displayHalfW; i++) {
+
+                byte pos = xPos;
+                if (d == 1) {
+                    pos = (maxStickCount - pos) % maxStickCount;
+                }
+            
+                byte c = i + pos;
+            
+                byte cIndex = c % colorSize;
+            
+                color_t color = 0;
+
+                byte x = i + (d == 1 ? displayHalfW : 0);
+            
+                if (cIndex == 0) {
+            
+                    color = palette->colors[c/colorSize % palette->size];
+                    matrix.fillRect(x, 0, width, displayH, color);
+                } else if (cIndex == width) {
+                
+                    matrix.fillRect(x, 0, space, displayH, color);
+                }
+            }
+        }
+    }
+    
 private:
-  int direction() {
-    return (isOtherDisplay ? 1 : -1);
-  }
-
-  byte width = 2;
-  byte tailSize;
-  const byte space = 2;
-  
-  byte xPos = 0;
-  
-  byte maxStickCount = displayW/2/width;
-
-  Palette* palette;
-
+    
+    byte width;
+    byte space;
+    byte speed;
+    
+    byte xPos = 0;
+    
+    byte maxStickCount;
+    byte colorSize;
+    
+    Palette* palette;
+    
 };
 
 #endif //STICKS_H

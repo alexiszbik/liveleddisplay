@@ -25,15 +25,15 @@ public:
   virtual void draw() override {
     matrix.startWrite();
 
-    for (byte a = 0; a < displayW/2/SIZE; a++) {
+    for (byte a = 0; a < displayHalfW/SIZE; a++) {
       byte pixX = 0;
 
       byte c = a;
       if (isOtherDisplay) {
-        c = displayW/2/SIZE - 1 - a;
+        c = displayHalfW/SIZE - 1 - a;
       }
 
-      color_t color = matrix.ColorHSV((1535/(displayW/2/SIZE)) * c, 255, 255, true);
+      color_t color = HSV((1535/(displayHalfW/SIZE)) * c, 255, 255);
       
       for (byte y = 0; y < displayH; y++) {
 

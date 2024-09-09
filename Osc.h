@@ -89,7 +89,7 @@ public:
       byte colorIndex = getRandom() % palette->size;
       color_t c = palette->colors[colorIndex];
 
-      xSqr = isOtherDisplay ? (((int)squarePosition - 2) * (int)VU_W) : (int)squarePosition * (int)VU_W;
+      xSqr = (int)squarePosition * (int)VU_W;
       
       if (xSqr >= 0) {
         matrix.fillRect(xSqr, 0, VU_W, VU_H, c);
@@ -97,19 +97,18 @@ public:
       
       
     } else if (showOsc) {
-      const byte w = displayHalfW;
 
-      for (byte i = 0; i < w; i++) {
+      for (byte i = 0; i < displayW; i++) {
         
         for (byte s = 0; s < waveCount; s++) {
 
           byte waveOffset = (displayW/waveCount) * s;
           
-          float x = ((float)(i + waveData[s].offset + waveOffset + (isOtherDisplay ? displayHalfW : 0)))/(float)w;
+          float x = ((float)(i + waveData[s].offset + waveOffset))/(float)displayHalfW;
           float y = cos(PI*x) * displayHalfH + displayHalfH; 
           y = fmin(y,displayH - 1);
 
-          float off_x = -((float)waveData[s].speed)/(float)w;
+          float off_x = -((float)waveData[s].speed)/(float)displayHalfW;
           float prevy = cos(PI*(x+off_x)) * displayHalfH + displayHalfH; 
           prevy = fmin(prevy,displayH - 1);
 

@@ -9,8 +9,7 @@ public:
   enum TextCollection {
     friendship = 0,
     brighter,
-    version,
-    front
+    version
   };
   
   public:
@@ -20,7 +19,7 @@ public:
                
   : MessageScene(palette), contourSize(contourSize), textCollection(textCollection) {
 
-    if (textCollection == friendship || textCollection == front) {
+    if (textCollection == friendship) {
       textCount = 3;
     }
 
@@ -58,17 +57,10 @@ public:
         }
       } break;
       case brighter : toDraw = F("BRIGHTER"); break;
-      case front : {
-        switch (textIndex) {
-          case 1 : toDraw = F("VOTEZ"); break;
-          case 2 : toDraw = F("FRONT"); break;
-          default : toDraw = F("POPULAIRE"); break;
-        }
-      } break;
-      default : toDraw = F("v1.1.3"); break;
+      default : toDraw = F("v1.1.0"); break;
     }
 
-    drawCentreString(toDraw, 0);
+    drawCentreString(toDraw, 0, 0);
 
     byte xOffset = isOtherDisplay ? displayW/2 : 0;
 

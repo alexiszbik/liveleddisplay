@@ -38,7 +38,7 @@ public:
     }
     
     color_t grey(byte level) {
-        return matrix.Color333(level, level, level);
+        return COLOR(level, level, level);
     }
     
     virtual void draw() override {
@@ -64,7 +64,8 @@ public:
                     byte colorIndex = ((x + d->offset) % d->len);
                     color_t c = (colorIndex <= 7) ? grey(colorIndex) : clearColor();
                     byte y = k == 0 ? midY + floor(dy) :  midY - 1 - floor(dy);
-                    matrix.writePixel(!isOtherDisplay ? width - x : x, y ,c);
+                    matrix.writePixel(width - 1 - x , y ,c);
+                    matrix.writePixel(width + x, y ,c);
                 }
             }
         }
