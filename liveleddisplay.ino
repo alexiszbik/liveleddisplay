@@ -101,7 +101,7 @@ void handleProgramChange(byte channel, byte program) {
       
 
       //Brighter Beat
-      case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::verticalWide);
+      case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::vertical);
         break;
 
       //Say : Brighter
@@ -149,7 +149,7 @@ void handleProgramChange(byte channel, byte program) {
       case 22 : scene = new RainDrops(bluePalette());
         break;
       //toms
-      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 4, BigVu::Mode::verticalMirrored); //TODO
+      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 8, BigVu::Mode::vertical, true); //TODO
         break;
 
         
@@ -195,13 +195,13 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
        //Friendship & Bravery
-      case 43 : scene = new AutoVu(new Palette(8,0,0,7, true)); //TODO
+      case 43 : scene = new AutoVu(new Palette(COLOR(0,0,7)));
         break;
 
       case 44 : scene = new Circles(bluePalette());
         break;
 
-      case 45 : scene = new AutoVu(new RainbowPalette());
+      case 45 : scene = new AutoVu(new VuPalette2());
         break;
      
       case 46 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), FlashingSign::friendship, 1);
@@ -229,7 +229,7 @@ void handleProgramChange(byte channel, byte program) {
       case 59 : scene = new Explode();
         break;
 
-      case 64 : scene = new BigVu(new VuPalette(), 36, 4, BigVu::verticalWide);
+      case 64 : scene = new BigVu(new VuPalette(), 36, 4, BigVu::vertical);
         break;
 
       case 65 : scene = new Sticks(new RainbowPalette(), 2, 3, 1); // TODO
@@ -264,7 +264,7 @@ void loop() {
 
   if (debug) {
     long newTimer = millis();
-    if ((newTimer - timer) > 200) {
+    if ((newTimer - timer) > 125) {
       tick = true;
       timer = newTimer;
     }

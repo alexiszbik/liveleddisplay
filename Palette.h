@@ -75,5 +75,20 @@ class VuPalette : public Palette {
   }
 };
 
+class VuPalette2 : public Palette {
+  public:
+  VuPalette2() : Palette() {
+    size = 8;
+    colors[0] = COLOR(7,0,0);
+    colors[1] = COLOR(7,4,0);
+    colors[2] = COLOR(7,7,0);
+    colors[3] = COLOR(4,7,0);
+    colors[4] = COLOR(0,7,0);
+    colors[5] = COLOR(0,7,4);
+    colors[6] = COLOR(0,7,7);
+    colors[7] = COLOR(0,4,7);
+  }
+};
+
 
 #endif //PALETTE_H

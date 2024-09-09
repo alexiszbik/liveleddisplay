@@ -5,7 +5,7 @@
 
 class AutoVu : public BigVu {
 public:
-  AutoVu(Palette* palette) : BigVu(palette,0,8,BigVu::verticalMirrored) {
+  AutoVu(Palette* palette) : BigVu(palette, 0, 16, BigVu::vertical) {
   }
 
   virtual float getRiseAmount() override {
@@ -15,7 +15,9 @@ public:
   virtual void tick(bool state) override {
     if (state)  {
       vuStates[autoTriggerIdx].reset();
-      autoTriggerIdx = (autoTriggerIdx + 1) % noteCount;
+      //vuStates[autoTriggerIdx + 8].reset();
+      vuStates[15 - autoTriggerIdx].reset();
+      autoTriggerIdx = (autoTriggerIdx + 1) % 8;
     }
   }
 
