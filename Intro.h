@@ -45,9 +45,9 @@ public:
         needRefresh = true;
     }
     
-    void drawSquare(int index, color_t color, bool fullWidth = false) {
+    void drawSquare(int index, color_t color) {
         byte sqrSize = 8;
-        byte perW = ((fullWidth ? displayW : displayHalfW)/sqrSize);
+        byte perW = (displayW/sqrSize);
         byte xPos = index % perW;
         byte yPos = index / perW;
         matrix.fillRect(xPos * sqrSize, yPos * sqrSize, sqrSize, sqrSize, color);
@@ -65,7 +65,7 @@ public:
                 clearScreen();
             } break;
             case stateA : {
-                matrix.writeFastHLine(0, displayHalfH, displayHalfW, COLOR(7,7,7));
+                matrix.writeFastHLine(0, displayHalfH, displayW, COLOR(7,7,7));
                 
             } break;
             case stateB : {

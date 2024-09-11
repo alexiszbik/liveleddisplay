@@ -188,7 +188,7 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //Tir3d of Technology
-      case 42 : scene = new StarTour(); //TODO
+      case 42 : scene = new StarTour();
         break;
 
        //Friendship & Bravery
@@ -209,11 +209,11 @@ void handleProgramChange(byte channel, byte program) {
       
     
       //test hearth
-      case 50 : scene = new Circles(redPalette(), true); //TODO
+      case 50 : scene = new Hearth(redPalette());
         break;
 
 
-      case 52 : scene = new Intro(); //TODO
+      case 52 : scene = new Intro();
         break;
       
          //Fill outside
