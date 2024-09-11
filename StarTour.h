@@ -19,11 +19,14 @@ class StarTour : public AutoRefreshedScene {
     
 public:
     StarTour() {
-        for (byte i = 0; i < TRAIL_COUNT; i++) {
-            byte len = 8 + random(10);
-            trailData[i].len = len;
-            trailData[i].offset = 0;
+        for (byte display = 0; display < 2; display++) {
+            for (byte i = 0; i < TRAIL_COUNT; i++) {
+                byte len = 8 + random(10);
+                trailData[display][i].len = len;
+                trailData[display][i].offset = 0;
+            }
         }
+        
     }
     
     virtual ~StarTour() {
@@ -32,8 +35,10 @@ public:
     
 public:
     virtual void updateOffsets() override {
-        for (byte i = 0; i < TRAIL_COUNT; i++) {
-            trailData[i].increment();
+        for (byte display = 0; display < 2; display++) {
+            for (byte i = 0; i < TRAIL_COUNT; i++) {
+                trailData[display][i].increment();
+            }
         }
     }
     
@@ -60,12 +65,17 @@ public:
                 
                 for (byte k = 0; k < 2; k++) {
                     byte db = b*2 + k;
-                    TrailData* d = &trailData[db];
-                    byte colorIndex = ((x + d->offset) % d->len);
-                    color_t c = (colorIndex <= 7) ? grey(colorIndex) : clearColor();
-                    byte y = k == 0 ? midY + floor(dy) :  midY - 1 - floor(dy);
-                    matrix.writePixel(width - 1 - x , y ,c);
-                    matrix.writePixel(width + x, y ,c);
+                    for (byte display = 0; display < 2; display++) {
+                        TrailData* trailD = &trailData[display][db];
+                        byte colorIndex = ((x + trailD->offset) % trailD->len);
+                        color_t c = (colorIndex <= 7) ? grey(colorIndex) : clearColor();
+                        byte y = k == 0 ? midY + floor(dy) :  midY - 1 - floor(dy);
+                        if (display == 0) {
+                            matrix.writePixel(width - 1 - x , y ,c);
+                        } else {
+                            matrix.writePixel(width + x, y ,c);
+                        }
+                    }
                 }
             }
         }
@@ -78,7 +88,7 @@ public:
     byte offset = 0;
     const byte width = displayHalfW;
     
-    TrailData trailData[TRAIL_COUNT];
+    TrailData trailData[2][TRAIL_COUNT];
     
 };
 

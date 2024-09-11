@@ -70,7 +70,7 @@ void setup() {
   matrix.show(); // Copy data to matrix buffers
 
   //scene = new Circles(redPalette(), true);
-  scene = new Sticks(redPalette());
+  scene = new StarTour();
 
   scene->prepareFrame();
 }
@@ -229,7 +229,7 @@ void handleProgramChange(byte channel, byte program) {
       case 64 : scene = new BigVu(new VuPalette(), 36, 4, BigVu::vertical);
         break;
 
-      case 65 : scene = new Sticks(new RainbowPalette(), 2, 3, 1); // TODO
+      case 65 : scene = new Sticks(new RainbowPalette(), 2, 3, 1);
         break;
 
       case 67 : scene = new SquareDrops(new RainbowPalette(), SquareDrops::wash);
