@@ -18,14 +18,8 @@ class Scene {
     	needRefresh = true;
   	}
 
-  	virtual void showFrame(bool _isOtherDisplay) {
+  	virtual void showFrame() {
       
-      if (isOtherDisplay != _isOtherDisplay) {
-        initFrame();
-        needRefresh = true;
-        isOtherDisplay = _isOtherDisplay;
-      }
-    
   		if (needRefresh) {
   			draw();
   			needRefresh = false;
@@ -55,7 +49,6 @@ class Scene {
 
   protected:
   	bool needRefresh = true;
-    bool isOtherDisplay = false;
 };
 
 class AutoRefreshedScene : public Scene {
@@ -73,8 +66,8 @@ class AutoRefreshedScene : public Scene {
 class TickerScene : public Scene {
   public:
 
-  virtual void showFrame(bool _isOtherDisplay) {
-    Scene::showFrame(_isOtherDisplay);
+  virtual void showFrame() {
+    Scene::showFrame();
     
     if (ticker.checkTime()) {
       needRefresh = true;

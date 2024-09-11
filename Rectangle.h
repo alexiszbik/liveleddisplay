@@ -31,7 +31,7 @@ public:
             
             color_t color = i == rectCount ? clearColor() : palette->colors[i];
             
-            int x = p + (displayW/ratio)*position - (isOtherDisplay ? displayW/2 : 0);
+            int x = p + (displayW/ratio)*position;
             
             byte w = displayW/ratio - p*2;
             

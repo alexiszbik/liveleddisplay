@@ -58,7 +58,7 @@ public:
                         states[i] = (states[i] + 1);
                     }
                 }
-                pos = (fullSquareCount() + (pos + 1 * (isOtherDisplay ? -1 : 1))) % fullSquareCount();
+                pos = (fullSquareCount() + (pos + 1)) % fullSquareCount();
             } break;
             case randomOnce : {
                 byte newPos = pos;

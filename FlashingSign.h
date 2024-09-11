@@ -62,11 +62,9 @@ public:
 
     drawCentreString(toDraw, 0, 0);
 
-    byte xOffset = isOtherDisplay ? displayW/2 : 0;
-
     for (byte i = 0; i < contourSize; i++) {
       byte cIndex = (colorIndex + 1 + i) % colorCount;
-      matrix.drawRect(i - xOffset,i, displayW - i*2, displayH - i*2, palette->colors[cIndex]);
+      matrix.drawRect(i,i, displayW - i*2, displayH - i*2, palette->colors[cIndex]);
     }
     
   }

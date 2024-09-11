@@ -14,8 +14,8 @@ public:
     virtual ~Intro() {
     }
     
-    virtual void showFrame(bool _isOtherDisplay) override {
-        Scene::showFrame(_isOtherDisplay);
+    virtual void showFrame() override {
+        Scene::showFrame();
         
         if (ticker.checkTime()) {
             needRefresh = true;
@@ -72,13 +72,9 @@ public:
                 if (index != prevIndex) {
                     clearScreen();
                     prevIndex = index;
-                    
-                    int i = index;
-                    if (isOtherDisplay) {
-                        i -= 8;
-                    }
+
                     byte r = 2 + (getRandom()%6);
-                    drawSquare(i, COLOR(r,r,r));
+                    drawSquare(index, COLOR(r,r,r));
                     
                 }
                 
@@ -89,7 +85,7 @@ public:
                 byte parts = 16;
                 byte width = displayW/parts;
                 for (int x = 0; x < (index + 1); x++) {
-                    byte posx = x - (isOtherDisplay ? (parts/2) : 0);
+                    byte posx = x ;
                     byte hw = width/2;
                     if (posx>=0) {
                         if (index < 8) {

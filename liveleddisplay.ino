@@ -139,7 +139,7 @@ void handleProgramChange(byte channel, byte program) {
 
       case 19 : scene = new PixNoise();
         break;
-      case 20 : scene = new SquareDrops(PINK_P, SquareDrops::wash);
+      case 20 : scene = new SquareDrops(new Palette(7, 7, 0, 7), SquareDrops::wash);
         break;
 
 
@@ -270,7 +270,7 @@ void loop() {
   scene->tick(tick);
   
   if (isPlaying || debug) {
-    scene->showFrame(false);
+    scene->showFrame();
     matrix.show();
   }
 

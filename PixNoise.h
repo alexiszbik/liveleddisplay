@@ -14,14 +14,14 @@ public:
   
 public:
 
-  byte getRandomColor(bool isOtherDisplay) {
-    return (byte)min(((random(1000 + (isOtherDisplay ? 100 : 0)) % 2) * 4), 7);
+  byte getRandomColor() {
+    return (byte)min(((random(1000) % 2) * 4), 7);
   }
 
   void makePixel() {
     byte x = random(displayW);
     byte y = random(displayH);
-    color_t c = COLOR(getRandomColor(isOtherDisplay), getRandomColor(isOtherDisplay), getRandomColor(isOtherDisplay));
+    color_t c = COLOR(getRandomColor(), getRandomColor(), getRandomColor());
     matrix.writePixel(x, y, random(4) >= 3 ? clearColor() : c);
   }
   
