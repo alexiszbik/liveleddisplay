@@ -7,10 +7,10 @@
 
 class Sticks : public AutoRefreshedScene {
     
-public:
+public: //ok this is still buggy ...
     Sticks(Palette* palette, byte width = 2, byte space = 2, byte speed = 2) : width(width), space(space), speed(speed), palette(palette)  {
-        colorSize = width + space;
-        maxStickCount = palette->size * (colorSize);
+        stickSize = width + space;
+        maxStickCount = palette->size * (stickSize);
     }
     
     virtual ~Sticks() {
@@ -19,7 +19,8 @@ public:
     
 public:
     virtual void updateOffsets() override {
-        xPos = ((xPos + speed) + maxStickCount) % maxStickCount;
+        xPos[0] = ((xPos[0] + speed) + maxStickCount) % maxStickCount;
+        xPos[1] = ((xPos[1] - speed) + maxStickCount) % maxStickCount;
     }
     
     virtual void draw() override {
@@ -28,23 +29,28 @@ public:
 
             for (byte i = 0; i < displayHalfW; i++) {
 
-                byte pos = xPos;
-                if (d == 1) {
-                    pos = (maxStickCount - pos) % maxStickCount;
-                }
+                byte pos = xPos[d];
             
                 byte c = i + pos;
             
-                byte cIndex = c % colorSize;
+                byte cIndex = c % stickSize;
             
                 color_t color = 0;
 
                 byte x = i + (d == 1 ? displayHalfW : 0);
             
                 if (cIndex == 0) {
+
+                    byte j = 0;
+                    if (d == 0) {
+                        j = (c/stickSize) % palette->size;
+                    }  else {
+                        j = ((palette->size - (c/stickSize)) + palette->size) % palette->size;
+                    }
             
-                    color = palette->colors[c/colorSize % palette->size];
+                    color = palette->colors[j];
                     matrix.fillRect(x, 0, width, displayH, color);
+                    
                 } else if (cIndex == width) {
                 
                     matrix.fillRect(x, 0, space, displayH, color);
@@ -59,10 +65,10 @@ private:
     byte space;
     byte speed;
     
-    byte xPos = 0;
+    byte xPos[2] = {0, 0};
     
     byte maxStickCount;
-    byte colorSize;
+    byte stickSize;
     
     Palette* palette;
     

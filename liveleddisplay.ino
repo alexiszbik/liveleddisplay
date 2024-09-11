@@ -70,7 +70,7 @@ void setup() {
   matrix.show(); // Copy data to matrix buffers
 
   //scene = new Circles(redPalette(), true);
-  scene = new Arrows();
+  scene = new Sticks(redPalette());
 
   scene->prepareFrame();
 }
@@ -121,7 +121,7 @@ void handleProgramChange(byte channel, byte program) {
 
 
       //Pers intro
-      case 15 : scene = new Sticks(redPalette());
+      case 15 : scene = new Sticks(redPalette()); //Weird but okay!
         break;
 
       //Pers Kick
