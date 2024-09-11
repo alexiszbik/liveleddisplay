@@ -98,7 +98,6 @@ void handleProgramChange(byte channel, byte program) {
     scene = NULL;
     
     switch(program) {
-      
 
       //Brighter Beat
       case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::vertical);
@@ -126,7 +125,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Pers Kick
-      case 16 : scene = new BigVu(new Palette(COLOR(7,0,0)), 36); //TODO
+      case 16 : scene = new BigVu(new Palette(COLOR(7,0,0)), 36, 1, BigVu::Mode::horizontal, true);
         break;
 
       //Pers Drop
@@ -149,10 +148,9 @@ void handleProgramChange(byte channel, byte program) {
       case 22 : scene = new RainDrops(bluePalette());
         break;
       //toms
-      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 8, BigVu::Mode::vertical, true); //TODO
+      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 4, BigVu::Mode::vertical, true);
         break;
 
-        
 
         //Water
       
@@ -176,11 +174,10 @@ void handleProgramChange(byte channel, byte program) {
       //Animaux end
       case 29 : scene = new BigYMNK(new RainbowPalette());
         break;
-
      
 
       // BiBimBap
-      case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2); //TODO
+      case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2, BigVu::Mode::horizontal, true);
         break;
       case 36 : scene = new Vortex();
         break;

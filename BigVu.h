@@ -3,9 +3,6 @@
 #define BIG_VU_H
 
 //y=abs(((x+size)%(size*2))-size)
-
-#include "Scene.h"
-
 static int triangleMod(int value, int size) {
     return abs(((value+size)%(size*2))-size);
 }
@@ -20,6 +17,8 @@ static int mirrorMod(int value, int size) {
 }
 
 
+#include "Scene.h"
+
 class BigVu : public TickerScene {
 public:
 enum Mode {
@@ -29,8 +28,8 @@ enum Mode {
   
 public:
   BigVu(Palette* palette, byte note, byte noteCount = 1, Mode mode = horizontal, bool mirrored = false) 
-    : noteCount(noteCount), palette(palette), note(note), mode(mode), mirrored(mirrored) {
-
+    : palette(palette), note(note), mode(mode), mirrored(mirrored) {
+    this->noteCount = mirrored ? noteCount * 2 : noteCount;
   }
 
   virtual ~BigVu() {
@@ -40,14 +39,18 @@ public:
 public:
 
     virtual void midiNote(byte noteValue) override {
-
         byte maxNote = mirrored ? noteCount/2 : noteCount;
 
         if (noteValue >= note && noteValue < (note + maxNote)) {
             byte vuIndex = noteValue - note;
             vuStates[vuIndex].reset();
             if (mirrored) {
-                vuStates[noteCount - 1 - vuIndex].reset();
+                if (mode == vertical) {
+                    vuStates[noteCount - 1 - vuIndex].reset();
+                } else {
+                    vuStates[vuIndex + maxNote].reset();
+                }
+                
             }
         }
     } 
@@ -72,11 +75,21 @@ public:
 
                 case horizontal : {
 
-                    x = isOtherDisplay ? (displayHalfW - state->vuSize) : (state->vuUp ? 0 : state->vuSize);
-                    y = i*vuH;
+                    if (i >= noteCount/2 && mirrored) {
+                        x = (displayW - state->vuSize);
+                    } else {
+                        x = state->vuUp ? 0 : state->vuSize;
+                    }
+
+                    vuH = displayH/noteCount;
+                    if (mirrored) {
+                        vuH = vuH*2;
+                    }
+                    
+                    y = (i*vuH) % displayH;
 
                     vuW = state->vuUp ? state->vuSize : 2;
-                    vuH = displayH/noteCount;
+                    
                 }   break;
 
                 case vertical : {
@@ -94,7 +107,7 @@ public:
             
                 matrix.fillRect(x, y, vuW, vuH, color);
             
-                if (state->vuSize >= (isHorizontal ? displayHalfW : displayH)) {
+                if (state->vuSize >= (isHorizontal ? (mirrored ? displayHalfW : displayW) : displayH)) {
                     state->vuUp = false;
                 }
 
