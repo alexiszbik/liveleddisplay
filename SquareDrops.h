@@ -51,15 +51,14 @@ public:
                 }
             } break;
             case trail : {
-                pos = (halfSquareCount() + (pos + 1 * (isOtherDisplay ? -1 : 1))) % halfSquareCount();
-                
-                for (byte i = 0; i < halfSquareCount(); i++) {
+                for (byte i = 0; i < fullSquareCount(); i++) {
                     if (i == pos) {
                         states[i] = 0;
                     } else {
                         states[i] = (states[i] + 1);
                     }
                 }
+                pos = (fullSquareCount() + (pos + 1 * (isOtherDisplay ? -1 : 1))) % fullSquareCount();
             } break;
             case randomOnce : {
                 byte newPos = pos;

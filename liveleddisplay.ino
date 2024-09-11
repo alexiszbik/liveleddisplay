@@ -70,7 +70,7 @@ void setup() {
   matrix.show(); // Copy data to matrix buffers
 
   //scene = new Circles(redPalette(), true);
-  scene = new Turnstile();
+  scene = new Arrows();
 
   scene->prepareFrame();
 }
@@ -166,10 +166,10 @@ void handleProgramChange(byte channel, byte program) {
          
 
       //Animaux intro
-      case 27 : scene = new SquareDrops(redPalette(4),  SquareDrops::trail); //TODO
+      case 27 : scene = new SquareDrops(redPalette(),  SquareDrops::trail);
         break;
       //Animaux kick
-      case 28 : scene = new Arrows(); //TODO
+      case 28 : scene = new Arrows();
         break;
       //Animaux end
       case 29 : scene = new BigYMNK(new RainbowPalette());
