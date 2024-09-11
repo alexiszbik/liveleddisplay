@@ -52,27 +52,31 @@ void setup() {
   Serial.begin(9600);
 
   matrix.begin();
-  matrix.setTextWrap(false);
   
-  delay(1000); 
-
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
-  MIDI.begin(16);
-
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
+  MIDI.begin(16);
 
-  matrix.println("YMNK"); // Default text color is white
+  delay(500); 
+
+  matrix.println("YMNK live LED matrix"); // Default text color is white
+
+  matrix.show();
+
+  matrix.setTextWrap(false);
+
+  delay(2000); 
 
   // AFTER DRAWING, A show() CALL IS REQUIRED TO UPDATE THE MATRIX!
 
-  matrix.show(); // Copy data to matrix buffers
-
+    clearScreen();
+  matrix.show();
   //scene = new Circles(redPalette(), true);
-  scene = new StarTour();
+    scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
 
-  scene->prepareFrame();
+    
 }
 
 void handleStart() {
@@ -82,6 +86,7 @@ void handleStart() {
 void handleStop() {
   clearScreen();
   isPlaying = false;
+  matrix.show();
 }
 
 
@@ -247,7 +252,7 @@ void handleProgramChange(byte channel, byte program) {
 
 bool cvInState = false;
 
-bool debug = true;
+bool debug = false;
 
 long timer = 0;
 
