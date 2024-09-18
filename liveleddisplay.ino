@@ -25,7 +25,7 @@
 #include "Vortex.h"
 #include "StarTour.h"
 #include "Circles.h"
-#include "Hearth.h"
+#include "Gfx.h"
 #include "Intro.h"
 #include "Explode.h"
 
@@ -57,6 +57,7 @@ void setup() {
   MIDI.setHandleProgramChange(handleProgramChange);
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
+  MIDI.turnThruOff();
   MIDI.begin(16);
 
   delay(500); 
@@ -71,11 +72,12 @@ void setup() {
 
   // AFTER DRAWING, A show() CALL IS REQUIRED TO UPDATE THE MATRIX!
 
-    clearScreen();
+  clearScreen();
   matrix.show();
   //scene = new Circles(redPalette(), true);
     scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
-
+//scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
+//scene = new Osc(new Palette(COLOR(0,7,7)));
     
 }
 
@@ -214,7 +216,10 @@ void handleProgramChange(byte channel, byte program) {
       
     
       //test hearth
-      case 50 : scene = new Hearth(redPalette());
+      case 50 : scene = new Gfx(new Palette(COLOR(7,0,0)), GfxEnum::gfx_hearth);
+        break;
+
+      case 51 : scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_hearth, Gfx::EGfxMode::gfxMode_plainWithContour, 0, 1);
         break;
 
 
@@ -237,7 +242,10 @@ void handleProgramChange(byte channel, byte program) {
       case 65 : scene = new Sticks(new RainbowPalette(), 2, 3, 1);
         break;
 
+//L'amour
       case 67 : scene = new SquareDrops(new RainbowPalette(), SquareDrops::wash);
+        break;
+      case 68 : scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_star, Gfx::EGfxMode::gfxMode_normal, 1, 1);
         break;
 
   
@@ -254,30 +262,32 @@ bool cvInState = false;
 
 bool debug = false;
 
-long timer = 0;
+long debugTimer = 0;
 
 void loop() {
 
-  MIDI.read();
-
-  bool newCvInState = analogRead(CVCLOCK) > 200;
-
-  bool tick = newCvInState && !cvInState;
-
-  if (debug) {
-    long newTimer = millis();
-    if ((newTimer - timer) > 125) {
-      tick = true;
-      timer = newTimer;
+    for (byte i = 0; i < 8; i++) {
+        MIDI.read();
     }
-  }
 
-  scene->tick(tick);
+    bool newCvInState = digitalRead(CVCLOCK);
   
-  if (isPlaying || debug) {
-    scene->showFrame();
-    matrix.show();
-  }
+    bool tick = newCvInState && !cvInState;
 
-  cvInState = newCvInState; 
+    if (debug) {
+        long newTimer = millis();
+        if ((newTimer - debugTimer) > 10) {
+        tick = true;
+        debugTimer = newTimer;
+        }
+    }
+
+    scene->tick(tick);
+    
+    if (isPlaying || debug) {
+        scene->showFrame();
+        matrix.show();
+    }
+
+    cvInState = newCvInState; 
 }

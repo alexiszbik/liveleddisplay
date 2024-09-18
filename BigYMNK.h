@@ -48,7 +48,7 @@ public:
     matrix.setTextSize(2);
 
     if (inverted) {
-      if (!once) {
+      if (!once) { ///yup this is not working with START/STOP
         matrix.fillScreen(COLOR(0,0,7));
 
         matrix.setTextColor(COLOR(0,0,0));

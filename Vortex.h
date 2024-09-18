@@ -24,8 +24,8 @@ public:
 
   void getRotation(float x, float y, float &X, float &Y, float inAngle) {
     float _angle = inAngle;
-    float s = sin(_angle);
-    float c = cos(_angle);
+    float s = sinf(_angle);
+    float c = cosf(_angle);
     X = (x - center_x) * c - (y - center_y) * s + center_x;
     Y = (x - center_x) * s + (y - center_y) * c + center_y;
   }
