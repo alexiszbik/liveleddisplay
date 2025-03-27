@@ -18,7 +18,7 @@ RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 #elif defined(ARDUINO_SAMD_ZERO) //for Arduino Zero
 #include <Adafruit_Protomatter.h>
 uint8_t rgbPins[]  = {2, 3, 4, 5, 6, 7};
-uint8_t addrPins[] = {A0, A1, A2};
+uint8_t addrPins[] = {A0, A2, A1};
 uint8_t clockPin   = 8;
 uint8_t latchPin   = 10;
 uint8_t oePin      = 9;
