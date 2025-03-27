@@ -39,10 +39,10 @@ static Adafruit_Protomatter matrix(
 
 #if defined(ARDUINO_SAMD_ZERO) 
 #define COLOR(r,g,b) matrix.color565(r*35,g*35,b*35)
-#define HSV(h,s,v) matrix.colorHSV(h * 42, s, v);
+#define HSV(h,s,v) matrix.colorHSV(h * 42, s, v)
 #else 
 #define COLOR(r,g,b) matrix.Color333(r,g,b)
-#define HSV(h,s,v) matrix.ColorHSV(h, s, v, true);
+#define HSV(h,s,v) matrix.ColorHSV(h, s, v, true)
 #endif
 
 typedef uint16_t color_t;
