@@ -12,6 +12,7 @@ class Scene {
     }
   	virtual void tick(bool state) {};
     virtual void midiNote(byte noteValue) {};   
+    virtual void midiSync() {};   
 
   	void prepareFrame() {
     	initFrame();
@@ -76,6 +77,15 @@ class TickerScene : public Scene {
 
   protected:
     Ticker ticker = Ticker(20);
+
+};
+
+class SyncScene : public Scene {
+  public:
+
+  virtual void midiSync() {
+     needRefresh = true;
+  }
 
 };
 

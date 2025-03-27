@@ -1,0 +1,45 @@
+
+#ifndef LASERS_H
+#define LASERS_H
+
+#include "Scene.h"
+#include "Palette.h"
+
+#define C_SIZE 12
+
+class Lasers : public Scene {
+
+public:
+
+  Lasers(Palette* palette) : palette(palette) {
+  }
+  virtual ~Lasers() {
+    delete palette;
+  }
+
+public:
+  virtual void tick(bool state) override {
+    if (state)  {
+      setNeedsRefresh();
+
+      offset = (offset + 1) % C_SIZE;
+    }
+  }
+
+  virtual void draw() override {
+    for (byte i = 0; i < palette->size; i++) {
+        int idx = (offset - i);
+        byte r = (idx + C_SIZE) % C_SIZE;
+        byte x = displayHalfW;
+        matrix.drawCircle(x, displayHalfH, r * 4, palette->colors[i]);
+    }
+    
+  }
+
+private:
+  Palette* palette;
+  byte offset = 0;
+
+};
+
+#endif //CIRCLES_H

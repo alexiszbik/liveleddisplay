@@ -1,30 +1,7 @@
 
-
-#ifndef PLASMA_H
-#define PLASMA_H
-
-#include "Scene.h"
-#include "Palette.h"
-
-class Plasma : public TickerScene {
-    
-public:
-    
-    Plasma() {
-        for (int y = 0; y < displayH; y++) {
-            for (int x = 0; x < displayW; x++) {
-                //heat[x][y] = 0;
-            }
-        }
-    }
-    
-public:
-    
-    virtual void draw() override {
-        matrix.startWrite();
         
         //PLASMA
-        
+        /*
         for (int y = 0; y < displayH; y++) {
             for (int x = 0; x < displayW; x++) {
                 
@@ -34,7 +11,7 @@ public:
                
             }
         }
-        
+        */
         //
         
         /*
@@ -83,19 +60,58 @@ public:
                }
            }
         */
-        plasmaTime += 1;  // Ajuster la vitesse du plasma
-        plasmaTime = plasmaTime % 1535;
 
+
+#ifndef PLASMA_H
+#define PLASMA_H
+
+#include "Scene.h"
+#include "Palette.h"
+
+#define SIN_TABLE_SIZE 256  // Nombre d'échantillons pour une période complète
+#define SIN_AMPLITUDE 127  // Amplitude normalisée du sinus
+
+class Plasma : public SyncScene {
+    
+public:
+    
+    Plasma() {
+        // Pré-calcul des valeurs de sin dans un tableau
+        for (int i = 0; i < SIN_TABLE_SIZE; i++) {
+            sinTable[i] = sin(i * (2 * PI / SIN_TABLE_SIZE)) * SIN_AMPLITUDE + SIN_AMPLITUDE;
+        }
+    }
+    
+public:
+    
+    virtual void draw() override {
+        matrix.startWrite();
         
+        // PLASMA optimisé avec table de sinus
+        for (int y = 0; y < displayH; y++) {
+            for (int x = 0; x < displayW; x++) {
+                // Utilisation du tableau pré-calculé au lieu de sin(x)
+                int16_t v = (
+                    sinTable[(x * 10) % SIN_TABLE_SIZE] +
+                    sinTable[(y * 10) % SIN_TABLE_SIZE] +
+                    sinTable[((x + y + plasmaTime) * 7) % SIN_TABLE_SIZE]
+                ) / 3;  // Normalisation
+
+                matrix.drawPixel(x, y, HSV(v * 6, 255, 255));
+            }
+        }
+
+        plasmaTime = (plasmaTime + 1) % SIN_TABLE_SIZE;  // Ajuster la vitesse et boucler
+
         matrix.endWrite();
     }
     
-    
 private:
     long plasmaTime = 0;
+    uint8_t sinTable[SIN_TABLE_SIZE];  // Table de sinus précalculée
 };
 
-#endif //FIRE_H
+#endif // PLASMA_H
 
 
 

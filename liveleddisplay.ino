@@ -28,6 +28,8 @@
 #include "Gfx.h"
 #include "Intro.h"
 #include "Explode.h"
+#include "Plasma.h"
+#include "Lasers.h"
 
 
 static inline Palette* bluePalette(byte size = 8) {
@@ -45,6 +47,7 @@ Scene* scene = NULL;
 byte currentProgram = 0;
 
 bool isPlaying = false;
+byte midiTick = 0;
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
@@ -57,6 +60,7 @@ void setup() {
   MIDI.setHandleProgramChange(handleProgramChange);
   MIDI.setHandleStart(handleStart);
   MIDI.setHandleStop(handleStop);
+  MIDI.setHandleClock(handleClock);
   MIDI.turnThruOff();
   MIDI.begin(16);
 
@@ -83,6 +87,7 @@ void setup() {
 
 void handleStart() {
   isPlaying = true;
+  midiTick = 0;
 }
 
 void handleStop() {
@@ -96,6 +101,15 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
   if (velocity > 0) {
     scene->midiNote(note);
   }
+}
+
+
+void handleClock() {
+    if (midiTick % 6 == 0) {
+        scene->midiSync();
+    }
+    midiTick = midiTick + 1;
+    midiTick = midiTick % 96;
 }
 
 void handleProgramChange(byte channel, byte program) {
@@ -118,6 +132,14 @@ void handleProgramChange(byte channel, byte program) {
 
       //End Brighter // Expect the Unexpected
       case 6 : scene = new SquareDrops(bluePalette(), SquareDrops::randDrops);
+        break;
+
+      //Plasma
+      case 7 : scene = new Plasma();
+        break;
+
+      //Lasers
+      case 8 : scene = new Lasers(bluePalette());
         break;
 
         
