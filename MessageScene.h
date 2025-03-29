@@ -34,7 +34,7 @@ class MessageScene : public AutoRefreshedScene {
   byte colorCount;  
   byte colorIndex = 0; 
   
-  Palette* palette;
+  Palette* palette = nullptr;
   
   
 };

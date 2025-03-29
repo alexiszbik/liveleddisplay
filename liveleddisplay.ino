@@ -13,6 +13,7 @@
 #include "RainDrops.h"
 #include "Arrows.h"
 #include "FlashingSign.h"
+#include "MovingSign.h"
 #include "SquareDrops.h"
 #include "RandomYMNK.h"
 #include "BigYMNK.h"
@@ -139,9 +140,10 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       //Lasers
-      case 8 : scene = new Lasers(bluePalette());
+      case 8 : scene = new Lasers();
         break;
 
+      
         
      
       //Expect the Unexpected, + drums
@@ -203,6 +205,17 @@ void handleProgramChange(byte channel, byte program) {
       //Animaux end
       case 29 : scene = new BigYMNK(new RainbowPalette());
         break;
+
+        //FANTASY
+        case 30 : scene = new MovingSign(new Palette(COLOR(0,0,7)), MovingSign::fantasy);
+        break;
+
+        case 31 : scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy);
+        break;
+
+        case 32 : scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy, true);
+        break;
+
      
 
       // BiBimBap

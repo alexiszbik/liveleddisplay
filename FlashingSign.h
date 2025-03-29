@@ -57,14 +57,16 @@ public:
         }
       } break;
       case brighter : toDraw = F("BRIGHTER"); break;
-      default : toDraw = F("v1.1.0"); break;
+      default : toDraw = F("v1.2.0"); break;
     }
 
     drawCentreString(toDraw, 0, 0);
 
-    for (byte i = 0; i < contourSize; i++) {
-      byte cIndex = (colorIndex + 1 + i) % colorCount;
-      matrix.drawRect(i,i, displayW - i*2, displayH - i*2, palette->colors[cIndex]);
+    if (palette) {
+        for (byte i = 0; i < contourSize; i++) {
+            byte cIndex = (colorIndex + 1 + i) % colorCount;
+            matrix.drawRect(i,i, displayW - i*2, displayH - i*2, palette->colors[cIndex]);
+        }
     }
     
   }
