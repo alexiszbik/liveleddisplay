@@ -57,25 +57,26 @@ public:
 
     void drawWhirlpool() {
         
-      for (int y = 0; y < displayH; y++) {
+        for (int x = 0; x < displayW; x++) {
+            for (int y = 0; y < displayH; y++) {
 
-            for (int x = 0; x < displayW; x++) {
-                
                 float r = rArray[x][y];
                 float theta = thetaArray[x][y];
                 
                 theta += r * 0.3f + timeOffset;
 
-                //int colorValue = (int)(127.5 * (1 + sin(theta)));
                 int hue = (int)((theta / M_PI) * 127.5f + 127.5f) % 256;
 
+                matrix.drawPixel(x, y, HSV(hue*6, 255, 255));
+
+
+                //int colorValue = (int)(127.5 * (1 + sin(theta)));
                 /*
                 int red = colorValue;
                 int g = 255 - colorValue;
                 int b = 128;
                 */
                 //matrix.drawPixel(x, y, COLOR((red/255.0)*7, (g/255.0)*7, (b/255.0)*7));
-                matrix.drawPixel(x, y, HSV(hue*6, 255, 255));
                 //byte c = hue/256.f * 7;
                 //matrix.drawPixel(x, y, COLOR(c,0,0));
             }
@@ -98,9 +99,7 @@ public:
         timeOffset = fastFmodf(timeOffset, 2*M_PI);
     }
     
-    
-    
-    
+
 private:
     float timeOffset = 0;
     float thetaArray[displayW][displayH];
