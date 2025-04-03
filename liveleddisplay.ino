@@ -142,6 +142,9 @@ void handleProgramChange(byte channel, byte program) {
       //Lasers
       case 8 : scene = new Lasers();
         break;
+        //Lasers
+      case 9 : scene = new Gfx(new Palette(COLOR(7,4,0)), GfxEnum::gfx_smiley, Gfx::EGfxMode::gfxMode_normal, false, false, true);
+        break;
 
       
         
@@ -280,7 +283,7 @@ void handleProgramChange(byte channel, byte program) {
 //L'amour
       case 67 : scene = new SquareDrops(new RainbowPalette(), SquareDrops::wash);
         break;
-      case 68 : scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_star, Gfx::EGfxMode::gfxMode_normal, 1, 1);
+      case 68 : scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_star, Gfx::EGfxMode::gfxMode_normal, 1, 1, 1);
         break;
 
   

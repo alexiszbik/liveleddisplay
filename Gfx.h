@@ -17,7 +17,8 @@ public:
     };
     
 public:
-    Gfx(Palette* palette, GfxEnum gfxEnum, EGfxMode mode = gfxMode_normal, bool yMove = false, bool colorMove = false) : palette(palette), yMove(yMove), colorMove(colorMove), mode(mode) {
+    Gfx(Palette* palette, GfxEnum gfxEnum, EGfxMode mode = gfxMode_normal, bool yMove = false, bool colorMove = false, bool isMidiSynced = false) 
+    : palette(palette), yMove(yMove), colorMove(colorMove), mode(mode), isMidiSynced(isMidiSynced) {
         const byte gfxSize = 16;
         switch (gfxEnum) {
             case gfx_hearth :
@@ -43,13 +44,24 @@ public:
     }
     
 public:
-    virtual void tick(bool state) override {
-        if (state)  {
+    virtual void midiSync() override {
+        if (isMidiSynced) {
             setNeedsRefresh();
+            updateOffsets();
+        } 
+    }
+
+    void updateOffsets() {
+        offset = (offset + 1) % 32;
+        yOffset = (offset + 1) % 16;
+        cOffset = (cOffset + 1) % palette->size;
+    }
+
+    virtual void tick(bool state) override {
+        if (state && !isMidiSynced)  {
+            setNeedsRefresh();
+            updateOffsets();
             
-            offset = (offset + 1) % 32;
-            yOffset = (offset + 1) % 16;
-            cOffset = (cOffset + 1) % palette->size;
         }
     }
     
@@ -173,6 +185,7 @@ private:
 
     bool yMove;
     bool colorMove;
+    bool isMidiSynced = false;
     
     int buf[16];
     

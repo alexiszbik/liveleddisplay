@@ -71,7 +71,7 @@ static int PROGMEM star[16] = {
     30750,
     0,
 };
-/*
+
 static int PROGMEM smiley[16] = {
     0b0000000000000000,
     0b0000001111000000,
@@ -90,8 +90,8 @@ static int PROGMEM smiley[16] = {
     0b0000001111000000,
     0b0000000000000000,
 };
-*/
 
+/*
 static int PROGMEM smiley[16] = {
     0,
     240,
@@ -109,5 +109,5 @@ static int PROGMEM smiley[16] = {
     3120,
     240,
     0
-};
+};*/
 #endif /* GfxRes_h */
