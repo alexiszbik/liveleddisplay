@@ -9,7 +9,7 @@ class Gfx : public Scene {
     
 public:
     enum EGfxMode {
-        gfxMode_normal,
+        gfxMode_normal = 0,
         gfxMode_plain,
         gfxMode_plainWithContour,
         gfxMode_inverted,
@@ -18,15 +18,21 @@ public:
     
 public:
     Gfx(Palette* palette, GfxEnum gfxEnum, EGfxMode mode = gfxMode_normal, bool yMove = false, bool colorMove = false) : palette(palette), yMove(yMove), colorMove(colorMove), mode(mode) {
+        const byte gfxSize = 16;
         switch (gfxEnum) {
             case gfx_hearth :
-                for (byte i = 0; i < 16; i++) {
+                for (byte i = 0; i < gfxSize; i++) {
                     buf[i] = pgm_read_word(&hearth[i]);
                 }
                 break;
             case gfx_star :
-                for (byte i = 0; i < 16; i++) {
+                for (byte i = 0; i < gfxSize; i++) {
                     buf[i] = pgm_read_word(&star[i]);
+                }
+                break;
+            case gfx_smiley :
+                for (byte i = 0; i < gfxSize; i++) {
+                    buf[i] = pgm_read_word(&smiley[i]);
                 }
                 break;
         }
@@ -57,34 +63,34 @@ public:
         const byte w = 16;
         const byte h = 16;
         
-        bool fillH = false;
+        bool fillInside = false;
         bool contour = false;
         bool inverted = false;
-        
-        if (mode == 1) {
-            fillH = true;
+
+        if (mode == gfxMode_plain) {
+            fillInside = true;
             contour = false;
             inverted = false;
         }
-        if (mode == 2) {
-            fillH = true;
+        if (mode == gfxMode_plainWithContour) {
+            fillInside = true;
             contour = true;
             inverted = false;
         }
-        if (mode == 3) {
-            fillH = true;
+        if (mode == gfxMode_inverted) {
+            fillInside = true;
             contour = false;
             inverted = true;
         }
-        if (mode == 4) {
-            fillH = true;
+        if (mode == gfxMode_invertedWithContour) {
+            fillInside = true;
             contour = true;
             inverted = true;
         }
         
         for (byte j = 0; j < h; j++) {
             if (inverted) {
-                matrix.drawLine(0, j, displayW, j, palette->colors[0]);
+                //matrix.drawLine(0, j, displayW, j, palette->colors[0]);
             } else {
                 if (buf[j] == 0) {
                     continue;
@@ -99,8 +105,8 @@ public:
                 bool state = ((buf[j] & (1<<i)) == (1<<i));
                 if (inverted) {
                     
-                    c = (state || fill) ? COLOR(0,0,0) : palette->colors[0];
-                    //c = (state || fill) ? COLOR(0,0,0) : palette->colors[cOffset];
+                    //c = (state || fill) ? COLOR(0,0,0) : palette->colors[0];
+                    c = (state || fill) ? COLOR(0,0,0) : palette->colors[cOffset];
                    
                     if (state) {
                         c = contour ? COLOR(7,7,7) : c;
@@ -134,7 +140,7 @@ public:
                     matrix.drawPixel(x % displayW, y, c);
                 }
                 
-                if (state && fillH) {
+                if (state && fillInside) {
                     bool invert = true;
                     if (i > 0) {
                         bool prevState = ((buf[j] & (1<<(i-1))) == (1<<(i-1)));
