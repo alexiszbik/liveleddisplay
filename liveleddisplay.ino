@@ -31,6 +31,7 @@
 #include "Explode.h"
 #include "Plasma.h"
 #include "Lasers.h"
+#include "Spiral.h"
 
 
 static inline Palette* bluePalette(byte size = 8) {
@@ -123,6 +124,9 @@ void handleProgramChange(byte channel, byte program) {
 
       //Brighter Beat
       case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::vertical);
+        break;
+
+      case 4 : scene = new Spiral();
         break;
 
       //Say : Brighter
