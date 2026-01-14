@@ -42,6 +42,7 @@ static inline Palette* redPalette(byte size = 8) {
   return new Palette(size, 7, 0, 0);
 }
 
+
 #define PINK_P new Palette(8, 7, 0, 7)
 
 //note : PROGMEM don't do shit here
@@ -57,7 +58,7 @@ void setup() {
   Serial.begin(9600);
 
   matrix.begin();
-  
+
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleProgramChange(handleProgramChange);
   MIDI.setHandleStart(handleStart);
@@ -66,25 +67,24 @@ void setup() {
   MIDI.turnThruOff();
   MIDI.begin(16);
 
-  delay(500); 
+  delay(500);
 
-  matrix.println("YMNK live LED matrix"); // Default text color is white
+  matrix.println("YMNK live LED matrix");  // Default text color is white
 
   matrix.show();
 
   matrix.setTextWrap(false);
 
-  delay(2000); 
+  delay(2000);
 
   // AFTER DRAWING, A show() CALL IS REQUIRED TO UPDATE THE MATRIX!
 
   clearScreen();
   matrix.show();
   //scene = new Circles(redPalette(), true);
-    scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
-//scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
-//scene = new Osc(new Palette(COLOR(0,7,7)));
-    
+  scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
+  //scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
+  //scene = new Osc(new Palette(COLOR(0,7,7)));
 }
 
 void handleStart() {
@@ -107,191 +107,249 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
 
 
 void handleClock() {
-    if (midiTick % 6 == 0) {
-        scene->midiSync();
-    }
-    midiTick = midiTick + 1;
-    midiTick = midiTick % 96;
+  if (midiTick % 6 == 0) {
+    scene->midiSync();
+  }
+  midiTick = midiTick + 1;
+  midiTick = midiTick % 96;
 }
 
 void handleProgramChange(byte channel, byte program) {
   if (program != currentProgram) {
-  
+
     delete scene;
     scene = NULL;
-    
-    switch(program) {
+
+    switch (program) {
 
       //Brighter Beat
-      case 2 : scene = new BigVu(new VuPalette(), 60, 4, BigVu::vertical);
+      case 2:
+        scene = new BigVu(new VuPalette(), 60, 4, BigVu::vertical);
         break;
 
-      case 4 : scene = new Spiral();
+      case 4:
+        scene = new Spiral();
         break;
 
       //Say : Brighter
-      case 5 : scene = new FlashingSign(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)), FlashingSign::brighter, 3);
+      case 5:
+        scene = new FlashingSign(new Palette(COLOR(0, 0, 7), COLOR(0, 7, 7), COLOR(7, 7, 7)), FlashingSign::brighter, 3);
         break;
 
 
 
       //End Brighter // Expect the Unexpected
-      case 6 : scene = new SquareDrops(bluePalette(), SquareDrops::randDrops);
+      case 6:
+        scene = new SquareDrops(bluePalette(), SquareDrops::randDrops);
         break;
 
       //Plasma
-      case 7 : scene = new Plasma();
+      case 7:
+        scene = new Plasma();
         break;
 
       //Lasers
-      case 8 : scene = new Lasers();
+      case 8:
+        scene = new Lasers();
         break;
         //Lasers
-      case 9 : scene = new Gfx(new Palette(COLOR(7,4,0)), GfxEnum::gfx_smiley, Gfx::EGfxMode::gfxMode_normal, false, false, true);
+      case 9:
+        scene = new Gfx(new Palette(COLOR(7, 4, 0)), GfxEnum::gfx_smiley, Gfx::EGfxMode::gfxMode_normal, false, false, true);
         break;
 
-      
-        
-     
+
+
+
       //Expect the Unexpected, + drums
-      case 10 : scene = new RandomYMNK(new RainbowPalette());
+      case 10:
+        scene = new RandomYMNK(new RainbowPalette());
         break;
 
 
       //Pers intro
-      case 15 : scene = new Sticks(redPalette()); //Weird but okay!
+      case 15:
+        scene = new Sticks(redPalette());  //Weird but okay!
         break;
 
       //Pers Kick
-      case 16 : scene = new BigVu(new Palette(COLOR(7,0,0)), 36, 1, BigVu::Mode::horizontal, true);
+      case 16:
+        scene = new BigVu(new Palette(COLOR(7, 0, 0)), 36, 1, BigVu::Mode::horizontal, true);
         break;
 
       //Pers Drop
-      case 17 : scene = new RectangleGroup(bluePalette(4));
+      case 17:
+        scene = new RectangleGroup(bluePalette(4));
         break;
 
-      //Pers End
-      
-      case 18 : scene = new Kaomojis(new RainbowPalette());
+        //Pers End
+
+      case 18:
+        scene = new Kaomojis(new RainbowPalette());
         break;
 
-      case 19 : scene = new PixNoise();
+      case 19:
+        scene = new PixNoise();
         break;
-      case 20 : scene = new SquareDrops(new Palette(7, 7, 0, 7), SquareDrops::wash);
+      case 20:
+        scene = new SquareDrops(new Palette(7, 7, 0, 7), SquareDrops::wash);
         break;
 
 
       //Hopes
       //intro
-      case 22 : scene = new RainDrops(bluePalette());
+      case 22:
+        scene = new RainDrops(bluePalette());
         break;
       //toms
-      case 23 : scene = new BigVu(new Palette(COLOR(0,0,7)), 48, 4, BigVu::Mode::vertical, true);
+      case 23:
+        scene = new BigVu(new Palette(COLOR(0, 0, 7)), 48, 4, BigVu::Mode::vertical, true);
         break;
 
 
         //Water
-      
-      case 24 : scene = new Osc(new Palette(COLOR(0,7,7)));
-         break;
 
-      case 25 : scene = new Turnstile();
-         break;
+      case 24:
+        scene = new Osc(new Palette(COLOR(0, 7, 7)));
+        break;
 
-      case 26 : scene = new Osc(new Palette(COLOR(0,0,7), COLOR(0,7,7), COLOR(7,7,7)));
-         break;
+      case 25:
+        scene = new Turnstile();
+        break;
 
-         
+      case 26:
+        scene = new Osc(new Palette(COLOR(0, 0, 7), COLOR(0, 7, 7), COLOR(7, 7, 7)));
+        break;
+
+
 
       //Animaux intro
-      case 27 : scene = new SquareDrops(redPalette(),  SquareDrops::trail);
+      case 27:
+        scene = new SquareDrops(redPalette(), SquareDrops::trail);
         break;
       //Animaux kick
-      case 28 : scene = new Arrows();
+      case 28:
+        scene = new Arrows();
         break;
       //Animaux end
-      case 29 : scene = new BigYMNK(new RainbowPalette());
+      case 29:
+        scene = new BigYMNK(new RainbowPalette());
         break;
 
-        //FANTASY
-        case 30 : scene = new MovingSign(new Palette(COLOR(0,0,7)), MovingSign::fantasy);
+      //FANTASY
+      case 30:
+        scene = new MovingSign(new Palette(COLOR(0, 0, 7)), MovingSign::fantasy);
         break;
 
-        case 31 : scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy);
+      case 31:
+        scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy);
         break;
 
-        case 32 : scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy, true);
+      case 32:
+        scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy, true);
         break;
 
-     
+
 
       // BiBimBap
-      case 35 : scene = new BigVu(new Palette(COLOR(0,7,0)), 36, 2, BigVu::Mode::horizontal, true);
+      case 35:
+        scene = new BigVu(new Palette(COLOR(0, 7, 0)), 36, 2, BigVu::Mode::horizontal, true);
         break;
-      case 36 : scene = new Vortex();
+      case 36:
+        scene = new Vortex();
         break;
-        
+
       //Raindrops Rainbow
-      case 40 : scene = new RainDrops(new RainbowPalette());
+      case 40:
+        scene = new RainDrops(new RainbowPalette());
         break;
 
 
       //Tir3d of Technology
-      case 42 : scene = new StarTour();
+      case 42:
+        scene = new StarTour();
         break;
 
-       //Friendship & Bravery
-      case 43 : scene = new AutoVu(new Palette(COLOR(0,0,7)));
+        //Friendship & Bravery
+      case 43:
+        scene = new AutoVu(new Palette(COLOR(0, 0, 7)));
         break;
 
-      case 44 : scene = new Circles(bluePalette());
+      case 44:
+        scene = new Circles(bluePalette());
         break;
 
-      case 45 : scene = new AutoVu(new VuPalette2());
-        break;
-     
-      case 46 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), FlashingSign::friendship, 1);
+      case 45:
+        scene = new AutoVu(new VuPalette2());
         break;
 
-      case 47 : scene = new FlashingSign(new RainbowPalette(), FlashingSign::friendship, 1);
+      case 46:
+        scene = new FlashingSign(new Palette(COLOR(7, 7, 7)), FlashingSign::friendship, 1);
         break;
-      
-    
+
+      case 47:
+        scene = new FlashingSign(new RainbowPalette(), FlashingSign::friendship, 1);
+        break;
+
+
       //test hearth
-      case 50 : scene = new Gfx(new Palette(COLOR(7,0,0)), GfxEnum::gfx_hearth);
+      case 50:
+        scene = new Gfx(new Palette(COLOR(7, 0, 0)), GfxEnum::gfx_hearth);
         break;
 
-      case 51 : scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_hearth, Gfx::EGfxMode::gfxMode_plainWithContour, 0, 1);
+      case 51:
+        scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_hearth, Gfx::EGfxMode::gfxMode_plainWithContour, 0, 1);
         break;
 
 
-      case 52 : scene = new Intro();
-        break;
-      
-         //Fill outside
-      case 53 : scene = new BigYMNK(new RainbowPalette(), true);
+      case 52:
+        scene = new Intro();
         break;
 
-      case 54 : scene = new FlashingSign(new Palette(COLOR(7,7,7)), FlashingSign::version, 0);
+        //Fill outside
+      case 53:
+        scene = new BigYMNK(new RainbowPalette(), true);
         break;
 
-      case 59 : scene = new Explode();
+      case 54:
+        scene = new FlashingSign(new Palette(COLOR(7, 7, 7)), FlashingSign::version, 0);
         break;
 
-      case 64 : scene = new BigVu(new VuPalette(), 36, 4, BigVu::vertical);
+      case 59:
+        scene = new Explode();
         break;
 
-      case 65 : scene = new Sticks(new RainbowPalette(), 2, 3, 1);
+      case 64:
+        scene = new BigVu(new VuPalette(), 36, 4, BigVu::vertical);
         break;
 
-//L'amour
-      case 67 : scene = new SquareDrops(new RainbowPalette(), SquareDrops::wash);
-        break;
-      case 68 : scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_star, Gfx::EGfxMode::gfxMode_normal, 1, 1, 1);
+      case 65:
+        scene = new Sticks(new RainbowPalette(), 2, 3, 1);
         break;
 
-  
-      default: scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
+        //L'amour
+      case 67:
+        scene = new SquareDrops(new RainbowPalette(), SquareDrops::wash);
+        break;
+      case 68:
+        scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_star, Gfx::EGfxMode::gfxMode_normal, 1, 1, 1);
+        break;
+
+      case 70:
+        scene = new MovingSign(new Palette(COLOR(0, 0, 7)), MovingSign::delaurentis, false, false);
+        break;
+      case 71:
+        scene = new BigYMNK(new RainbowPalette());
+        break;
+      case 72:
+        scene = new MovingSign(new Palette(7, 0, 7, 7), MovingSign::douran, false, false);
+        break;
+
+
+
+
+
+      default:
+        scene = new SquareDrops(new RainbowPalette(), SquareDrops::randomOnce);
         break;
     }
     scene->prepareFrame();
@@ -301,35 +359,33 @@ void handleProgramChange(byte channel, byte program) {
 }
 
 bool cvInState = false;
-
-bool debug = false;
-
+bool debug = true;
 long debugTimer = 0;
 
 void loop() {
 
-    for (byte i = 0; i < 8; i++) {
-        MIDI.read();
+  for (byte i = 0; i < 8; i++) {
+    MIDI.read();
+  }
+
+  bool newCvInState = digitalRead(CVCLOCK);
+
+  bool tick = newCvInState && !cvInState;
+
+  if (debug) {
+    long newTimer = millis();
+    if ((newTimer - debugTimer) > 120) {
+      tick = true;
+      debugTimer = newTimer;
     }
+  }
 
-    bool newCvInState = digitalRead(CVCLOCK);
-  
-    bool tick = newCvInState && !cvInState;
+  scene->tick(tick);
 
-    if (debug) {
-        long newTimer = millis();
-        if ((newTimer - debugTimer) > 10) {
-        tick = true;
-        debugTimer = newTimer;
-        }
-    }
+  if (isPlaying || debug) {
+    scene->showFrame();
+    matrix.show();
+  }
 
-    scene->tick(tick);
-    
-    if (isPlaying || debug) {
-        scene->showFrame();
-        matrix.show();
-    }
-
-    cvInState = newCvInState; 
+  cvInState = newCvInState;
 }

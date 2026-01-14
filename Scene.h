@@ -6,87 +6,94 @@
 #include "ColorsAndMatrix.h"
 
 class Scene {
-  public:
+public:
 
-    virtual ~Scene() {
+  virtual ~Scene() {
+  }
+  virtual void tick(bool state){};
+  virtual void midiNote(byte noteValue){};
+  virtual void midiSync(){};
+
+  void prepareFrame() {
+    initFrame();
+    needRefresh = true;
+  }
+
+  virtual void showFrame() {
+
+    if (needRefresh) {
+      draw();
+      needRefresh = false;
     }
-  	virtual void tick(bool state) {};
-    virtual void midiNote(byte noteValue) {};   
-    virtual void midiSync() {};   
+  }
 
-  	void prepareFrame() {
-    	initFrame();
-    	needRefresh = true;
-  	}
+protected:
+  void initCursor() {
+    matrix.setCursor(0, 0);
+  }
 
-  	virtual void showFrame() {
-      
-  		if (needRefresh) {
-  			draw();
-  			needRefresh = false;
-  		}
-  	}
+  void initFrame() {
+    clearScreen();
+    initCursor();
+  }
 
-  protected:
-    void initCursor() {
-      matrix.setCursor(0, 0);
-    }
+  int getRandom() {
+    return random(1000);
+  }
 
-  	void initFrame() {
-      clearScreen();
-      initCursor();
-  	}
+  void setNeedsRefresh() {
+    needRefresh = true;
+  }
 
-    int getRandom() {
-      return random(1000);
-    }
+  virtual void draw() = 0;
 
-    void setNeedsRefresh() {
-      needRefresh = true;
-    }
 
-  	virtual void draw() = 0;
-  	
-
-  protected:
-  	bool needRefresh = true;
+protected:
+  bool needRefresh = true;
 };
 
 class AutoRefreshedScene : public Scene {
-  public:
+public:
   virtual void tick(bool state) override {
-    if (state)  {
+    if (state) {
       needRefresh = true;
       updateOffsets();
     }
   }
 
-  virtual void updateOffsets() {};
+  virtual void updateOffsets(){};
 };
 
 class TickerScene : public Scene {
-  public:
+public:
 
   virtual void showFrame() {
     Scene::showFrame();
-    
+
     if (ticker.checkTime()) {
       needRefresh = true;
     }
   }
 
-  protected:
-    Ticker ticker = Ticker(20);
-
+protected:
+  Ticker ticker = Ticker(20);
 };
 
 class SyncScene : public Scene {
-  public:
+public:
 
   virtual void midiSync() {
-     needRefresh = true;
+    if (synced) {
+      needRefresh = true;
+    }
   }
 
+  void setSynced(bool state) {
+    this->synced = state;
+  }
+
+protected:
+  bool synced = true;
 };
 
 struct VuState {
@@ -100,4 +107,4 @@ struct VuState {
 };
 
 
-#endif //SCENE_H
+#endif  //SCENE_H

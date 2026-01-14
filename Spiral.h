@@ -6,7 +6,7 @@
 #include "Scene.h"
 #include "Palette.h"
 
-class Spiral : public Scene {
+class Spiral : public SyncScene {
     
 public:
     

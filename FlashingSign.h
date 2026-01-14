@@ -57,7 +57,7 @@ public:
         }
       } break;
       case brighter : toDraw = F("BRIGHTER"); break;
-      default : toDraw = F("v1.2.0"); break;
+      default : toDraw = F("v1.2.1"); break;
     }
 
     drawCentreString(toDraw, 0, 0);
