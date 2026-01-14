@@ -8,6 +8,13 @@
 class Gfx : public Scene {
     
 public:
+    enum EYmove {
+        noMove = 0,
+        bipolar,
+        diagonalFall,
+        falling
+    };
+    
     enum EGfxMode {
         gfxMode_normal = 0,
         gfxMode_plain,
@@ -17,8 +24,8 @@ public:
     };
     
 public:
-    Gfx(Palette* palette, GfxEnum gfxEnum, EGfxMode mode = gfxMode_normal, bool yMove = false, bool colorMove = false, bool isMidiSynced = false) 
-    : palette(palette), yMove(yMove), colorMove(colorMove), mode(mode), isMidiSynced(isMidiSynced) {
+    Gfx(Palette* palette, GfxEnum gfxEnum, EGfxMode mode = gfxMode_normal, EYmove yMove = noMove, bool colorMove = false, bool isMidiSynced = false)
+    : palette(palette), yMove(yMove), colorMove(colorMove), isMidiSynced(isMidiSynced), mode(mode) {
         const byte gfxSize = 16;
         switch (gfxEnum) {
             case gfx_hearth :
@@ -34,6 +41,11 @@ public:
             case gfx_smiley :
                 for (byte i = 0; i < gfxSize; i++) {
                     buf[i] = pgm_read_word(&smiley[i]);
+                }
+                break;
+            case gfx_tear :
+                for (byte i = 0; i < gfxSize; i++) {
+                    buf[i] = pgm_read_word(&tear[i]);
                 }
                 break;
         }
@@ -114,7 +126,8 @@ public:
             for (byte i = 0; i < w; i++) {
                 
                 color_t c;
-                bool state = ((buf[j] & (1<<i)) == (1<<i));
+                bool state = ((buf[j] & (1<<i)) == (1<<i)); //ici on verifi si on peut colorier jusque la fin de la ligne
+                //TODO
                 if (inverted) {
                     
                     //c = (state || fill) ? COLOR(0,0,0) : palette->colors[0];
@@ -141,18 +154,42 @@ public:
                     }
                 }
                 
-                for (int z = 0; z < 4; z++) {
+                for (int z = 0; z < 4; z++) { //Dessiner 4 fois le motif sur la matrice
                     int x = i + maxW*z + offset;
+                    if (yMove == falling) {
+                        x = i + maxW*z;
+                    }
                     byte y = j;
                     
-                    if (yMove) {
+                    if (yMove == bipolar) {
                         y = (z % 2) ? ((j + yOffset) % displayH) : (((j - yOffset) + displayH) % displayH);
+                    }
+                    else if (yMove == diagonalFall || yMove == falling) {
+                        byte jj = j;
+                        if (z % 2) {
+                            jj += 8;
+                        }
+                        y = ((jj + yOffset) % displayH);
                     }
                     
                     matrix.drawPixel(x % displayW, y, c);
                 }
                 
-                if (state && fillInside) {
+                bool isInvertable = false;
+                if (i < (w-1) && !fill && state) {
+                    for (byte ii = i + 1; ii < w; ii++) {
+                        isInvertable = ((buf[j] & (1<<(ii))) == (1<<(ii)));
+                        if (isInvertable) {
+                            break;
+                        }
+                    }
+                }
+                
+                if (fill) {
+                    isInvertable = true;
+                }
+                
+                if (state && fillInside && isInvertable) {
                     bool invert = true;
                     if (i > 0) {
                         bool prevState = ((buf[j] & (1<<(i-1))) == (1<<(i-1)));
@@ -177,13 +214,15 @@ public:
     }
     
 private:
+
+    
     Palette* palette;
     
     byte offset = 0;
     byte cOffset = 0;
     byte yOffset = 0;
 
-    bool yMove;
+    EYmove yMove = noMove;
     bool colorMove;
     bool isMidiSynced = false;
     
