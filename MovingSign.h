@@ -11,30 +11,37 @@ public:
     delaurentis = 1,
     ymnk,
     douran,
+    bv3,
+    nouvelleVague,
+    prettyInside
   };
 
 public:
   MovingSign(Palette* palette,
              TextCollection textCollection,
+             bool bigLetters = true,
              bool yMove = false,
              bool midiSync = true)
 
-    : palette(palette), textCollection(textCollection), yMove(yMove) {
+    : palette(palette), textCollection(textCollection), yMove(yMove), bigLetters(bigLetters) {
 
     colorCount = palette->size;
 
     switch (textCollection) {
       case fantasy: toDraw = F("FANTASY!"); break;
-      case delaurentis: toDraw = F("DeLaurentis"); break;
+      case delaurentis: toDraw = F("DeLaurentis "); break;
       case ymnk: toDraw = F("YMNK"); break;
-      case douran: toDraw = F("Douran"); break;
+      case douran: toDraw = F("Douran "); break;
+      case bv3: toDraw = F("Bran Van 3000 Elektrio "); break;
+      case nouvelleVague: toDraw = F("Nouvelle Vague "); break;
+      case prettyInside: toDraw = F("Pretty Inside "); break;
       //case fantasy : toDraw = F("そばにきてくらい"); break;
       default: toDraw = F("v1.2.0"); break;
     }
 
     setSynced(midiSync);
 
-    matrix.setTextSize(2);
+    matrix.setTextSize(bigLetters ? 2 : 1);
     matrix.setTextWrap(false);
 
     int16_t x1, y1;
@@ -65,11 +72,11 @@ public:
 
   void drawText(int offset) {
     byte len = toDraw.length();
-    const byte letterSize = 12;
+    const byte letterSize = bigLetters ? 12 : 6;
     for (byte c = 0; c < len; c++) {
       char letter = toDraw.charAt(c);
       matrix.setTextColor(palette->colors[c % colorCount]);
-      int y = 1;
+      int y = bigLetters ? 1 : 5;
       if (yMove) {
         y += yOffset * ((c % 2) ? 1 : -1);
         for (int h = -1; h <= 1; h++) {
@@ -87,7 +94,9 @@ public:
 
     clearScreen();
 
-    for (byte i = 0; i < 2; i++) {
+    const byte repetition = bigLetters ? 2 : 3;
+
+    for (byte i = 0; i < repetition; i++) {
       drawText(-xOffset + i * textWidth);
     }
   }
@@ -103,6 +112,7 @@ protected:
   bool yMove = false;
 
   Palette* palette = nullptr;
+  bool bigLetters = true;
 };
 
 #endif  //MOVING_SIGN_H

@@ -154,7 +154,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
         //Lasers
       case 9:
-        scene = new Gfx(new Palette(COLOR(7, 4, 0)), GfxEnum::gfx_smiley, Gfx::EGfxMode::gfxMode_normal, false, false, true);
+        scene = new Gfx(new Palette(COLOR(7, 4, 0)), GfxEnum::gfx_smiley, Gfx::EGfxMode::gfxMode_normal, Gfx::EYmove::noMove, false, true);
         break;
 
 
@@ -245,7 +245,7 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       case 32:
-        scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy, true);
+        scene = new MovingSign(new RainbowPalette(), MovingSign::fantasy, true, true);
         break;
 
 
@@ -297,7 +297,8 @@ void handleProgramChange(byte channel, byte program) {
         break;
 
       case 51:
-        scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_hearth, Gfx::EGfxMode::gfxMode_plainWithContour, 0, 1);
+      //Gfx(Palette* palette, GfxEnum gfxEnum, EGfxMode mode = gfxMode_normal, EYmove yMove = noMove, bool colorMove = false, bool isMidiSynced = false)
+        scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_hearth, Gfx::EGfxMode::gfxMode_plainWithContour,  Gfx::EYmove::noMove, true);
         break;
 
 
@@ -331,17 +332,50 @@ void handleProgramChange(byte channel, byte program) {
         scene = new SquareDrops(new RainbowPalette(), SquareDrops::wash);
         break;
       case 68:
-        scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_star, Gfx::EGfxMode::gfxMode_normal, 1, 1, 1);
+        scene = new Gfx(new RainbowPalette(), GfxEnum::gfx_star, Gfx::EGfxMode::gfxMode_normal,  Gfx::EYmove::bipolar, true, true);
         break;
 
+
       case 70:
-        scene = new MovingSign(new Palette(COLOR(0, 0, 7)), MovingSign::delaurentis, false, false);
+        scene = new Gfx(new Palette(COLOR(7, 0, 0)), GfxEnum::gfx_tear, Gfx::EGfxMode::gfxMode_plain,  Gfx::EYmove::diagonalFall);
         break;
       case 71:
+        scene = new Gfx(new Palette(COLOR(7, 0, 0)), GfxEnum::gfx_tear, Gfx::EGfxMode::gfxMode_plain,  Gfx::EYmove::falling);
+        break;
+
+
+      case 80:
+        scene = new MovingSign(new Palette(COLOR(0, 0, 7)), MovingSign::delaurentis, false, false, false);
+        break;
+      case 81:
         scene = new BigYMNK(new RainbowPalette());
         break;
-      case 72:
-        scene = new MovingSign(new Palette(7, 0, 7, 7), MovingSign::douran, false, false);
+      case 82:
+        scene = new MovingSign(new Palette(7, 0, 7, 7), MovingSign::douran, false, false, false);
+        break;
+      case 83:
+        scene = new FlashingSign(new Palette(COLOR(0, 0, 7), COLOR(0, 7, 7), COLOR(7, 7, 7)), FlashingSign::deadChic, 3);
+        break;
+      case 84:
+        scene = new FlashingSign(new Palette(COLOR(7, 0, 0)), FlashingSign::vss, 1, true);
+        break;
+      case 85:
+        scene = new MovingSign(new Palette(COLOR(0, 7, 0)), MovingSign::bv3, false, false, false);
+        break;
+      case 86:
+        scene = new FlashingSign(new Palette(COLOR(0, 0, 4), COLOR(0, 0, 7), COLOR(0, 4, 7)), FlashingSign::elvett, 3);
+        break;
+      case 87:
+        scene = new MovingSign(new Palette(COLOR(0, 0, 7)), MovingSign::nouvelleVague, false, false, false);
+        break;
+      case 88:
+        scene = new MovingSign(new Palette(COLOR(7, 0, 0)), MovingSign::prettyInside, false, false, false);
+        break;
+      case 89:
+        scene = new FlashingSign(new RainbowPalette(), FlashingSign::sonia, 2, true);
+        break;
+      case 90:
+        scene = new FlashingSign(new Palette(COLOR(0, 7, 0)), FlashingSign::ilEstVilaine, 1, true);
         break;
 
 
